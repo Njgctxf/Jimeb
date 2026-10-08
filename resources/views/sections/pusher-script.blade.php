@@ -1,0 +1,278 @@
+@if(pusherSettings()->is_enabled_pusher_broadcast)
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+<script>
+    console.log('🔧 Pusher script loading...');
+    // console.log('📊 Raw pusherSettings():', @json(pusherSettings()));
+
+    // Always update PUSHER_SETTINGS with fresh data
+    window.PUSHER_SETTINGS = @json(pusherSettings());
+    // console.log('📊 PUSHER_SETTINGS object:', window.PUSHER_SETTINGS);
+    // console.log('📊 PUSHER_SETTINGS.pusher_key:', window.PUSHER_SETTINGS.pusher_key);
+    // console.log('📊 PUSHER_SETTINGS.pusher_cluster:', window.PUSHER_SETTINGS.pusher_cluster);
+    // console.log('📊 PUSHER_SETTINGS.is_enabled_pusher_broadcast:', window.PUSHER_SETTINGS.is_enabled_pusher_broadcast);
+
+    if (!window.PUSHER_SETTINGS.pusher_key || window.PUSHER_SETTINGS.pusher_key === 'undefined') {
+        console.error('❌ Pusher key is undefined or invalid:', window.PUSHER_SETTINGS.pusher_key);
+    } else {
+        console.log('✅ Pusher key is valid, initializing Pusher...');
+
+        // Implement connection sharing to reduce quota usage
+        if (!window.GLOBAL_PUSHER) {
+            window.GLOBAL_PUSHER = new Pusher(window.PUSHER_SETTINGS.pusher_key, {
+                cluster: window.PUSHER_SETTINGS.pusher_cluster,
+                encrypted: true,
+                maxReconnectionAttempts: 3, // Limit reconnection attempts
+                maxReconnectGap: 10, // Limit reconnection frequency
+                activityTimeout: 30000, // Reduce activity timeout
+                pongTimeout: 15000 // Reduce pong timeout
+            });
+            console.log('✅ Global Pusher connection created');
+
+            // Add connection cleanup on page unload
+            window.addEventListener('beforeunload', function() {
+                if (window.GLOBAL_PUSHER) {
+                    console.log('🧹 Cleaning up Pusher connection on page unload');
+                    window.GLOBAL_PUSHER.disconnect();
+                }
+            });
+
+            // Add connection cleanup on visibility change (tab switching)
+            document.addEventListener('visibilitychange', function() {
+                if (document.hidden && window.GLOBAL_PUSHER) {
+                    console.log('🧹 Pausing Pusher connection (tab hidden)');
+                    // Don't disconnect, just pause activity
+                } else if (!document.hidden && window.GLOBAL_PUSHER) {
+                    console.log('🔄 Resuming Pusher connection (tab visible)');
+                }
+            });
+
+        } else {
+            console.log('✅ Reusing existing global Pusher connection');
+        }
+
+        window.PUSHER = window.GLOBAL_PUSHER;
+        console.log('✅ Pusher initialized successfully');
+        console.log('📊 Pusher connection options:', {
+            key: window.PUSHER_SETTINGS.pusher_key ? '***' + window.PUSHER_SETTINGS.pusher_key.slice(-4) : 'undefined',
+            cluster: window.PUSHER_SETTINGS.pusher_cluster,
+            encrypted: true,
+            maxReconnectionAttempts: 3,
+            maxReconnectGap: 10
+        });
+    }
+
+    (function initGlobalKotPusherChannel() {
+        const kotPusherCurrentUserId = @json(auth()->check() ? auth()->id() : null);
+        const kotPusherCurrentRestaurantId = @json(auth()->check() ? (int) (user()->restaurant_id ?? 0) : 0);
+        const kotPusherCurrentBranchId = @json(auth()->check() ? (int) (branch()->id ?? 0) : 0);
+        const kotPusherSoundUrl = @json(asset('sound/new_order.wav'));
+
+        function deliverKotPusherPayload(raw) {
+            if (!window.Livewire || typeof window.Livewire.getByName !== 'function') {
+                return;
+            }
+            const data = raw && typeof raw === 'object' ? Object.assign({}, raw) : {};
+
+            const eventRestaurantId = data.restaurant_id != null ? Number(data.restaurant_id) : 0;
+            const eventBranchId = data.branch_id != null ? Number(data.branch_id) : 0;
+            const currentRestaurantId = kotPusherCurrentRestaurantId != null ? Number(kotPusherCurrentRestaurantId) : 0;
+            const currentBranchId = kotPusherCurrentBranchId != null ? Number(kotPusherCurrentBranchId) : 0;
+
+            if (eventRestaurantId > 0 && currentRestaurantId > 0 && eventRestaurantId !== currentRestaurantId) {
+                return;
+            }
+
+            if (eventBranchId > 0 && currentBranchId > 0 && eventBranchId !== currentBranchId) {
+                return;
+            }
+
+            window.Livewire.getByName('kot.kots').forEach(function (wire) {
+                if (wire && typeof wire.call === 'function') {
+                    wire.call('refreshKotsFromPusher', data);
+                }
+            });
+
+            window.Livewire.getByName('kot.kot-pusher-listener').forEach(function (wire) {
+                if (wire && typeof wire.call === 'function') {
+                    wire.call('showKotStatusToast', data);
+                }
+            });
+
+            window.Livewire.getByName('customer-order-board').forEach(function (wire) {
+                if (wire && typeof wire.call === 'function') {
+                    wire.call('refreshBoard');
+                }
+            });
+
+            if (data.type === 'status_updated') {
+                const actorId = data.updated_by_user_id != null ? Number(data.updated_by_user_id) : null;
+                const selfId = kotPusherCurrentUserId != null ? Number(kotPusherCurrentUserId) : null;
+                if (actorId === null || selfId === null || actorId !== selfId) {
+                    try {
+                        new Audio(kotPusherSoundUrl).play();
+                    } catch (e) { /* ignore */ }
+                }
+            }
+        }
+
+        function bindGlobalKotChannel() {
+            if (!window.PUSHER) {
+                return;
+            }
+            try {
+                window.__kotsPusherChannel = window.__kotsPusherChannel || window.PUSHER.subscribe('kots');
+                const channel = window.__kotsPusherChannel;
+                channel.unbind('kot.updated');
+                channel.bind('kot.updated', function (data) {
+                    try {
+                        deliverKotPusherPayload(data);
+                    } catch (error) {
+                        console.error('❌ kot.updated handler:', error);
+                    }
+                });
+            } catch (error) {
+                console.error('❌ KOT Pusher channel bind failed:', error);
+            }
+        }
+
+        document.addEventListener('livewire:init', function () {
+            bindGlobalKotChannel();
+        });
+
+        if (!window.__kotPusherGlobalNavigateBound) {
+            window.__kotPusherGlobalNavigateBound = true;
+            document.addEventListener('livewire:navigated', function () {
+                bindGlobalKotChannel();
+            });
+        }
+
+        if (window.Livewire && typeof window.Livewire.getByName === 'function') {
+            bindGlobalKotChannel();
+        }
+    })();
+
+    (function initGlobalLivewirePusherBridges() {
+        const customerDisplayUserId = @json(auth()->check() ? auth()->id() : null);
+
+        function deliverToLivewire(componentName, method, payload) {
+            if (!window.Livewire || typeof window.Livewire.getByName !== 'function') {
+                return;
+            }
+
+            window.Livewire.getByName(componentName).forEach(function (wire) {
+                if (!wire) {
+                    return;
+                }
+
+                if (method === '$refresh' && typeof wire.$refresh === 'function') {
+                    wire.$refresh();
+                    return;
+                }
+
+                if (typeof wire.call === 'function') {
+                    if (typeof payload === 'undefined') {
+                        wire.call(method);
+                    } else {
+                        wire.call(method, payload);
+                    }
+                }
+            });
+        }
+
+        function bindChannel(channelName, eventName, handler) {
+            if (!window.PUSHER) {
+                return;
+            }
+
+            try {
+                const handlerKey = '__pusherBridge_' + channelName + '_' + eventName;
+                const channel = window.PUSHER.subscribe(channelName);
+                if (typeof window[handlerKey] === 'function') {
+                    channel.unbind(eventName, window[handlerKey]);
+                }
+                window[handlerKey] = function (data) {
+                    try {
+                        handler(data);
+                    } catch (error) {
+                        console.error('❌ Pusher handler failed for ' + channelName + ':' + eventName, error);
+                    }
+                };
+                channel.bind(eventName, window[handlerKey]);
+            } catch (error) {
+                console.error('❌ Pusher subscribe failed for ' + channelName, error);
+            }
+        }
+
+        function bindLivewirePusherBridges() {
+            if (!window.PUSHER) {
+                return;
+            }
+
+            bindChannel('today-orders', 'today-orders.updated', function (data) {
+                deliverToLivewire('dashboard.today-orders', 'refreshOrders', data);
+            });
+
+            bindChannel('today-reservations', 'today-reservations.created', function (data) {
+                deliverToLivewire('dashboard.today-reservations', 'refreshReservations', data);
+            });
+
+            bindChannel('active-waiter-requests', 'active-waiter-requests.created', function (data) {
+                deliverToLivewire('dashboard.active-waiter-requests', 'refreshActiveWaiterRequests', data);
+                deliverToLivewire('waiter-request.tables', '$refresh');
+            });
+
+            bindChannel('orders', 'order.updated', function () {
+                deliverToLivewire('customer-order-board', 'refreshBoard');
+            });
+
+            bindChannel('orders', 'order.created', function () {
+                deliverToLivewire('customer-order-board', 'refreshBoard');
+            });
+
+            bindChannel('order-success', 'order-success.created', function (data) {
+                deliverToLivewire('shop.order-success', 'refreshOrderSuccess', data);
+                deliverToLivewire('shop.order-detail', 'refreshOrderSuccess', data);
+            });
+
+            if (customerDisplayUserId && !window.__customerDisplayPusherBound) {
+                window.__customerDisplayPusherBound = true;
+                bindChannel('customer-display-user-' + customerDisplayUserId, 'customer-display.updated', function (data) {
+                    const payload = data && data.order_data ? data.order_data : null;
+                    deliverToLivewire('customer-display', 'refreshCustomerDisplay', payload);
+                });
+            }
+        }
+
+        document.addEventListener('livewire:init', bindLivewirePusherBridges);
+        if (!window.__livewirePusherBridgesNavigateBound) {
+            window.__livewirePusherBridgesNavigateBound = true;
+            document.addEventListener('livewire:navigated', bindLivewirePusherBridges);
+        }
+        bindLivewirePusherBridges();
+    })();
+
+    function reloadKots() {
+        document.addEventListener('livewire:initialized', function () {
+            // Safe to call Livewire.emit now
+            Livewire.emit('refreshOrders');
+            console.log('🔄 Reloading Kots...')
+            new Audio("{{ asset('sound/new_order.wav')}}").play();
+        });
+
+        // Livewire.emit('updateKots');
+        // window.PUSHER.channels.get('kots').trigger('kot.updated');
+    }
+
+    function reloadOrders() {
+        console.log('🔄 Reloading Orders...');
+        Livewire.emit('updateOrders');
+        // window.PUSHER.channels.get('orders').trigger('order.updated');
+    }
+
+
+</script>
+@else
+<script>
+    console.log('📡 Pusher broadcast is disabled');
+</script>
+@endif

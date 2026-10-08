@@ -1,0 +1,301 @@
+{
+    "name": "laravel/laravel",
+    "type": "project",
+    "description": "The skeleton application for the Laravel framework.",
+    "keywords": ["laravel", "framework"],
+    "license": "MIT",
+    "require": {
+        "php": "^8.3",
+        "async-aws/simple-s3": "^2.0",
+        "bacon/bacon-qr-code": "^3.0",
+        "barryvdh/laravel-dompdf": "^3.1",
+        "barryvdh/laravel-translation-manager": "^0.6.9",
+        "billowapp/payfast": "^0.6.7",
+        "blade-ui-kit/blade-heroicons": "^2.6",
+        "fakerphp/faker": "^1.23",
+        "flutterwavedev/flutterwave-v3": "^1.0",
+        "froiden/envato": "^5.0",
+        "froiden/laravel-installer": "^11.0",
+        "froiden/laravel-rest-api": "^13.0",
+        "guzzlehttp/guzzle": "^7.9",
+        "http-interop/http-factory-guzzle": "^1.2",
+        "intervention/image": "^2.5",
+        "jantinnerezo/livewire-alert": "^3.0.4",
+        "ladumor/laravel-pwa": "^0.0.4",
+        "laravel/cashier": "^15.8",
+        "laravel/cashier-paddle": "^2.8",
+        "laravel/framework": "^13.12",
+        "laravel/jetstream": "^5.5",
+        "laravel/sanctum": "^4.3",
+        "laravel/tinker": "^3.0",
+        "laravel/vonage-notification-channel": "^3.3",
+        "league/flysystem-async-aws-s3": "^3.0",
+        "livewire/livewire": "^3.8",
+        "maatwebsite/excel": "^3.1",
+        "macellan/laravel-zip": "^1.0",
+        "mhmiton/laravel-modules-livewire": "^5.2.1",
+        "minishlink/web-push": "^9.0",
+        "mollie/laravel-mollie": "^3.1.1",
+        "nwidart/laravel-modules": "*",
+        "opcodesio/log-viewer": "^3.24",
+        "paypal/rest-api-sdk-php": "dev-laravel10",
+        "phiki/phiki": "^2.0",
+        "pusher/pusher-php-server": "^7.2",
+        "pusher/pusher-push-notifications": "^2.0",
+        "razorpay/razorpay": "^2.9",
+        "spatie/laravel-permission": "^6.25",
+        "spatie/laravel-translatable": "^6.14",
+        "stichoza/google-translate-php": "^5.3",
+        "tanmuhittin/laravel-google-translate": "^2.4",
+        "unicodeveloper/laravel-paystack": "dev-l12-compatibility",
+        "xendit/xendit-php": "^7.0"
+    },
+    "require-dev": {
+        "barryvdh/laravel-debugbar": "^4.3",
+        "laravel/sail": "^1.26",
+        "mockery/mockery": "^1.6",
+        "nunomaduro/collision": "^8.0",
+        "phpunit/phpunit": "^12.0"
+    },
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "billowapp/payfast",
+                "version": "0.6.7",
+                "source": {
+                    "url": "https://github.com/Froiden/payfast.git",
+                    "type": "git",
+                    "reference": "218c69b380575aa496c5c27518c8779ec4b45d0a"
+                },
+                "dist": {
+                    "url": "https://api.github.com/repos/Froiden/payfast/zipball/218c69b380575aa496c5c27518c8779ec4b45d0a",
+                    "type": "zip",
+                    "reference": "218c69b380575aa496c5c27518c8779ec4b45d0a"
+                },
+                "require": {
+                    "illuminate/support": "^5.4|^6.0|^7.0|^8.0|^9.0|^10.0|^11.0|^12.0|^13.0",
+                    "illuminate/http": "^5.4|^6.0|^7.0|^8.0|^9.0|^10.0|^11.0|^12.0|^13.0"
+                },
+                "autoload": {
+                    "psr-4": {
+                        "Billow\\": "src/"
+                    }
+                },
+                "extra": {
+                    "laravel": {
+                        "providers": [
+                            "Billow\\PayfastServiceProvider"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "unicodeveloper/laravel-paystack",
+                "version": "dev-l12-compatibility",
+                "source": {
+                    "url": "https://github.com/laravel-shift/laravel-paystack.git",
+                    "type": "git",
+                    "reference": "ae92cdc005a46834eff864b58cafea11e0b579bc"
+                },
+                "dist": {
+                    "url": "https://api.github.com/repos/laravel-shift/laravel-paystack/zipball/ae92cdc005a46834eff864b58cafea11e0b579bc",
+                    "type": "zip",
+                    "reference": "ae92cdc005a46834eff864b58cafea11e0b579bc"
+                },
+                "require": {
+                    "php": "^7.2|^8.0|^8.1",
+                    "illuminate/support": "~6|~7|~8|~9|^10.0|^11.0|^12.0|^13.0",
+                    "guzzlehttp/guzzle": "~6|~7|~8|~9"
+                },
+                "autoload": {
+                    "files": [
+                        "src/Support/helpers.php"
+                    ],
+                    "psr-4": {
+                        "Unicodeveloper\\Paystack\\": "src/"
+                    }
+                },
+                "extra": {
+                    "laravel": {
+                        "providers": [
+                            "Unicodeveloper\\Paystack\\PaystackServiceProvider"
+                        ],
+                        "aliases": {
+                            "Paystack": "Unicodeveloper\\Paystack\\Facades\\Paystack"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "jantinnerezo/livewire-alert",
+                "version": "3.0.4",
+                "source": {
+                    "url": "https://github.com/jantinnerezo/livewire-alert.git",
+                    "type": "git",
+                    "reference": "7466b71df6b237dd49dcd741fd872dfaa47977fe"
+                },
+                "dist": {
+                    "url": "https://api.github.com/repos/jantinnerezo/livewire-alert/zipball/7466b71df6b237dd49dcd741fd872dfaa47977fe",
+                    "type": "zip",
+                    "reference": "7466b71df6b237dd49dcd741fd872dfaa47977fe"
+                },
+                "require": {
+                    "php": "^8.1|^8.2|^8.3",
+                    "livewire/livewire": "^3.0",
+                    "illuminate/support": "^5.5 || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0|^11.0|^12.0|^13.0"
+                },
+                "autoload": {
+                    "psr-4": {
+                        "Jantinnerezo\\LivewireAlert\\": "src"
+                    }
+                },
+                "extra": {
+                    "laravel": {
+                        "providers": [
+                            "Jantinnerezo\\LivewireAlert\\LivewireAlertServiceProvider"
+                        ],
+                        "aliases": {
+                            "LivewireAlert": "Jantinnerezo\\LivewireAlert\\LivewireAlertFacade"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "mhmiton/laravel-modules-livewire",
+                "version": "5.2.1",
+                "source": {
+                    "url": "https://github.com/mhmiton/laravel-modules-livewire.git",
+                    "type": "git",
+                    "reference": "afe5031db8810a8e7e4c14c447f90cbb43dd633a"
+                },
+                "dist": {
+                    "url": "https://api.github.com/repos/mhmiton/laravel-modules-livewire/zipball/afe5031db8810a8e7e4c14c447f90cbb43dd633a",
+                    "type": "zip",
+                    "reference": "afe5031db8810a8e7e4c14c447f90cbb43dd633a"
+                },
+                "require": {
+                    "php": ">=8.1",
+                    "laravel/framework": "^10.0|^11.0|^12.0|^13.0",
+                    "livewire/livewire": "^3.0",
+                    "nwidart/laravel-modules": ">=11.0"
+                },
+                "autoload": {
+                    "psr-4": {
+                        "Mhmiton\\LaravelModulesLivewire\\": "src/"
+                    }
+                },
+                "extra": {
+                    "laravel": {
+                        "providers": [
+                            "Mhmiton\\LaravelModulesLivewire\\LaravelModulesLivewireServiceProvider"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "mollie/laravel-mollie",
+                "version": "3.1.1",
+                "source": {
+                    "url": "https://github.com/mollie/laravel-mollie.git",
+                    "type": "git",
+                    "reference": "98a89dff9f27d1b41da36e048282516a99271662"
+                },
+                "dist": {
+                    "url": "https://api.github.com/repos/mollie/laravel-mollie/zipball/98a89dff9f27d1b41da36e048282516a99271662",
+                    "type": "zip",
+                    "reference": "98a89dff9f27d1b41da36e048282516a99271662"
+                },
+                "require": {
+                    "php": "^8.1|^8.2|^8.3",
+                    "ext-json": "*",
+                    "illuminate/support": "^10.0|^11.0|^12.0|^13.0",
+                    "mollie/mollie-api-php": "^2.60"
+                },
+                "autoload": {
+                    "psr-4": {
+                        "Mollie\\Laravel\\": "src/"
+                    }
+                },
+                "extra": {
+                    "laravel": {
+                        "providers": [
+                            "Mollie\\Laravel\\MollieServiceProvider"
+                        ],
+                        "aliases": {
+                            "Mollie": "Mollie\\Laravel\\Facades\\Mollie"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/Froiden/PayPal-PHP-SDK"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "ArPHP\\I18N\\": "app/Support/ArPhp/I18N/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/",
+            "Modules\\": "Modules/"
+        },
+        "files": [
+            "app/Helper/start.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi"
+        ],
+        "post-update-cmd": [
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
+            "@php artisan vendor:publish --tag=livewire:assets --ansi --force"
+        ],
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "@php artisan key:generate --ansi",
+            "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
+            "@php artisan migrate --graceful --ansi"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": []
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true,
+            "wikimedia/composer-merge-plugin": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
