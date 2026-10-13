@@ -763,5 +763,16 @@
         "attribution": "unversioned"
       }
     ]
-  }
+  },
+  "renders": {
+    "latest": {
+      "id": "285bb91f-6a33-434d-bed1-2414b3d16650",
+      "completedAt": 1791906172828,
+      "output": "/home/user/Jimeb/videos/dtl-promo/renders/video.mp4",
+      "status": "completed",
+      "revision": null
+    },
+    "retainedRevisions": []
+  },
+  "pendingArtifactCleanup": []
 }
