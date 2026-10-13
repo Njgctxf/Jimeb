@@ -1,0 +1,142 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+@font-face { font-family: "Anton"; src: url("assets/fonts/Anton-400.woff2") format("woff2"); font-weight: 400; }
+@font-face { font-family: "Montserrat"; src: url("assets/fonts/Montserrat-var.woff2") format("woff2"); font-weight: 100 900; }
+
+#root { position: absolute; inset: 0; overflow: hidden; container-type: size; font-family: "Montserrat", sans-serif; color: #fff; }
+.f08-layer { position: absolute; inset: 0; }
+.f08-bg { position: absolute; inset: 0; background: radial-gradient(120% 80% at 50% 20%, #1B3F8F 0%, #0A1A44 60%, #060F2B 100%); }
+.f08-blob { position: absolute; border-radius: 50%; filter: blur(70px); }
+.f08-blobA { left: -200px; top: 120px; width: 760px; height: 760px; background: rgba(47,123,255,.55); }
+.f08-blobB { right: -260px; top: 1050px; width: 820px; height: 820px; background: rgba(34,211,238,.38); }
+.f08-spark { position: absolute; width: 46px; height: 46px; }
+.f08-cam { position: absolute; inset: 0; }
+.f08-abs { position: absolute; }
+.f08-center { position: absolute; left: 0; right: 0; display: flex; justify-content: center; }
+.f08-anton { font-family: "Anton", sans-serif; text-transform: uppercase; line-height: .92; }
+.f08-hot { color: #F19E14; text-shadow: 0 5px 0 #C9520F, 0 10px 0 #9C3F0B, 0 15px 0 #7A3009, 0 26px 40px rgba(0,0,0,.55); }
+.f08-white3d { color: #fff; text-shadow: 0 5px 0 #9DB5EE, 0 10px 0 #5A78C4, 0 15px 0 #2A4691, 0 26px 40px rgba(0,0,0,.55); }
+.f08-glass { background: rgba(255,255,255,.10); border: 2px solid rgba(255,255,255,.28); border-radius: 40px; backdrop-filter: blur(18px); box-shadow: inset 0 2px 0 rgba(255,255,255,.35), 0 30px 80px rgba(0,0,0,.35); }
+.f08-chip { display: inline-flex; align-items: center; gap: 18px; padding: 22px 40px; border-radius: 999px; font-weight: 800; font-size: 40px; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+.f08-chip.hot { background: linear-gradient(135deg, #F19E14 0%, #E2741B 60%, #C9520F 100%); box-shadow: 0 18px 40px rgba(226,116,27,.45), inset 0 2px 0 rgba(255,255,255,.45); }
+.f08-chip.glass { background: rgba(255,255,255,.12); border: 2px solid rgba(255,255,255,.32); backdrop-filter: blur(14px); }
+.f08-chip svg { width: 56px; height: 56px; }
+.f08-label { font-weight: 800; font-size: 34px; letter-spacing: .22em; text-transform: uppercase; color: #B9C6E8; }
+.f08-dots { position: absolute; top: 150px; left: 0; right: 0; display: flex; justify-content: center; gap: 16px; }
+.f08-dot { width: 64px; height: 12px; border-radius: 6px; background: rgba(255,255,255,.22); }
+.f08-dot.on { background: linear-gradient(90deg, #F19E14, #E2741B); box-shadow: 0 0 20px rgba(241,158,20,.8); }
+.f08-streak { position: absolute; height: 10px; border-radius: 5px; background: linear-gradient(90deg, rgba(241,158,20,0), #F19E14 60%, #E2741B); }
+
+    .f08-globe { position: absolute; left: 190px; top: 600px; width: 700px; height: 700px; }
+    
+  </style>
+  <div id="root" data-composition-id="08-import-export" data-width="1080" data-height="1920" data-duration="5.419">
+  
+  <div id="f08-ground" class="clip f08-layer" data-start="0" data-duration="5.419" data-track-index="0">
+    <div class="f08-bg"></div>
+    <div id="f08-blobA" class="f08-blob f08-blobA"></div>
+    <div id="f08-blobB" class="f08-blob f08-blobB"></div>
+    <div id="f08-sp0" class="f08-spark" style="left:120px;top:300px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#fff"/></svg></div><div id="f08-sp1" class="f08-spark" style="left:930px;top:420px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#F19E14"/></svg></div><div id="f08-sp2" class="f08-spark" style="left:860px;top:1180px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#fff"/></svg></div><div id="f08-sp3" class="f08-spark" style="left:90px;top:1350px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#7FB2FF"/></svg></div><div id="f08-sp4" class="f08-spark" style="left:520px;top:210px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#7FB2FF"/></svg></div><div id="f08-sp5" class="f08-spark" style="left:980px;top:860px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#fff"/></svg></div>
+  </div>
+  <div id="f08-content" class="clip f08-layer" data-start="0" data-duration="5.419" data-track-index="1">
+    <div id="f08-cam" class="f08-cam">
+    
+    
+    <div class="f08-dots"><div class="f08-dot"></div><div class="f08-dot"></div><div class="f08-dot"></div><div class="f08-dot"></div><div class="f08-dot on"></div><div class="f08-dot"></div><div class="f08-dot"></div></div>
+    <div id="f08-numwrap" class="f08-center" style="top:230px;align-items:center;gap:26px">
+      <div id="f08-num" class="f08-anton f08-hot" style="font-size:120px">05</div>
+      <div id="f08-svc" class="f08-label">SERVICE</div>
+    </div>
+    <div class="f08-center" style="top:380px;flex-direction:column;align-items:center">
+      <div id="f08-title" class="f08-anton f08-white3d" style="font-size:150px;text-align:center">IMPORT-EXPORT</div>
+      
+    </div>
+    <div id="f08-gw" class="f08-globe"><svg style="width:700px;height:700px" viewBox="0 0 700 700" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="f08-gg" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#4C93FF"/><stop offset=".6" stop-color="#1B3F8F"/><stop offset="1" stop-color="#0A1A44"/></radialGradient>
+<clipPath id="f08-gc"><circle cx="350" cy="350" r="300"/></clipPath></defs>
+<circle cx="350" cy="350" r="330" fill="rgba(47,123,255,.18)"/>
+<circle cx="350" cy="350" r="300" fill="url(#f08-gg)"/>
+<g clip-path="url(#f08-gc)">
+  <g id="f08-land" fill="#F19E14" opacity=".9">
+    <path d="M300 200 q60-30 100 10 q30 40 10 90 q-10 60 -50 90 q-30 30 -40 -10 q-10-40 -40-60 q-30-30 -10-70 q10-40 30-50z"/>
+    <path d="M120 180 q40-20 70 20 q10 40 -20 60 q-40 10 -60-20 q-10-40 10-60z"/>
+    <path d="M480 160 q70-10 120 30 q20 50 -30 70 q-60 10 -80-30 q-20-40 -10-70z"/>
+    <path d="M520 420 q40-10 60 30 q0 40 -40 40 q-30-10 -20-70z"/>
+    <path d="M900 200 q60-30 100 10 q30 40 10 90 q-10 60 -50 90 q-30 30 -40 -10 q-10-40 -40-60 q-30-30 -10-70 q10-40 30-50z"/>
+    <path d="M720 180 q40-20 70 20 q10 40 -20 60 q-40 10 -60-20 q-10-40 10-60z"/>
+  </g>
+  <g stroke="rgba(255,255,255,.18)" stroke-width="3" fill="none"><ellipse cx="350" cy="350" rx="300" ry="100"/><ellipse cx="350" cy="350" rx="300" ry="200"/><ellipse cx="350" cy="350" rx="100" ry="300"/><ellipse cx="350" cy="350" rx="200" ry="300"/><path d="M50 350 H650 M350 50 V650"/></g>
+</g>
+<circle cx="350" cy="350" r="300" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="4"/>
+<path id="f08-a1" d="M330 390 Q 200 120 90 150" stroke="#fff" stroke-width="8" fill="none" stroke-dasharray="500" stroke-dashoffset="500" stroke-linecap="round"/>
+<path id="f08-a2" d="M330 390 Q 520 140 610 220" stroke="#fff" stroke-width="8" fill="none" stroke-dasharray="500" stroke-dashoffset="500" stroke-linecap="round"/>
+<path id="f08-a3" d="M330 390 Q 470 600 600 520" stroke="#fff" stroke-width="8" fill="none" stroke-dasharray="500" stroke-dashoffset="500" stroke-linecap="round"/>
+<circle id="f08-ci" cx="330" cy="390" r="20" fill="#E2741B" stroke="#fff" stroke-width="6"/>
+<circle id="f08-ciring" cx="330" cy="390" r="20" fill="none" stroke="#F19E14" stroke-width="6"/>
+</svg></div>
+    <div id="f08-plane" class="f08-abs" style="left:150px;top:640px;width:130px;height:130px"><svg style="width:130px;height:130px" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<path d="M10 64 l40-6 l30-40 h12 l-16 38 l30-4 l10-14 h8 l-6 22 l6 22 h-8 l-10-14 l-30-4 l16 38 h-12 l-30-40 l-40-6z" fill="#FFFFFF" transform="rotate(-8 60 60)"/>
+</svg></div>
+    <div id="f08-ship" class="f08-abs" style="left:760px;top:1100px;width:150px;height:150px"><svg style="width:150px;height:150px" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<path d="M10 70 h100 l-14 28 h-72z" fill="#1B3F8F"/>
+<rect x="24" y="44" width="22" height="24" fill="#E2741B"/><rect x="48" y="44" width="22" height="24" fill="#F19E14"/><rect x="72" y="44" width="22" height="24" fill="#2F7BFF"/>
+<rect x="36" y="22" width="22" height="22" fill="#F19E14"/><rect x="60" y="22" width="22" height="22" fill="#E2741B"/>
+<path d="M4 104 q14 8 28 0 q14 8 28 0 q14 8 28 0 q14 8 28 0" stroke="#7FB2FF" stroke-width="5" fill="none"/>
+</svg></div>
+    <div id="f08-ciL" class="f08-abs f08-label" style="left:380px;top:1010px;color:#fff;font-size:30px">CÔTE D'IVOIRE</div>
+    <div class="f08-center" style="top:1330px"><div id="f08-c1" class="f08-chip glass"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="46" fill="#2F7BFF"/>
+<path d="M30 40 q14-8 20 6 q-4 14 10 18 q6 14-8 22 q-14-6-18-22z M70 26 q16 2 26 18 q-10 4-16-2 q-12 0-10-16z M76 70 q12-4 18 6 q-6 14-16 12z" fill="#F19E14"/>
+<circle cx="60" cy="60" r="46" fill="none" stroke="#FFFFFF" stroke-width="5"/>
+</svg><span>CÔTE D'IVOIRE → MONDE</span></div></div>
+    <div class="f08-center" style="top:1460px"><div id="f08-c2" class="f08-chip hot"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<path d="M60 14 l44 22 v50 l-44 22 l-44-22 v-50z" fill="#E2741B"/>
+<path d="M60 14 l44 22 l-44 22 l-44-22z" fill="#F19E14"/>
+<path d="M60 58 v50" stroke="#B5530F" stroke-width="4"/>
+<path d="M38 25 l44 22 v18" stroke="#FFFFFF" stroke-width="7" fill="none" opacity=".9"/>
+</svg><span>MONDE → CHEZ VOUS</span></div></div>
+    
+    </div>
+  </div>
+  </div>
+  <script>
+  (function () {
+    var tl = gsap.timeline({ paused: true });
+    tl.fromTo("#f08-blobA", {x: -40, y: 0}, {x: 120, y: 90, duration: 5.419, ease: "none"}, 0);
+    tl.fromTo("#f08-blobB", {x: 40, y: 0}, {x: -140, y: -110, duration: 5.419, ease: "none"}, 0);
+    tl.fromTo("#f08-cam", {scale: 1}, {scale: 1.045, duration: 5.419, ease: "none"}, 0);
+    tl.fromTo("#f08-sp0", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 0.15);
+    tl.to("#f08-sp0", {rotation: 90, duration: 4.62, ease: "none"}, 0.70);
+    tl.fromTo("#f08-sp1", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 0.52);
+    tl.to("#f08-sp1", {rotation: 90, duration: 4.62, ease: "none"}, 1.07);
+    tl.fromTo("#f08-sp2", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 0.89);
+    tl.to("#f08-sp2", {rotation: 90, duration: 4.62, ease: "none"}, 1.44);
+    tl.fromTo("#f08-sp3", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 1.26);
+    tl.to("#f08-sp3", {rotation: 90, duration: 4.62, ease: "none"}, 1.81);
+    tl.fromTo("#f08-sp4", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 1.63);
+    tl.to("#f08-sp4", {rotation: 90, duration: 4.62, ease: "none"}, 2.18);
+    tl.fromTo("#f08-sp5", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 2.00);
+    tl.to("#f08-sp5", {rotation: 90, duration: 4.62, ease: "none"}, 2.55);
+    
+    
+    tl.fromTo("#f08-numwrap", {y: -60, opacity: 0}, {y: 0, opacity: 1, duration: .45, ease: "back.out(2)"}, 0.05);
+    tl.fromTo("#f08-title", {scale: 1.8, opacity: 0, filter: "blur(16px)"}, {scale: 1, opacity: 1, filter: "blur(0px)", duration: .5, ease: "expo.out"}, 0.12);
+    if (document.querySelector("#f08-sub")) tl.fromTo("#f08-sub", {y: 30, opacity: 0}, {y: 0, opacity: 1, duration: .4, ease: "power3.out"}, 0.45);
+    tl.fromTo("#f08-gw", {scale: .5, opacity: 0}, {scale: 1, opacity: 1, duration: .7, ease: "back.out(1.5)"}, 0.3);
+    tl.fromTo("#f08-land", {x: -600}, {x: 0, duration: 5.42, ease: "none"}, 0);
+    tl.fromTo("#f08-ci", {scale: 0, transformOrigin: "50% 50%"}, {scale: 1, duration: .4, ease: "back.out(3)"}, 0.8);
+    tl.fromTo("#f08-ciring", {scale: 1, opacity: 1, transformOrigin: "50% 50%"}, {scale: 3, opacity: 0, duration: .9, ease: "power2.out", repeat: 3}, 0.9);
+    tl.fromTo("#f08-ciL", {opacity: 0, y: 20}, {opacity: 1, y: 0, duration: .4}, 1.0);
+    tl.fromTo("#f08-a1", {strokeDashoffset: 500}, {strokeDashoffset: 0, duration: .8, ease: "power2.out"}, 1.4);
+    tl.fromTo("#f08-a2", {strokeDashoffset: 500}, {strokeDashoffset: 0, duration: .8, ease: "power2.out"}, 1.6);
+    tl.fromTo("#f08-a3", {strokeDashoffset: 500}, {strokeDashoffset: 0, duration: .8, ease: "power2.out"}, 1.8);
+    tl.fromTo("#f08-plane", {x: 400, y: 260, opacity: 0, scale: .5}, {x: 0, y: 0, opacity: 1, scale: 1, duration: 1.2, ease: "power2.out"}, 1.4);
+    tl.fromTo("#f08-ship", {x: -300, opacity: 0}, {x: 0, opacity: 1, duration: 1.6, ease: "power2.out"}, 1.8);
+    tl.fromTo("#f08-c1", {scale: 0.4, opacity: 0}, {scale: 1, opacity: 1, duration: 0.45, ease: "back.out(2.2)"}, 1.9);
+    tl.fromTo("#f08-c2", {scale: 0.4, opacity: 0}, {scale: 1, opacity: 1, duration: 0.45, ease: "back.out(2.2)"}, 3.9);
+    
+    window.__timelines["08-import-export"] = tl;
+  })();
+  </script>
+</template>

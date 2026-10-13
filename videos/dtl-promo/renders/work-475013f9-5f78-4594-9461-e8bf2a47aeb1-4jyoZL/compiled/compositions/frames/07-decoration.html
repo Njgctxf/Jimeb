@@ -1,0 +1,133 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+@font-face { font-family: "Anton"; src: url("assets/fonts/Anton-400.woff2") format("woff2"); font-weight: 400; }
+@font-face { font-family: "Montserrat"; src: url("assets/fonts/Montserrat-var.woff2") format("woff2"); font-weight: 100 900; }
+
+#root { position: absolute; inset: 0; overflow: hidden; container-type: size; font-family: "Montserrat", sans-serif; color: #fff; }
+.f07-layer { position: absolute; inset: 0; }
+.f07-bg { position: absolute; inset: 0; background: radial-gradient(120% 80% at 50% 20%, #1B3F8F 0%, #0A1A44 60%, #060F2B 100%); }
+.f07-blob { position: absolute; border-radius: 50%; filter: blur(70px); }
+.f07-blobA { left: -200px; top: 120px; width: 760px; height: 760px; background: rgba(47,123,255,.55); }
+.f07-blobB { right: -260px; top: 1050px; width: 820px; height: 820px; background: rgba(34,211,238,.38); }
+.f07-spark { position: absolute; width: 46px; height: 46px; }
+.f07-cam { position: absolute; inset: 0; }
+.f07-abs { position: absolute; }
+.f07-center { position: absolute; left: 0; right: 0; display: flex; justify-content: center; }
+.f07-anton { font-family: "Anton", sans-serif; text-transform: uppercase; line-height: .92; }
+.f07-hot { color: #F19E14; text-shadow: 0 5px 0 #C9520F, 0 10px 0 #9C3F0B, 0 15px 0 #7A3009, 0 26px 40px rgba(0,0,0,.55); }
+.f07-white3d { color: #fff; text-shadow: 0 5px 0 #9DB5EE, 0 10px 0 #5A78C4, 0 15px 0 #2A4691, 0 26px 40px rgba(0,0,0,.55); }
+.f07-glass { background: rgba(255,255,255,.10); border: 2px solid rgba(255,255,255,.28); border-radius: 40px; backdrop-filter: blur(18px); box-shadow: inset 0 2px 0 rgba(255,255,255,.35), 0 30px 80px rgba(0,0,0,.35); }
+.f07-chip { display: inline-flex; align-items: center; gap: 18px; padding: 22px 40px; border-radius: 999px; font-weight: 800; font-size: 40px; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+.f07-chip.hot { background: linear-gradient(135deg, #F19E14 0%, #E2741B 60%, #C9520F 100%); box-shadow: 0 18px 40px rgba(226,116,27,.45), inset 0 2px 0 rgba(255,255,255,.45); }
+.f07-chip.glass { background: rgba(255,255,255,.12); border: 2px solid rgba(255,255,255,.32); backdrop-filter: blur(14px); }
+.f07-chip svg { width: 56px; height: 56px; }
+.f07-label { font-weight: 800; font-size: 34px; letter-spacing: .22em; text-transform: uppercase; color: #B9C6E8; }
+.f07-dots { position: absolute; top: 150px; left: 0; right: 0; display: flex; justify-content: center; gap: 16px; }
+.f07-dot { width: 64px; height: 12px; border-radius: 6px; background: rgba(255,255,255,.22); }
+.f07-dot.on { background: linear-gradient(90deg, #F19E14, #E2741B); box-shadow: 0 0 20px rgba(241,158,20,.8); }
+.f07-streak { position: absolute; height: 10px; border-radius: 5px; background: linear-gradient(90deg, rgba(241,158,20,0), #F19E14 60%, #E2741B); }
+
+    .f07-cf { position: absolute; }
+    .f07-bal { position: absolute; width: 170px; height: 170px; }
+    .f07-flag { position: absolute; top: 560px; left: 0; right: 0; height: 160px; }
+    
+  </style>
+  <div id="root" data-composition-id="07-decoration" data-width="1080" data-height="1920" data-duration="5.312">
+  
+  <div id="f07-ground" class="clip f07-layer" data-start="0" data-duration="5.312" data-track-index="0">
+    <div class="f07-bg"></div>
+    <div id="f07-blobA" class="f07-blob f07-blobA"></div>
+    <div id="f07-blobB" class="f07-blob f07-blobB"></div>
+    <div id="f07-sp0" class="f07-spark" style="left:120px;top:300px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#fff"/></svg></div><div id="f07-sp1" class="f07-spark" style="left:930px;top:420px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#F19E14"/></svg></div><div id="f07-sp2" class="f07-spark" style="left:860px;top:1180px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#fff"/></svg></div><div id="f07-sp3" class="f07-spark" style="left:90px;top:1350px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#7FB2FF"/></svg></div><div id="f07-sp4" class="f07-spark" style="left:520px;top:210px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#7FB2FF"/></svg></div><div id="f07-sp5" class="f07-spark" style="left:980px;top:860px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#fff"/></svg></div>
+  </div>
+  <div id="f07-content" class="clip f07-layer" data-start="0" data-duration="5.312" data-track-index="1">
+    <div id="f07-cam" class="f07-cam">
+    
+    
+    <div class="f07-dots"><div class="f07-dot"></div><div class="f07-dot"></div><div class="f07-dot"></div><div class="f07-dot on"></div><div class="f07-dot"></div><div class="f07-dot"></div><div class="f07-dot"></div></div>
+    <div id="f07-numwrap" class="f07-center" style="top:230px;align-items:center;gap:26px">
+      <div id="f07-num" class="f07-anton f07-hot" style="font-size:120px">04</div>
+      <div id="f07-svc" class="f07-label">SERVICE</div>
+    </div>
+    <div class="f07-center" style="top:380px;flex-direction:column;align-items:center">
+      <div id="f07-title" class="f07-anton f07-white3d" style="font-size:190px;text-align:center">DÉCORATION</div>
+      
+    </div>
+    <div id="f07-flagw" class="f07-flag"><svg style="width:1080px;height:160px" viewBox="0 0 1080 160" xmlns="http://www.w3.org/2000/svg"><path d="M0 20 Q540 70 1080 20" stroke="#fff" stroke-width="5" fill="none"/><path d="M0 20 l60 0 l-30 70z" fill="#E2741B"/><path d="M70 20 l60 0 l-30 70z" fill="#F19E14"/><path d="M140 20 l60 0 l-30 70z" fill="#2F7BFF"/><path d="M210 20 l60 0 l-30 70z" fill="#fff"/><path d="M280 20 l60 0 l-30 70z" fill="#E2741B"/><path d="M350 20 l60 0 l-30 70z" fill="#F19E14"/><path d="M420 20 l60 0 l-30 70z" fill="#2F7BFF"/><path d="M490 20 l60 0 l-30 70z" fill="#fff"/><path d="M560 20 l60 0 l-30 70z" fill="#E2741B"/><path d="M630 20 l60 0 l-30 70z" fill="#F19E14"/><path d="M700 20 l60 0 l-30 70z" fill="#2F7BFF"/><path d="M770 20 l60 0 l-30 70z" fill="#fff"/><path d="M840 20 l60 0 l-30 70z" fill="#E2741B"/><path d="M910 20 l60 0 l-30 70z" fill="#F19E14"/><path d="M980 20 l60 0 l-30 70z" fill="#2F7BFF"/><path d="M1050 20 l60 0 l-30 70z" fill="#fff"/></svg></div>
+    <div id="f07-b0" class="f07-bal" style="left:80px;top:1150px"><svg style="width:170px;height:170px" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<ellipse cx="60" cy="48" rx="32" ry="38" fill="#E2741B"/>
+<ellipse cx="48" cy="34" rx="8" ry="12" fill="#fff" opacity=".5"/>
+<path d="M54 84 l6 8 l6-8z" fill="#E2741B"/>
+<path d="M60 92 q-8 12 0 24" stroke="#FFFFFF" stroke-width="3" fill="none"/>
+</svg></div><div id="f07-b1" class="f07-bal" style="left:260px;top:1150px"><svg style="width:170px;height:170px" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<ellipse cx="60" cy="48" rx="32" ry="38" fill="#2F7BFF"/>
+<ellipse cx="48" cy="34" rx="8" ry="12" fill="#fff" opacity=".5"/>
+<path d="M54 84 l6 8 l6-8z" fill="#2F7BFF"/>
+<path d="M60 92 q-8 12 0 24" stroke="#FFFFFF" stroke-width="3" fill="none"/>
+</svg></div><div id="f07-b2" class="f07-bal" style="left:760px;top:1150px"><svg style="width:170px;height:170px" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<ellipse cx="60" cy="48" rx="32" ry="38" fill="#F19E14"/>
+<ellipse cx="48" cy="34" rx="8" ry="12" fill="#fff" opacity=".5"/>
+<path d="M54 84 l6 8 l6-8z" fill="#F19E14"/>
+<path d="M60 92 q-8 12 0 24" stroke="#FFFFFF" stroke-width="3" fill="none"/>
+</svg></div><div id="f07-b3" class="f07-bal" style="left:900px;top:1150px"><svg style="width:170px;height:170px" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<ellipse cx="60" cy="48" rx="32" ry="38" fill="#E2741B"/>
+<ellipse cx="48" cy="34" rx="8" ry="12" fill="#fff" opacity=".5"/>
+<path d="M54 84 l6 8 l6-8z" fill="#E2741B"/>
+<path d="M60 92 q-8 12 0 24" stroke="#FFFFFF" stroke-width="3" fill="none"/>
+</svg></div>
+    <div id="f07-gift" class="f07-abs" style="left:400px;top:780px;width:280px;height:280px"><svg style="width:280px;height:280px" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<rect x="18" y="46" width="84" height="60" rx="6" fill="#E2741B"/>
+<rect x="12" y="34" width="96" height="18" rx="5" fill="#F19E14"/>
+<rect x="54" y="34" width="12" height="72" fill="#FFFFFF"/>
+<path d="M60 34 q-28-26 -30 -6 q4 10 30 6 q26 4 30-6 q-2-20 -30 6z" fill="#FFFFFF"/>
+</svg></div>
+    <div class="f07-cf" style="left:540px;top:900px;width:24px;height:24px;background:#F19E14;border-radius:50%" data-x="622" data-y="795"></div><div class="f07-cf" style="left:540px;top:900px;width:18px;height:34px;background:#E2741B;border-radius:4px" data-x="505" data-y="873"></div><div class="f07-cf" style="left:540px;top:900px;width:24px;height:24px;background:#2F7BFF;border-radius:4px" data-x="462" data-y="650"></div><div class="f07-cf" style="left:540px;top:900px;width:18px;height:34px;background:#fff;border-radius:50%" data-x="457" data-y="882"></div><div class="f07-cf" style="left:540px;top:900px;width:24px;height:24px;background:#7FB2FF;border-radius:4px" data-x="652" data-y="854"></div><div class="f07-cf" style="left:540px;top:900px;width:18px;height:34px;background:#F19E14;border-radius:4px" data-x="222" data-y="794"></div><div class="f07-cf" style="left:540px;top:900px;width:24px;height:24px;background:#E2741B;border-radius:50%" data-x="601" data-y="714"></div><div class="f07-cf" style="left:540px;top:900px;width:18px;height:34px;background:#2F7BFF;border-radius:4px" data-x="959" data-y="673"></div><div class="f07-cf" style="left:540px;top:900px;width:24px;height:24px;background:#fff;border-radius:4px" data-x="698" data-y="738"></div><div class="f07-cf" style="left:540px;top:900px;width:18px;height:34px;background:#7FB2FF;border-radius:50%" data-x="225" data-y="841"></div><div class="f07-cf" style="left:540px;top:900px;width:24px;height:24px;background:#F19E14;border-radius:4px" data-x="958" data-y="679"></div><div class="f07-cf" style="left:540px;top:900px;width:18px;height:34px;background:#E2741B;border-radius:4px" data-x="450" data-y="894"></div><div class="f07-cf" style="left:540px;top:900px;width:24px;height:24px;background:#2F7BFF;border-radius:50%" data-x="449" data-y="649"></div><div class="f07-cf" style="left:540px;top:900px;width:18px;height:34px;background:#fff;border-radius:4px" data-x="606" data-y="881"></div><div class="f07-cf" style="left:540px;top:900px;width:24px;height:24px;background:#7FB2FF;border-radius:4px" data-x="188" data-y="910"></div><div class="f07-cf" style="left:540px;top:900px;width:18px;height:34px;background:#F19E14;border-radius:50%" data-x="520" data-y="775"></div><div class="f07-cf" style="left:540px;top:900px;width:24px;height:24px;background:#E2741B;border-radius:4px" data-x="744" data-y="890"></div><div class="f07-cf" style="left:540px;top:900px;width:18px;height:34px;background:#2F7BFF;border-radius:4px" data-x="819" data-y="827"></div><div class="f07-cf" style="left:540px;top:900px;width:24px;height:24px;background:#fff;border-radius:50%" data-x="264" data-y="832"></div><div class="f07-cf" style="left:540px;top:900px;width:18px;height:34px;background:#7FB2FF;border-radius:4px" data-x="962" data-y="714"></div><div class="f07-cf" style="left:540px;top:900px;width:24px;height:24px;background:#F19E14;border-radius:4px" data-x="129" data-y="929"></div><div class="f07-cf" style="left:540px;top:900px;width:18px;height:34px;background:#E2741B;border-radius:50%" data-x="334" data-y="668"></div><div class="f07-cf" style="left:540px;top:900px;width:24px;height:24px;background:#2F7BFF;border-radius:4px" data-x="976" data-y="746"></div><div class="f07-cf" style="left:540px;top:900px;width:18px;height:34px;background:#fff;border-radius:4px" data-x="867" data-y="718"></div><div class="f07-cf" style="left:540px;top:900px;width:24px;height:24px;background:#7FB2FF;border-radius:50%" data-x="292" data-y="680"></div><div class="f07-cf" style="left:540px;top:900px;width:18px;height:34px;background:#F19E14;border-radius:4px" data-x="163" data-y="912"></div><div class="f07-cf" style="left:540px;top:900px;width:24px;height:24px;background:#E2741B;border-radius:4px" data-x="301" data-y="770"></div><div class="f07-cf" style="left:540px;top:900px;width:18px;height:34px;background:#2F7BFF;border-radius:50%" data-x="583" data-y="755"></div><div class="f07-cf" style="left:540px;top:900px;width:24px;height:24px;background:#fff;border-radius:4px" data-x="371" data-y="694"></div><div class="f07-cf" style="left:540px;top:900px;width:18px;height:34px;background:#7FB2FF;border-radius:4px" data-x="266" data-y="744"></div><div class="f07-cf" style="left:540px;top:900px;width:24px;height:24px;background:#F19E14;border-radius:50%" data-x="647" data-y="781"></div><div class="f07-cf" style="left:540px;top:900px;width:18px;height:34px;background:#E2741B;border-radius:4px" data-x="559" data-y="914"></div><div class="f07-cf" style="left:540px;top:900px;width:24px;height:24px;background:#2F7BFF;border-radius:4px" data-x="137" data-y="660"></div><div class="f07-cf" style="left:540px;top:900px;width:18px;height:34px;background:#fff;border-radius:50%" data-x="821" data-y="795"></div><div class="f07-cf" style="left:540px;top:900px;width:24px;height:24px;background:#7FB2FF;border-radius:4px" data-x="974" data-y="779"></div><div class="f07-cf" style="left:540px;top:900px;width:18px;height:34px;background:#F19E14;border-radius:4px" data-x="58" data-y="781"></div>
+    <div class="f07-center" style="top:1180px;gap:20px"><div id="f07-c1" class="f07-chip glass"><span>MARIAGES</span></div><div id="f07-c2" class="f07-chip glass"><span>ANNIVERSAIRES</span></div></div>
+    <div class="f07-center" style="top:1310px"><div id="f07-c3" class="f07-chip glass"><span>CÉRÉMONIES</span></div></div>
+    <div class="f07-center" style="top:1450px"><div id="f07-c4" class="f07-chip hot"><span>ÉVÉNEMENTS & ESPACES</span></div></div>
+    
+    </div>
+  </div>
+  </div>
+  <script>
+  (function () {
+    var tl = gsap.timeline({ paused: true });
+    tl.fromTo("#f07-blobA", {x: -40, y: 0}, {x: 120, y: 90, duration: 5.312, ease: "none"}, 0);
+    tl.fromTo("#f07-blobB", {x: 40, y: 0}, {x: -140, y: -110, duration: 5.312, ease: "none"}, 0);
+    tl.fromTo("#f07-cam", {scale: 1}, {scale: 1.045, duration: 5.312, ease: "none"}, 0);
+    tl.fromTo("#f07-sp0", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 0.15);
+    tl.to("#f07-sp0", {rotation: 90, duration: 4.51, ease: "none"}, 0.70);
+    tl.fromTo("#f07-sp1", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 0.52);
+    tl.to("#f07-sp1", {rotation: 90, duration: 4.51, ease: "none"}, 1.07);
+    tl.fromTo("#f07-sp2", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 0.89);
+    tl.to("#f07-sp2", {rotation: 90, duration: 4.51, ease: "none"}, 1.44);
+    tl.fromTo("#f07-sp3", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 1.26);
+    tl.to("#f07-sp3", {rotation: 90, duration: 4.51, ease: "none"}, 1.81);
+    tl.fromTo("#f07-sp4", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 1.63);
+    tl.to("#f07-sp4", {rotation: 90, duration: 4.51, ease: "none"}, 2.18);
+    tl.fromTo("#f07-sp5", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 2.00);
+    tl.to("#f07-sp5", {rotation: 90, duration: 4.51, ease: "none"}, 2.55);
+    
+    
+    tl.fromTo("#f07-numwrap", {y: -60, opacity: 0}, {y: 0, opacity: 1, duration: .45, ease: "back.out(2)"}, 0.05);
+    tl.fromTo("#f07-title", {scale: 1.8, opacity: 0, filter: "blur(16px)"}, {scale: 1, opacity: 1, filter: "blur(0px)", duration: .5, ease: "expo.out"}, 0.12);
+    if (document.querySelector("#f07-sub")) tl.fromTo("#f07-sub", {y: 30, opacity: 0}, {y: 0, opacity: 1, duration: .4, ease: "power3.out"}, 0.45);
+    tl.fromTo("#f07-flagw", {y: -200, opacity: 0}, {y: 0, opacity: 1, duration: .6, ease: "bounce.out"}, 0.4);
+    tl.fromTo("#f07-gift", {scale: 0, rotation: -20}, {scale: 1, rotation: 0, duration: .5, ease: "back.out(2.5)"}, 0.6);
+    document.querySelectorAll(".f07-cf").forEach(function (el, i) {
+      var x = +el.dataset.x - 540, y = +el.dataset.y - 900;
+      tl.fromTo(el, {x: 0, y: 0, opacity: 0, rotation: 0}, {x: x, y: y, opacity: 1, rotation: (i % 2 ? 1 : -1) * (180 + i * 17), duration: .8, ease: "power3.out"}, 1.05 + (i % 6) * .02);
+      tl.to(el, {y: y + 260 + (i % 5) * 40, rotation: "+=" + (120 + i * 9), duration: 3.41, ease: "power1.in"}, 1.85);
+    });
+    tl.fromTo("#f07-gift", {scale: 1}, {immediateRender: false, scale: 1.15, duration: .12, yoyo: true, repeat: 1}, 1.12);
+    tl.fromTo(["#f07-b0", "#f07-b1", "#f07-b2", "#f07-b3"], {y: 400, opacity: 0}, {y: -380, opacity: 1, duration: 3.2, stagger: .25, ease: "power1.out"}, 1.2);
+    tl.fromTo("#f07-c1", {scale: 0.4, opacity: 0}, {scale: 1, opacity: 1, duration: 0.45, ease: "back.out(2.2)"}, 1.5);
+    tl.fromTo("#f07-c2", {scale: 0.4, opacity: 0}, {scale: 1, opacity: 1, duration: 0.45, ease: "back.out(2.2)"}, 2.1);
+    tl.fromTo("#f07-c3", {scale: 0.4, opacity: 0}, {scale: 1, opacity: 1, duration: 0.45, ease: "back.out(2.2)"}, 2.8);
+    tl.fromTo("#f07-c4", {scale: 0.4, opacity: 0}, {scale: 1, opacity: 1, duration: 0.45, ease: "back.out(2.2)"}, 3.9);
+    
+    window.__timelines["07-decoration"] = tl;
+  })();
+  </script>
+</template>

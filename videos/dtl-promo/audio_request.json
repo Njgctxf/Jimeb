@@ -1,0 +1,65 @@
+{
+  "provider": "kokoro",
+  "speed": "1.0",
+  "lines": [
+    {
+      "id": "01",
+      "text": "Attendez… ne swipez pas ! Cette vidéo est pour vous."
+    },
+    {
+      "id": "02",
+      "text": "Un trajet, une livraison, un événement à préparer… Vous cherchez quelqu'un de fiable ?"
+    },
+    {
+      "id": "03",
+      "text": "Découvrez Dé Té El, DIBI Transport et Logistique : votre partenaire de confiance !"
+    },
+    {
+      "id": "04",
+      "text": "Transport de personnes et transport scolaire : vos enfants et vos équipes voyagent en toute sécurité."
+    },
+    {
+      "id": "05",
+      "text": "VTC et gestion de véhicules : des chauffeurs pros, une flotte bien entretenue."
+    },
+    {
+      "id": "06",
+      "text": "Livraison de repas, de colis et de marchandises : rapide, partout, à l'heure."
+    },
+    {
+      "id": "07",
+      "text": "Décoration : mariages, anniversaires, cérémonies… nous sublimons vos événements et vos espaces."
+    },
+    {
+      "id": "08",
+      "text": "Import-export : vos marchandises voyagent de la Côte d'Ivoire vers le monde, et du monde jusqu'à vous."
+    },
+    {
+      "id": "09",
+      "text": "Logistique pour les entreprises : réception, préparation, expédition, suivi… Vous vendez, on s'occupe du reste."
+    },
+    {
+      "id": "10",
+      "text": "Et l'élevage de poulets, de lapins et de cailles : des produits frais et de qualité."
+    },
+    {
+      "id": "11",
+      "text": "Fiabilité, rapidité, professionnalisme : avec Dé Té El, ça bouge !"
+    },
+    {
+      "id": "12",
+      "text": "Appelez-nous ou écrivez-nous sur WhatsApp dès maintenant : plus deux cent vingt-cinq, zéro sept, soixante-dix-neuf, quatre-vingt-quatre, vingt-deux, soixante-seize !"
+    },
+    {
+      "id": "13",
+      "text": "Dé Té El, DIBI Transport et Logistique. On vous transporte plus loin !"
+    }
+  ],
+  "bgm": {
+    "mode": "retrieve",
+    "query": "upbeat energetic afro-pop corporate promo, punchy drums",
+    "blob": "DTL — un seul partenaire de confiance pour transporter, livrer, décorer, importer et nourrir : appelez le +225 07 79 84 22 76",
+    "arc": "Hook → Question → Brand reveal → Feature-Benefit Cascade (7 services) → Récap → CTA → Brand outro"
+  },
+  "voice": "ff_siwis"
+}

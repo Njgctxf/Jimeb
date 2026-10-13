@@ -1,0 +1,94 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+@font-face { font-family: "Anton"; src: url("assets/fonts/Anton-400.woff2") format("woff2"); font-weight: 400; }
+@font-face { font-family: "Montserrat"; src: url("assets/fonts/Montserrat-var.woff2") format("woff2"); font-weight: 100 900; }
+
+#root { position: absolute; inset: 0; overflow: hidden; container-type: size; font-family: "Montserrat", sans-serif; color: #fff; }
+.f01-layer { position: absolute; inset: 0; }
+.f01-bg { position: absolute; inset: 0; background: radial-gradient(120% 80% at 50% 20%, #1B3F8F 0%, #0A1A44 60%, #060F2B 100%); }
+.f01-blob { position: absolute; border-radius: 50%; filter: blur(70px); }
+.f01-blobA { left: -200px; top: 120px; width: 760px; height: 760px; background: rgba(47,123,255,.55); }
+.f01-blobB { right: -260px; top: 1050px; width: 820px; height: 820px; background: rgba(34,211,238,.38); }
+.f01-spark { position: absolute; width: 46px; height: 46px; }
+.f01-cam { position: absolute; inset: 0; }
+.f01-abs { position: absolute; }
+.f01-center { position: absolute; left: 0; right: 0; display: flex; justify-content: center; }
+.f01-anton { font-family: "Anton", sans-serif; text-transform: uppercase; line-height: .92; }
+.f01-hot { color: #F19E14; text-shadow: 0 5px 0 #C9520F, 0 10px 0 #9C3F0B, 0 15px 0 #7A3009, 0 26px 40px rgba(0,0,0,.55); }
+.f01-white3d { color: #fff; text-shadow: 0 5px 0 #9DB5EE, 0 10px 0 #5A78C4, 0 15px 0 #2A4691, 0 26px 40px rgba(0,0,0,.55); }
+.f01-glass { background: rgba(255,255,255,.10); border: 2px solid rgba(255,255,255,.28); border-radius: 40px; backdrop-filter: blur(18px); box-shadow: inset 0 2px 0 rgba(255,255,255,.35), 0 30px 80px rgba(0,0,0,.35); }
+.f01-chip { display: inline-flex; align-items: center; gap: 18px; padding: 22px 40px; border-radius: 999px; font-weight: 800; font-size: 40px; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+.f01-chip.hot { background: linear-gradient(135deg, #F19E14 0%, #E2741B 60%, #C9520F 100%); box-shadow: 0 18px 40px rgba(226,116,27,.45), inset 0 2px 0 rgba(255,255,255,.45); }
+.f01-chip.glass { background: rgba(255,255,255,.12); border: 2px solid rgba(255,255,255,.32); backdrop-filter: blur(14px); }
+.f01-chip svg { width: 56px; height: 56px; }
+.f01-label { font-weight: 800; font-size: 34px; letter-spacing: .22em; text-transform: uppercase; color: #B9C6E8; }
+.f01-dots { position: absolute; top: 150px; left: 0; right: 0; display: flex; justify-content: center; gap: 16px; }
+.f01-dot { width: 64px; height: 12px; border-radius: 6px; background: rgba(255,255,255,.22); }
+.f01-dot.on { background: linear-gradient(90deg, #F19E14, #E2741B); box-shadow: 0 0 20px rgba(241,158,20,.8); }
+.f01-streak { position: absolute; height: 10px; border-radius: 5px; background: linear-gradient(90deg, rgba(241,158,20,0), #F19E14 60%, #E2741B); }
+
+    .f01-word { font-size: 300px; }
+    
+  </style>
+  <div id="root" data-composition-id="01-ne-swipez-pas" data-width="1080" data-height="1920" data-duration="2.581">
+  
+  <div id="f01-ground" class="clip f01-layer" data-start="0" data-duration="2.581" data-track-index="0">
+    <div class="f01-bg"></div>
+    <div id="f01-blobA" class="f01-blob f01-blobA"></div>
+    <div id="f01-blobB" class="f01-blob f01-blobB"></div>
+    <div id="f01-sp0" class="f01-spark" style="left:120px;top:300px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#fff"/></svg></div><div id="f01-sp1" class="f01-spark" style="left:930px;top:420px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#F19E14"/></svg></div><div id="f01-sp2" class="f01-spark" style="left:860px;top:1180px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#fff"/></svg></div><div id="f01-sp3" class="f01-spark" style="left:90px;top:1350px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#7FB2FF"/></svg></div><div id="f01-sp4" class="f01-spark" style="left:520px;top:210px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#7FB2FF"/></svg></div><div id="f01-sp5" class="f01-spark" style="left:980px;top:860px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#fff"/></svg></div>
+  </div>
+  <div id="f01-content" class="clip f01-layer" data-start="0" data-duration="2.581" data-track-index="1">
+    <div id="f01-cam" class="f01-cam">
+    
+    <div class="f01-center" style="top:250px;flex-direction:column;align-items:center;gap:0">
+      <div id="f01-w1" class="f01-anton f01-white3d f01-word" style="font-size:230px">NE</div>
+      <div id="f01-w2" class="f01-anton f01-hot f01-word" style="font-size:250px">SWIPEZ</div>
+      <div id="f01-w3" class="f01-anton f01-white3d f01-word">PAS</div>
+    </div>
+    <div id="f01-phone" class="f01-abs" style="left:390px;top:1130px;width:300px;height:300px">
+      <svg style="width:300px;height:300px" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"><rect x="70" y="10" width="160" height="280" rx="30" fill="#0A1A44" stroke="#fff" stroke-width="10"/><path id="f01-arrow" d="M150 220 V80 M110 120 L150 80 L190 120" stroke="#F19E14" stroke-width="16" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg id="f01-x" class="f01-abs" style="left:0;top:0;width:300px;height:300px" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"><path d="M40 40 L260 260 M260 40 L40 260" stroke="#FF3B3B" stroke-width="30" stroke-linecap="round"/></svg>
+    </div>
+    <div id="f01-pill" class="f01-center" style="top:1470px"><div id="f01-pillc" class="f01-chip hot"><span>C'EST POUR VOUS</span></div></div>
+    <div id="f01-s1" class="f01-streak" style="left:-200px;top:420px;width:520px"></div>
+    <div id="f01-s2" class="f01-streak" style="left:-200px;top:940px;width:640px"></div>
+    
+    </div>
+  </div>
+  </div>
+  <script>
+  (function () {
+    var tl = gsap.timeline({ paused: true });
+    tl.fromTo("#f01-blobA", {x: -40, y: 0}, {x: 120, y: 90, duration: 2.581, ease: "none"}, 0);
+    tl.fromTo("#f01-blobB", {x: 40, y: 0}, {x: -140, y: -110, duration: 2.581, ease: "none"}, 0);
+    tl.fromTo("#f01-cam", {scale: 1}, {scale: 1.045, duration: 2.581, ease: "none"}, 0);
+    tl.fromTo("#f01-sp0", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 0.15);
+    tl.to("#f01-sp0", {rotation: 90, duration: 1.78, ease: "none"}, 0.70);
+    tl.fromTo("#f01-sp1", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 0.52);
+    tl.to("#f01-sp1", {rotation: 90, duration: 1.78, ease: "none"}, 1.07);
+    tl.fromTo("#f01-sp2", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 0.89);
+    tl.to("#f01-sp2", {rotation: 90, duration: 1.78, ease: "none"}, 1.44);
+    tl.fromTo("#f01-sp3", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 1.26);
+    tl.to("#f01-sp3", {rotation: 90, duration: 1.78, ease: "none"}, 1.81);
+    tl.fromTo("#f01-sp4", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 1.63);
+    tl.to("#f01-sp4", {rotation: 90, duration: 1.78, ease: "none"}, 2.18);
+    tl.fromTo("#f01-sp5", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 0.02);
+    tl.to("#f01-sp5", {rotation: 90, duration: 1.78, ease: "none"}, 0.57);
+    
+    tl.fromTo("#f01-w1", {scale: 3, opacity: 0}, {scale: 1, opacity: 1, duration: .28, ease: "expo.out"}, 0.02);
+    tl.fromTo("#f01-w2", {scale: 3, opacity: 0, rotation: -6}, {scale: 1, opacity: 1, rotation: -3, duration: .3, ease: "expo.out"}, 0.28);
+    tl.fromTo("#f01-w3", {scale: 3, opacity: 0}, {scale: 1, opacity: 1, duration: .3, ease: "expo.out"}, 0.55);
+    tl.to("#f01-cam", {keyframes: {x: [0, -18, 16, -10, 6, 0], y: [0, 10, -8, 6, -3, 0]}, duration: .35, ease: "none"}, 0.6);
+    tl.fromTo("#f01-s1", {x: 0}, {x: 1500, duration: .45, ease: "power2.in"}, 0.3);
+    tl.fromTo("#f01-s2", {x: 0}, {x: 1500, duration: .45, ease: "power2.in"}, 0.6);
+    tl.fromTo("#f01-phone", {y: 120, opacity: 0}, {y: 0, opacity: 1, duration: .4, ease: "back.out(2)"}, 0.85);
+    tl.fromTo("#f01-arrow", {y: 40}, {y: -30, duration: .35, ease: "power2.inOut"}, 1.1);
+    tl.fromTo("#f01-x", {scale: 0, opacity: 0, rotation: -30}, {scale: 1, opacity: 1, rotation: 0, duration: .3, ease: "back.out(3)"}, 1.35);
+    tl.fromTo("#f01-pill", {y: 80, opacity: 0}, {y: 0, opacity: 1, duration: .45, ease: "back.out(2)"}, 1.65);
+    
+    window.__timelines["01-ne-swipez-pas"] = tl;
+  })();
+  </script>
+</template>

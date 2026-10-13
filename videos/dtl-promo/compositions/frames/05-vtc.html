@@ -1,0 +1,107 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+@font-face { font-family: "Anton"; src: url("assets/fonts/Anton-400.woff2") format("woff2"); font-weight: 400; }
+@font-face { font-family: "Montserrat"; src: url("assets/fonts/Montserrat-var.woff2") format("woff2"); font-weight: 100 900; }
+
+#root { position: absolute; inset: 0; overflow: hidden; container-type: size; font-family: "Montserrat", sans-serif; color: #fff; }
+.f05-layer { position: absolute; inset: 0; }
+.f05-bg { position: absolute; inset: 0; background: radial-gradient(120% 80% at 50% 20%, #1B3F8F 0%, #0A1A44 60%, #060F2B 100%); }
+.f05-blob { position: absolute; border-radius: 50%; filter: blur(70px); }
+.f05-blobA { left: -200px; top: 120px; width: 760px; height: 760px; background: rgba(47,123,255,.55); }
+.f05-blobB { right: -260px; top: 1050px; width: 820px; height: 820px; background: rgba(34,211,238,.38); }
+.f05-spark { position: absolute; width: 46px; height: 46px; }
+.f05-cam { position: absolute; inset: 0; }
+.f05-abs { position: absolute; }
+.f05-center { position: absolute; left: 0; right: 0; display: flex; justify-content: center; }
+.f05-anton { font-family: "Anton", sans-serif; text-transform: uppercase; line-height: .92; }
+.f05-hot { color: #F19E14; text-shadow: 0 5px 0 #C9520F, 0 10px 0 #9C3F0B, 0 15px 0 #7A3009, 0 26px 40px rgba(0,0,0,.55); }
+.f05-white3d { color: #fff; text-shadow: 0 5px 0 #9DB5EE, 0 10px 0 #5A78C4, 0 15px 0 #2A4691, 0 26px 40px rgba(0,0,0,.55); }
+.f05-glass { background: rgba(255,255,255,.10); border: 2px solid rgba(255,255,255,.28); border-radius: 40px; backdrop-filter: blur(18px); box-shadow: inset 0 2px 0 rgba(255,255,255,.35), 0 30px 80px rgba(0,0,0,.35); }
+.f05-chip { display: inline-flex; align-items: center; gap: 18px; padding: 22px 40px; border-radius: 999px; font-weight: 800; font-size: 40px; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+.f05-chip.hot { background: linear-gradient(135deg, #F19E14 0%, #E2741B 60%, #C9520F 100%); box-shadow: 0 18px 40px rgba(226,116,27,.45), inset 0 2px 0 rgba(255,255,255,.45); }
+.f05-chip.glass { background: rgba(255,255,255,.12); border: 2px solid rgba(255,255,255,.32); backdrop-filter: blur(14px); }
+.f05-chip svg { width: 56px; height: 56px; }
+.f05-label { font-weight: 800; font-size: 34px; letter-spacing: .22em; text-transform: uppercase; color: #B9C6E8; }
+.f05-dots { position: absolute; top: 150px; left: 0; right: 0; display: flex; justify-content: center; gap: 16px; }
+.f05-dot { width: 64px; height: 12px; border-radius: 6px; background: rgba(255,255,255,.22); }
+.f05-dot.on { background: linear-gradient(90deg, #F19E14, #E2741B); box-shadow: 0 0 20px rgba(241,158,20,.8); }
+.f05-streak { position: absolute; height: 10px; border-radius: 5px; background: linear-gradient(90deg, rgba(241,158,20,0), #F19E14 60%, #E2741B); }
+
+    .f05-map { position: absolute; left: 120px; top: 640px; width: 840px; height: 560px; overflow: hidden; }
+    .f05-map svg { position: absolute; left: 0; top: 0; }
+    
+  </style>
+  <div id="root" data-composition-id="05-vtc" data-width="1080" data-height="1920" data-duration="4.395">
+  
+  <div id="f05-ground" class="clip f05-layer" data-start="0" data-duration="4.395" data-track-index="0">
+    <div class="f05-bg"></div>
+    <div id="f05-blobA" class="f05-blob f05-blobA"></div>
+    <div id="f05-blobB" class="f05-blob f05-blobB"></div>
+    <div id="f05-sp0" class="f05-spark" style="left:120px;top:300px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#fff"/></svg></div><div id="f05-sp1" class="f05-spark" style="left:930px;top:420px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#F19E14"/></svg></div><div id="f05-sp2" class="f05-spark" style="left:860px;top:1180px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#fff"/></svg></div><div id="f05-sp3" class="f05-spark" style="left:90px;top:1350px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#7FB2FF"/></svg></div><div id="f05-sp4" class="f05-spark" style="left:520px;top:210px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#7FB2FF"/></svg></div><div id="f05-sp5" class="f05-spark" style="left:980px;top:860px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#fff"/></svg></div>
+  </div>
+  <div id="f05-content" class="clip f05-layer" data-start="0" data-duration="4.395" data-track-index="1">
+    <div id="f05-cam" class="f05-cam">
+    
+    
+    <div class="f05-dots"><div class="f05-dot"></div><div class="f05-dot on"></div><div class="f05-dot"></div><div class="f05-dot"></div><div class="f05-dot"></div><div class="f05-dot"></div><div class="f05-dot"></div></div>
+    <div id="f05-numwrap" class="f05-center" style="top:230px;align-items:center;gap:26px">
+      <div id="f05-num" class="f05-anton f05-hot" style="font-size:120px">02</div>
+      <div id="f05-svc" class="f05-label">SERVICE</div>
+    </div>
+    <div class="f05-center" style="top:380px;flex-direction:column;align-items:center">
+      <div id="f05-title" class="f05-anton f05-white3d" style="font-size:190px;text-align:center">VTC</div>
+      <div id="f05-sub" class="f05-label" style="margin-top:22px;font-size:38px;color:#fff">& GESTION DE VÉHICULES</div>
+    </div>
+    <div id="f05-mapc" class="f05-map f05-glass">
+      <svg style="width:840px;height:560px" viewBox="0 0 840 560" xmlns="http://www.w3.org/2000/svg"><g stroke="rgba(255,255,255,.12)" stroke-width="18" fill="none"><path d="M0 200 H840 M0 380 H840 M200 0 V560 M520 0 V560 M700 0 V560"/></g></svg>
+      <svg style="width:840px;height:560px" viewBox="0 0 840 560" xmlns="http://www.w3.org/2000/svg"><path id="f05-route" d="M110 440 C 260 440, 260 260, 420 260 S 600 120, 730 120" stroke="#F19E14" stroke-width="16" fill="none" stroke-linecap="round" stroke-dasharray="1000" stroke-dashoffset="1000"/><circle cx="110" cy="440" r="22" fill="#2F7BFF" stroke="#fff" stroke-width="6"/></svg>
+      <div id="f05-pin" class="f05-abs" style="left:680px;top:20px;width:100px;height:110px"><svg style="width:100px;height:110px" viewBox="0 0 100 110" xmlns="http://www.w3.org/2000/svg"><path d="M50 105 C 20 70 6 52 6 36 a44 44 0 0 1 88 0 c0 16 -14 34 -44 69z" fill="#E2741B" stroke="#fff" stroke-width="6"/><circle cx="50" cy="38" r="15" fill="#fff"/></svg></div>
+      <div id="f05-car" class="f05-abs" style="left:0;top:0;width:150px;height:110px"><svg style="width:150px;height:110px" viewBox="0 0 140 110" xmlns="http://www.w3.org/2000/svg">
+<path d="M14 74 q0-16 16-18 l14-2 q14-22 34-22 q22 0 32 22 l8 2 q10 2 10 18 v10 h-114z" fill="#FFFFFF"/>
+<path d="M50 54 q10-16 28-16 q16 0 24 16z" fill="#2F7BFF"/>
+<rect x="14" y="70" width="114" height="6" fill="#E2741B"/>
+<circle cx="38" cy="86" r="12" fill="#112557"/><circle cx="102" cy="86" r="12" fill="#112557"/>
+</svg></div>
+    </div>
+    <div class="f05-center" style="top:1280px"><div id="f05-c1" class="f05-chip glass"><span>CHAUFFEURS PROS</span></div></div>
+    <div class="f05-center" style="top:1420px"><div id="f05-c2" class="f05-chip hot"><span>FLOTTE ENTRETENUE</span></div></div>
+    
+    </div>
+  </div>
+  </div>
+  <script>
+  (function () {
+    var tl = gsap.timeline({ paused: true });
+    tl.fromTo("#f05-blobA", {x: -40, y: 0}, {x: 120, y: 90, duration: 4.395, ease: "none"}, 0);
+    tl.fromTo("#f05-blobB", {x: 40, y: 0}, {x: -140, y: -110, duration: 4.395, ease: "none"}, 0);
+    tl.fromTo("#f05-cam", {scale: 1}, {scale: 1.045, duration: 4.395, ease: "none"}, 0);
+    tl.fromTo("#f05-sp0", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 0.15);
+    tl.to("#f05-sp0", {rotation: 90, duration: 3.59, ease: "none"}, 0.70);
+    tl.fromTo("#f05-sp1", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 0.52);
+    tl.to("#f05-sp1", {rotation: 90, duration: 3.59, ease: "none"}, 1.07);
+    tl.fromTo("#f05-sp2", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 0.89);
+    tl.to("#f05-sp2", {rotation: 90, duration: 3.59, ease: "none"}, 1.44);
+    tl.fromTo("#f05-sp3", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 1.26);
+    tl.to("#f05-sp3", {rotation: 90, duration: 3.59, ease: "none"}, 1.81);
+    tl.fromTo("#f05-sp4", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 1.63);
+    tl.to("#f05-sp4", {rotation: 90, duration: 3.59, ease: "none"}, 2.18);
+    tl.fromTo("#f05-sp5", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 2.00);
+    tl.to("#f05-sp5", {rotation: 90, duration: 3.59, ease: "none"}, 2.55);
+    
+    
+    tl.fromTo("#f05-numwrap", {y: -60, opacity: 0}, {y: 0, opacity: 1, duration: .45, ease: "back.out(2)"}, 0.05);
+    tl.fromTo("#f05-title", {scale: 1.8, opacity: 0, filter: "blur(16px)"}, {scale: 1, opacity: 1, filter: "blur(0px)", duration: .5, ease: "expo.out"}, 0.12);
+    if (document.querySelector("#f05-sub")) tl.fromTo("#f05-sub", {y: 30, opacity: 0}, {y: 0, opacity: 1, duration: .4, ease: "power3.out"}, 0.45);
+    tl.fromTo("#f05-mapc", {y: 120, opacity: 0, rotationX: 30}, {y: 0, opacity: 1, rotationX: 0, duration: .6, ease: "power3.out"}, 0.35);
+    tl.fromTo("#f05-route", {strokeDashoffset: 1000}, {strokeDashoffset: 0, duration: 1.8, ease: "power1.inOut"}, 0.8);
+    tl.fromTo("#f05-car", {x: 35, y: 360}, {keyframes: {x: [35, 115, 175, 215, 275, 345, 425, 485, 565, 655], y: [360, 358, 320, 240, 190, 180, 160, 100, 50, 40]}, duration: 1.8, ease: "power1.inOut"}, 0.8);
+    tl.fromTo("#f05-pin", {y: -80, opacity: 0}, {y: 0, opacity: 1, duration: .5, ease: "bounce.out"}, 0.9);
+    tl.fromTo("#f05-pin", {scale: 1}, {immediateRender: false, scale: 1.15, duration: .25, ease: "sine.inOut", yoyo: true, repeat: 5, transformOrigin: "50% 100%"}, 2.6);
+    tl.fromTo("#f05-c1", {scale: 0.4, opacity: 0}, {scale: 1, opacity: 1, duration: 0.45, ease: "back.out(2.2)"}, 2.0);
+    tl.fromTo("#f05-c2", {scale: 0.4, opacity: 0}, {scale: 1, opacity: 1, duration: 0.45, ease: "back.out(2.2)"}, 3.1);
+    
+    window.__timelines["05-vtc"] = tl;
+  })();
+  </script>
+</template>

@@ -1,0 +1,886 @@
+{
+  "bgm": {
+    "path": "assets/music/bgm.wav",
+    "source": "host"
+  },
+  "bgm_pending": false,
+  "voices": [
+    {
+      "frame": 1,
+      "path": "assets/voice/01.wav",
+      "duration_s": 2.581,
+      "words": [
+        {
+          "text": "Attendez…",
+          "start": 0.03,
+          "end": 0.381
+        },
+        {
+          "text": "ne",
+          "start": 0.515,
+          "end": 0.642
+        },
+        {
+          "text": "swipez",
+          "start": 0.665,
+          "end": 0.941
+        },
+        {
+          "text": "pas !",
+          "start": 0.964,
+          "end": 1.128
+        },
+        {
+          "text": "Cette",
+          "start": 1.262,
+          "end": 1.501
+        },
+        {
+          "text": "vidéo",
+          "start": 1.524,
+          "end": 1.763
+        },
+        {
+          "text": "est",
+          "start": 1.785,
+          "end": 1.949
+        },
+        {
+          "text": "pour",
+          "start": 1.972,
+          "end": 2.174
+        },
+        {
+          "text": "vous.",
+          "start": 2.196,
+          "end": 2.398
+        }
+      ]
+    },
+    {
+      "frame": 2,
+      "path": "assets/voice/02.wav",
+      "duration_s": 4.565,
+      "words": [
+        {
+          "text": "Un",
+          "start": 0.04,
+          "end": 0.185
+        },
+        {
+          "text": "trajet,",
+          "start": 0.21,
+          "end": 0.526
+        },
+        {
+          "text": "une",
+          "start": 0.679,
+          "end": 0.867
+        },
+        {
+          "text": "livraison,",
+          "start": 0.892,
+          "end": 1.336
+        },
+        {
+          "text": "un",
+          "start": 1.489,
+          "end": 1.634
+        },
+        {
+          "text": "événement",
+          "start": 1.66,
+          "end": 2.103
+        },
+        {
+          "text": "à",
+          "start": 2.128,
+          "end": 2.231
+        },
+        {
+          "text": "préparer…",
+          "start": 2.256,
+          "end": 2.657
+        },
+        {
+          "text": "Vous",
+          "start": 2.81,
+          "end": 3.041
+        },
+        {
+          "text": "cherchez",
+          "start": 3.066,
+          "end": 3.467
+        },
+        {
+          "text": "quelqu'un",
+          "start": 3.492,
+          "end": 3.893
+        },
+        {
+          "text": "de",
+          "start": 3.919,
+          "end": 4.063
+        },
+        {
+          "text": "fiable ?",
+          "start": 4.089,
+          "end": 4.404
+        }
+      ]
+    },
+    {
+      "frame": 3,
+      "path": "assets/voice/03.wav",
+      "duration_s": 4.971,
+      "words": [
+        {
+          "text": "Découvrez",
+          "start": 0.03,
+          "end": 0.562
+        },
+        {
+          "text": "DTL",
+          "start": 0.593,
+          "end": 1.074
+        },
+        {
+          "text": "DIBI",
+          "start": 1.258,
+          "end": 1.534
+        },
+        {
+          "text": "Transport",
+          "start": 1.565,
+          "end": 2.097
+        },
+        {
+          "text": "et",
+          "start": 2.128,
+          "end": 2.302
+        },
+        {
+          "text": "Logistique :",
+          "start": 2.333,
+          "end": 2.916
+        },
+        {
+          "text": "votre",
+          "start": 3.1,
+          "end": 3.428
+        },
+        {
+          "text": "partenaire",
+          "start": 3.458,
+          "end": 4.042
+        },
+        {
+          "text": "de",
+          "start": 4.072,
+          "end": 4.246
+        },
+        {
+          "text": "confiance !",
+          "start": 4.277,
+          "end": 4.809
+        }
+      ]
+    },
+    {
+      "frame": 4,
+      "path": "assets/voice/04.wav",
+      "duration_s": 5.611,
+      "words": [
+        {
+          "text": "Transport",
+          "start": 0.03,
+          "end": 0.514
+        },
+        {
+          "text": "de",
+          "start": 0.541,
+          "end": 0.7
+        },
+        {
+          "text": "personnes",
+          "start": 0.727,
+          "end": 1.211
+        },
+        {
+          "text": "et",
+          "start": 1.239,
+          "end": 1.397
+        },
+        {
+          "text": "transport",
+          "start": 1.425,
+          "end": 1.908
+        },
+        {
+          "text": "scolaire :",
+          "start": 1.936,
+          "end": 2.373
+        },
+        {
+          "text": "vos",
+          "start": 2.541,
+          "end": 2.745
+        },
+        {
+          "text": "enfants",
+          "start": 2.773,
+          "end": 3.164
+        },
+        {
+          "text": "et",
+          "start": 3.192,
+          "end": 3.35
+        },
+        {
+          "text": "vos",
+          "start": 3.378,
+          "end": 3.582
+        },
+        {
+          "text": "équipes",
+          "start": 3.61,
+          "end": 4.001
+        },
+        {
+          "text": "voyagent",
+          "start": 4.029,
+          "end": 4.466
+        },
+        {
+          "text": "en",
+          "start": 4.494,
+          "end": 4.652
+        },
+        {
+          "text": "toute",
+          "start": 4.68,
+          "end": 4.977
+        },
+        {
+          "text": "sécurité.",
+          "start": 5.005,
+          "end": 5.442
+        }
+      ]
+    },
+    {
+      "frame": 5,
+      "path": "assets/voice/05.wav",
+      "duration_s": 4.395,
+      "words": [
+        {
+          "text": "VTC",
+          "start": 0.04,
+          "end": 0.239
+        },
+        {
+          "text": "et",
+          "start": 0.266,
+          "end": 0.42
+        },
+        {
+          "text": "gestion",
+          "start": 0.447,
+          "end": 0.828
+        },
+        {
+          "text": "de",
+          "start": 0.855,
+          "end": 1.009
+        },
+        {
+          "text": "véhicules :",
+          "start": 1.036,
+          "end": 1.507
+        },
+        {
+          "text": "des",
+          "start": 1.67,
+          "end": 1.869
+        },
+        {
+          "text": "chauffeurs",
+          "start": 1.896,
+          "end": 2.412
+        },
+        {
+          "text": "pros,",
+          "start": 2.439,
+          "end": 2.684
+        },
+        {
+          "text": "une",
+          "start": 2.847,
+          "end": 3.046
+        },
+        {
+          "text": "flotte",
+          "start": 3.073,
+          "end": 3.408
+        },
+        {
+          "text": "bien",
+          "start": 3.435,
+          "end": 3.68
+        },
+        {
+          "text": "entretenue.",
+          "start": 3.707,
+          "end": 4.223
+        }
+      ]
+    },
+    {
+      "frame": 6,
+      "path": "assets/voice/06.wav",
+      "duration_s": 4.117,
+      "words": [
+        {
+          "text": "Livraison",
+          "start": 0.04,
+          "end": 0.467
+        },
+        {
+          "text": "de",
+          "start": 0.492,
+          "end": 0.631
+        },
+        {
+          "text": "repas,",
+          "start": 0.656,
+          "end": 0.919
+        },
+        {
+          "text": "de",
+          "start": 1.066,
+          "end": 1.206
+        },
+        {
+          "text": "colis",
+          "start": 1.231,
+          "end": 1.493
+        },
+        {
+          "text": "et",
+          "start": 1.518,
+          "end": 1.657
+        },
+        {
+          "text": "de",
+          "start": 1.682,
+          "end": 1.822
+        },
+        {
+          "text": "marchandises :",
+          "start": 1.846,
+          "end": 2.396
+        },
+        {
+          "text": "rapide,",
+          "start": 2.544,
+          "end": 2.848
+        },
+        {
+          "text": "partout,",
+          "start": 2.996,
+          "end": 3.341
+        },
+        {
+          "text": "à",
+          "start": 3.488,
+          "end": 3.587
+        },
+        {
+          "text": "l'heure.",
+          "start": 3.612,
+          "end": 3.915
+        }
+      ]
+    },
+    {
+      "frame": 7,
+      "path": "assets/voice/07.wav",
+      "duration_s": 5.312,
+      "words": [
+        {
+          "text": "Décoration :",
+          "start": 0.04,
+          "end": 0.555
+        },
+        {
+          "text": "mariages,",
+          "start": 0.717,
+          "end": 1.141
+        },
+        {
+          "text": "anniversaires,",
+          "start": 1.304,
+          "end": 1.954
+        },
+        {
+          "text": "cérémonies…",
+          "start": 2.116,
+          "end": 2.631
+        },
+        {
+          "text": "nous",
+          "start": 2.793,
+          "end": 3.037
+        },
+        {
+          "text": "sublimons",
+          "start": 3.064,
+          "end": 3.533
+        },
+        {
+          "text": "vos",
+          "start": 3.56,
+          "end": 3.759
+        },
+        {
+          "text": "événements",
+          "start": 3.786,
+          "end": 4.301
+        },
+        {
+          "text": "et",
+          "start": 4.328,
+          "end": 4.481
+        },
+        {
+          "text": "vos",
+          "start": 4.508,
+          "end": 4.707
+        },
+        {
+          "text": "espaces.",
+          "start": 4.734,
+          "end": 5.113
+        }
+      ]
+    },
+    {
+      "frame": 8,
+      "path": "assets/voice/08.wav",
+      "duration_s": 5.419,
+      "words": [
+        {
+          "text": "Import-export :",
+          "start": 0.06,
+          "end": 0.649
+        },
+        {
+          "text": "vos",
+          "start": 0.808,
+          "end": 1.001
+        },
+        {
+          "text": "marchandises",
+          "start": 1.028,
+          "end": 1.617
+        },
+        {
+          "text": "voyagent",
+          "start": 1.643,
+          "end": 2.057
+        },
+        {
+          "text": "de",
+          "start": 2.083,
+          "end": 2.233
+        },
+        {
+          "text": "la",
+          "start": 2.259,
+          "end": 2.409
+        },
+        {
+          "text": "Côte",
+          "start": 2.435,
+          "end": 2.673
+        },
+        {
+          "text": "d'Ivoire",
+          "start": 2.699,
+          "end": 3.068
+        },
+        {
+          "text": "vers",
+          "start": 3.095,
+          "end": 3.332
+        },
+        {
+          "text": "le",
+          "start": 3.359,
+          "end": 3.508
+        },
+        {
+          "text": "monde,",
+          "start": 3.535,
+          "end": 3.816
+        },
+        {
+          "text": "et",
+          "start": 3.974,
+          "end": 4.124
+        },
+        {
+          "text": "du",
+          "start": 4.15,
+          "end": 4.3
+        },
+        {
+          "text": "monde",
+          "start": 4.326,
+          "end": 4.608
+        },
+        {
+          "text": "jusqu'à",
+          "start": 4.634,
+          "end": 4.96
+        },
+        {
+          "text": "vous.",
+          "start": 4.986,
+          "end": 5.224
+        }
+      ]
+    },
+    {
+      "frame": 9,
+      "path": "assets/voice/09.wav",
+      "duration_s": 6.741,
+      "words": [
+        {
+          "text": "Logistique",
+          "start": 0.05,
+          "end": 0.603
+        },
+        {
+          "text": "pour",
+          "start": 0.632,
+          "end": 0.894
+        },
+        {
+          "text": "les",
+          "start": 0.923,
+          "end": 1.137
+        },
+        {
+          "text": "entreprises :",
+          "start": 1.166,
+          "end": 1.768
+        },
+        {
+          "text": "réception,",
+          "start": 1.942,
+          "end": 2.447
+        },
+        {
+          "text": "préparation,",
+          "start": 2.621,
+          "end": 3.223
+        },
+        {
+          "text": "expédition,",
+          "start": 3.398,
+          "end": 3.951
+        },
+        {
+          "text": "suivi…",
+          "start": 4.126,
+          "end": 4.436
+        },
+        {
+          "text": "Vous",
+          "start": 4.611,
+          "end": 4.873
+        },
+        {
+          "text": "vendez,",
+          "start": 4.902,
+          "end": 5.261
+        },
+        {
+          "text": "on",
+          "start": 5.436,
+          "end": 5.601
+        },
+        {
+          "text": "s'occupe",
+          "start": 5.63,
+          "end": 6.037
+        },
+        {
+          "text": "du",
+          "start": 6.066,
+          "end": 6.231
+        },
+        {
+          "text": "reste.",
+          "start": 6.26,
+          "end": 6.571
+        }
+      ]
+    },
+    {
+      "frame": 10,
+      "path": "assets/voice/10.wav",
+      "duration_s": 4.032,
+      "words": [
+        {
+          "text": "Et",
+          "start": 0.04,
+          "end": 0.17
+        },
+        {
+          "text": "l'élevage",
+          "start": 0.192,
+          "end": 0.551
+        },
+        {
+          "text": "de",
+          "start": 0.574,
+          "end": 0.703
+        },
+        {
+          "text": "poulets,",
+          "start": 0.726,
+          "end": 1.046
+        },
+        {
+          "text": "de",
+          "start": 1.184,
+          "end": 1.313
+        },
+        {
+          "text": "lapins",
+          "start": 1.336,
+          "end": 1.618
+        },
+        {
+          "text": "et",
+          "start": 1.641,
+          "end": 1.771
+        },
+        {
+          "text": "de",
+          "start": 1.793,
+          "end": 1.923
+        },
+        {
+          "text": "cailles :",
+          "start": 1.946,
+          "end": 2.266
+        },
+        {
+          "text": "des",
+          "start": 2.403,
+          "end": 2.571
+        },
+        {
+          "text": "produits",
+          "start": 2.594,
+          "end": 2.952
+        },
+        {
+          "text": "frais",
+          "start": 2.975,
+          "end": 3.219
+        },
+        {
+          "text": "et",
+          "start": 3.242,
+          "end": 3.372
+        },
+        {
+          "text": "de",
+          "start": 3.394,
+          "end": 3.524
+        },
+        {
+          "text": "qualité.",
+          "start": 3.547,
+          "end": 3.867
+        }
+      ]
+    },
+    {
+      "frame": 11,
+      "path": "assets/voice/11.wav",
+      "duration_s": 4.245,
+      "words": [
+        {
+          "text": "Fiabilité,",
+          "start": 0.08,
+          "end": 0.608
+        },
+        {
+          "text": "rapidité,",
+          "start": 0.791,
+          "end": 1.268
+        },
+        {
+          "text": "professionnalisme :",
+          "start": 1.451,
+          "end": 2.384
+        },
+        {
+          "text": "avec",
+          "start": 2.567,
+          "end": 2.841
+        },
+        {
+          "text": "DTL",
+          "start": 2.872,
+          "end": 3.349
+        },
+        {
+          "text": "ça",
+          "start": 3.532,
+          "end": 3.704
+        },
+        {
+          "text": "bouge !",
+          "start": 3.735,
+          "end": 4.06
+        }
+      ]
+    },
+    {
+      "frame": 12,
+      "path": "assets/voice/12.wav",
+      "duration_s": 9.131,
+      "words": [
+        {
+          "text": "Appelez-nous",
+          "start": 0.1,
+          "end": 0.693
+        },
+        {
+          "text": "ou",
+          "start": 0.722,
+          "end": 0.885
+        },
+        {
+          "text": "écrivez-nous",
+          "start": 0.913,
+          "end": 1.507
+        },
+        {
+          "text": "sur",
+          "start": 1.535,
+          "end": 1.746
+        },
+        {
+          "text": "WhatsApp",
+          "start": 1.775,
+          "end": 2.225
+        },
+        {
+          "text": "dès",
+          "start": 2.253,
+          "end": 2.464
+        },
+        {
+          "text": "maintenant :",
+          "start": 2.492,
+          "end": 3.038
+        },
+        {
+          "text": "+225",
+          "start": 3.21,
+          "end": 4.473
+        },
+        {
+          "text": "07",
+          "start": 4.646,
+          "end": 5.143
+        },
+        {
+          "text": "79",
+          "start": 5.316,
+          "end": 6.196
+        },
+        {
+          "text": "84",
+          "start": 6.368,
+          "end": 7.344
+        },
+        {
+          "text": "22",
+          "start": 7.517,
+          "end": 8.062
+        },
+        {
+          "text": "76 !",
+          "start": 8.234,
+          "end": 8.971
+        }
+      ]
+    },
+    {
+      "frame": 13,
+      "path": "assets/voice/13.wav",
+      "duration_s": 4.117,
+      "words": [
+        {
+          "text": "DTL",
+          "start": 0.03,
+          "end": 0.48
+        },
+        {
+          "text": "DIBI",
+          "start": 0.652,
+          "end": 0.91
+        },
+        {
+          "text": "Transport",
+          "start": 0.939,
+          "end": 1.436
+        },
+        {
+          "text": "et",
+          "start": 1.465,
+          "end": 1.628
+        },
+        {
+          "text": "Logistique.",
+          "start": 1.656,
+          "end": 2.202
+        },
+        {
+          "text": "On",
+          "start": 2.374,
+          "end": 2.536
+        },
+        {
+          "text": "vous",
+          "start": 2.565,
+          "end": 2.823
+        },
+        {
+          "text": "transporte",
+          "start": 2.852,
+          "end": 3.397
+        },
+        {
+          "text": "plus",
+          "start": 3.426,
+          "end": 3.684
+        },
+        {
+          "text": "loin !",
+          "start": 3.713,
+          "end": 3.971
+        }
+      ]
+    }
+  ],
+  "sfx": []
+}

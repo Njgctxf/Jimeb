@@ -1,0 +1,142 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+@font-face { font-family: "Anton"; src: url("assets/fonts/Anton-400.woff2") format("woff2"); font-weight: 400; }
+@font-face { font-family: "Montserrat"; src: url("assets/fonts/Montserrat-var.woff2") format("woff2"); font-weight: 100 900; }
+
+#root { position: absolute; inset: 0; overflow: hidden; container-type: size; font-family: "Montserrat", sans-serif; color: #fff; }
+.f06-layer { position: absolute; inset: 0; }
+.f06-bg { position: absolute; inset: 0; background: radial-gradient(120% 80% at 50% 20%, #1B3F8F 0%, #0A1A44 60%, #060F2B 100%); }
+.f06-blob { position: absolute; border-radius: 50%; filter: blur(70px); }
+.f06-blobA { left: -200px; top: 120px; width: 760px; height: 760px; background: rgba(47,123,255,.55); }
+.f06-blobB { right: -260px; top: 1050px; width: 820px; height: 820px; background: rgba(34,211,238,.38); }
+.f06-spark { position: absolute; width: 46px; height: 46px; }
+.f06-cam { position: absolute; inset: 0; }
+.f06-abs { position: absolute; }
+.f06-center { position: absolute; left: 0; right: 0; display: flex; justify-content: center; }
+.f06-anton { font-family: "Anton", sans-serif; text-transform: uppercase; line-height: .92; }
+.f06-hot { color: #F19E14; text-shadow: 0 5px 0 #C9520F, 0 10px 0 #9C3F0B, 0 15px 0 #7A3009, 0 26px 40px rgba(0,0,0,.55); }
+.f06-white3d { color: #fff; text-shadow: 0 5px 0 #9DB5EE, 0 10px 0 #5A78C4, 0 15px 0 #2A4691, 0 26px 40px rgba(0,0,0,.55); }
+.f06-glass { background: rgba(255,255,255,.10); border: 2px solid rgba(255,255,255,.28); border-radius: 40px; backdrop-filter: blur(18px); box-shadow: inset 0 2px 0 rgba(255,255,255,.35), 0 30px 80px rgba(0,0,0,.35); }
+.f06-chip { display: inline-flex; align-items: center; gap: 18px; padding: 22px 40px; border-radius: 999px; font-weight: 800; font-size: 40px; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+.f06-chip.hot { background: linear-gradient(135deg, #F19E14 0%, #E2741B 60%, #C9520F 100%); box-shadow: 0 18px 40px rgba(226,116,27,.45), inset 0 2px 0 rgba(255,255,255,.45); }
+.f06-chip.glass { background: rgba(255,255,255,.12); border: 2px solid rgba(255,255,255,.32); backdrop-filter: blur(14px); }
+.f06-chip svg { width: 56px; height: 56px; }
+.f06-label { font-weight: 800; font-size: 34px; letter-spacing: .22em; text-transform: uppercase; color: #B9C6E8; }
+.f06-dots { position: absolute; top: 150px; left: 0; right: 0; display: flex; justify-content: center; gap: 16px; }
+.f06-dot { width: 64px; height: 12px; border-radius: 6px; background: rgba(255,255,255,.22); }
+.f06-dot.on { background: linear-gradient(90deg, #F19E14, #E2741B); box-shadow: 0 0 20px rgba(241,158,20,.8); }
+.f06-streak { position: absolute; height: 10px; border-radius: 5px; background: linear-gradient(90deg, rgba(241,158,20,0), #F19E14 60%, #E2741B); }
+
+    .f06-ic { width: 210px; height: 210px; display: flex; align-items: center; justify-content: center; }
+    .f06-ic svg { width: 150px; height: 150px; }
+    .f06-stamp { font-family: "Anton"; font-size: 110px; text-transform: uppercase; }
+    
+  </style>
+  <div id="root" data-composition-id="06-livraison" data-width="1080" data-height="1920" data-duration="4.117">
+  
+  <div id="f06-ground" class="clip f06-layer" data-start="0" data-duration="4.117" data-track-index="0">
+    <div class="f06-bg"></div>
+    <div id="f06-blobA" class="f06-blob f06-blobA"></div>
+    <div id="f06-blobB" class="f06-blob f06-blobB"></div>
+    <div id="f06-sp0" class="f06-spark" style="left:120px;top:300px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#fff"/></svg></div><div id="f06-sp1" class="f06-spark" style="left:930px;top:420px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#F19E14"/></svg></div><div id="f06-sp2" class="f06-spark" style="left:860px;top:1180px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#fff"/></svg></div><div id="f06-sp3" class="f06-spark" style="left:90px;top:1350px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#7FB2FF"/></svg></div><div id="f06-sp4" class="f06-spark" style="left:520px;top:210px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#7FB2FF"/></svg></div><div id="f06-sp5" class="f06-spark" style="left:980px;top:860px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#fff"/></svg></div>
+  </div>
+  <div id="f06-content" class="clip f06-layer" data-start="0" data-duration="4.117" data-track-index="1">
+    <div id="f06-cam" class="f06-cam">
+    
+    
+    <div class="f06-dots"><div class="f06-dot"></div><div class="f06-dot"></div><div class="f06-dot on"></div><div class="f06-dot"></div><div class="f06-dot"></div><div class="f06-dot"></div><div class="f06-dot"></div></div>
+    <div id="f06-numwrap" class="f06-center" style="top:230px;align-items:center;gap:26px">
+      <div id="f06-num" class="f06-anton f06-hot" style="font-size:120px">03</div>
+      <div id="f06-svc" class="f06-label">SERVICE</div>
+    </div>
+    <div class="f06-center" style="top:380px;flex-direction:column;align-items:center">
+      <div id="f06-title" class="f06-anton f06-white3d" style="font-size:190px;text-align:center">LIVRAISON</div>
+      
+    </div>
+    <div class="f06-center" style="top:600px;gap:40px">
+      <div id="f06-i1" class="f06-ic f06-glass"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<path d="M20 60 h80 a40 40 0 0 1 -80 0z" fill="#F19E14"/>
+<path d="M20 60 h80" stroke="#112557" stroke-width="6" stroke-linecap="round"/>
+<path d="M45 45 q5-12 0-22 M60 45 q5-12 0-22 M75 45 q5-12 0-22" stroke="#FFFFFF" stroke-width="5" fill="none" stroke-linecap="round" opacity=".85"/>
+<rect x="30" y="98" width="60" height="8" rx="4" fill="#112557"/>
+</svg></div>
+      <div id="f06-i2" class="f06-ic f06-glass"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<path d="M60 14 l44 22 v50 l-44 22 l-44-22 v-50z" fill="#E2741B"/>
+<path d="M60 14 l44 22 l-44 22 l-44-22z" fill="#F19E14"/>
+<path d="M60 58 v50" stroke="#B5530F" stroke-width="4"/>
+<path d="M38 25 l44 22 v18" stroke="#FFFFFF" stroke-width="7" fill="none" opacity=".9"/>
+</svg></div>
+      <div id="f06-i3" class="f06-ic f06-glass"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<rect x="16" y="20" width="40" height="40" rx="6" fill="#E2741B"/>
+<rect x="64" y="20" width="40" height="40" rx="6" fill="#F19E14"/>
+<rect x="40" y="58" width="40" height="34" rx="6" fill="#2F7BFF"/>
+<rect x="10" y="94" width="100" height="10" rx="3" fill="#1B3F8F"/>
+<rect x="18" y="104" width="12" height="8" fill="#1B3F8F"/><rect x="54" y="104" width="12" height="8" fill="#1B3F8F"/><rect x="90" y="104" width="12" height="8" fill="#1B3F8F"/>
+</svg></div>
+    </div>
+    <div class="f06-center" style="top:830px;gap:40px">
+      <div class="f06-label" style="width:210px;text-align:center">REPAS</div><div class="f06-label" style="width:210px;text-align:center">COLIS</div><div class="f06-label" style="width:210px;text-align:center;letter-spacing:.06em">MARCHANDISES</div>
+    </div>
+    <div id="f06-sl1" class="f06-streak" style="left:60px;top:1040px;width:300px"></div>
+    <div id="f06-sl2" class="f06-streak" style="left:20px;top:1100px;width:380px"></div>
+    <div id="f06-sco" class="f06-abs" style="left:330px;top:900px;width:420px;height:300px"><svg style="width:420px;height:300px" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
+<ellipse cx="210" cy="286" rx="180" ry="10" fill="rgba(0,0,0,.35)"/>
+<rect x="40" y="70" width="130" height="110" rx="14" fill="#E2741B"/>
+<rect x="40" y="70" width="130" height="26" rx="10" fill="#F19E14"/>
+<path d="M95 112 h20 v30 h-20z" fill="#FFFFFF" opacity=".9"/>
+<text x="105" y="166" font-family="Anton" font-size="24" fill="#FFFFFF" text-anchor="middle">DTL</text>
+<path d="M60 200 h200 l40-90 h40 l-30 110 h-260z" fill="#1B3F8F"/>
+<path d="M300 110 l20-40 h30" stroke="#112557" stroke-width="12" fill="none" stroke-linecap="round"/>
+<circle cx="245" cy="120" r="26" fill="#112557"/>
+<path d="M225 112 a22 22 0 0 1 40 0z" fill="#2F7BFF"/>
+<path d="M220 150 q30-20 50 10 l-10 50 h-40z" fill="#F19E14"/>
+<g class="wheel"><circle cx="95" cy="240" r="38" fill="#112557"/><circle cx="95" cy="240" r="15" fill="#C9D3EA"/></g>
+<g class="wheel"><circle cx="330" cy="240" r="38" fill="#112557"/><circle cx="330" cy="240" r="15" fill="#C9D3EA"/></g>
+</svg></div>
+    <div class="f06-center" style="top:1260px;gap:30px">
+      <div id="f06-t1" class="f06-stamp f06-hot">RAPIDE</div><div id="f06-t2" class="f06-stamp f06-white3d">PARTOUT</div>
+    </div>
+    <div class="f06-center" style="top:1410px"><div id="f06-t3" class="f06-stamp f06-hot">À L'HEURE</div></div>
+    
+    </div>
+  </div>
+  </div>
+  <script>
+  (function () {
+    var tl = gsap.timeline({ paused: true });
+    tl.fromTo("#f06-blobA", {x: -40, y: 0}, {x: 120, y: 90, duration: 4.117, ease: "none"}, 0);
+    tl.fromTo("#f06-blobB", {x: 40, y: 0}, {x: -140, y: -110, duration: 4.117, ease: "none"}, 0);
+    tl.fromTo("#f06-cam", {scale: 1}, {scale: 1.045, duration: 4.117, ease: "none"}, 0);
+    tl.fromTo("#f06-sp0", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 0.15);
+    tl.to("#f06-sp0", {rotation: 90, duration: 3.32, ease: "none"}, 0.70);
+    tl.fromTo("#f06-sp1", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 0.52);
+    tl.to("#f06-sp1", {rotation: 90, duration: 3.32, ease: "none"}, 1.07);
+    tl.fromTo("#f06-sp2", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 0.89);
+    tl.to("#f06-sp2", {rotation: 90, duration: 3.32, ease: "none"}, 1.44);
+    tl.fromTo("#f06-sp3", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 1.26);
+    tl.to("#f06-sp3", {rotation: 90, duration: 3.32, ease: "none"}, 1.81);
+    tl.fromTo("#f06-sp4", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 1.63);
+    tl.to("#f06-sp4", {rotation: 90, duration: 3.32, ease: "none"}, 2.18);
+    tl.fromTo("#f06-sp5", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 2.00);
+    tl.to("#f06-sp5", {rotation: 90, duration: 3.32, ease: "none"}, 2.55);
+    
+    
+    tl.fromTo("#f06-numwrap", {y: -60, opacity: 0}, {y: 0, opacity: 1, duration: .45, ease: "back.out(2)"}, 0.05);
+    tl.fromTo("#f06-title", {scale: 1.8, opacity: 0, filter: "blur(16px)"}, {scale: 1, opacity: 1, filter: "blur(0px)", duration: .5, ease: "expo.out"}, 0.12);
+    if (document.querySelector("#f06-sub")) tl.fromTo("#f06-sub", {y: 30, opacity: 0}, {y: 0, opacity: 1, duration: .4, ease: "power3.out"}, 0.45);
+    tl.fromTo("#f06-i1", {scale: 0.4, opacity: 0}, {scale: 1, opacity: 1, duration: 0.45, ease: "back.out(2.2)"}, 0.55);
+    tl.fromTo("#f06-i2", {scale: 0.4, opacity: 0}, {scale: 1, opacity: 1, duration: 0.45, ease: "back.out(2.2)"}, 0.95);
+    tl.fromTo("#f06-i3", {scale: 0.4, opacity: 0}, {scale: 1, opacity: 1, duration: 0.45, ease: "back.out(2.2)"}, 1.35);
+    tl.fromTo("#f06-sco", {x: -800}, {x: 0, duration: .8, ease: "power3.out"}, 1.6);
+    tl.fromTo("#f06-sco .wheel", {rotation: 0, transformOrigin: "50% 50%"}, {rotation: 900, duration: 2.52, ease: "power1.out"}, 1.6);
+    tl.fromTo("#f06-sco", {y: 0}, {immediateRender: false, y: -5, duration: .15, yoyo: true, repeat: 11, ease: "sine.inOut"}, 2.4);
+    tl.fromTo(["#f06-sl1", "#f06-sl2"], {x: 200, opacity: 0}, {x: -80, opacity: 1, duration: .5, stagger: .1, ease: "power2.out"}, 2.0);
+    tl.fromTo("#f06-t1", {scale: 2.4, opacity: 0}, {scale: 1, opacity: 1, duration: .3, ease: "expo.out"}, 2.45);
+    tl.fromTo("#f06-t2", {scale: 2.4, opacity: 0}, {scale: 1, opacity: 1, duration: .3, ease: "expo.out"}, 2.95);
+    tl.fromTo("#f06-t3", {scale: 2.4, opacity: 0}, {scale: 1, opacity: 1, duration: .3, ease: "expo.out"}, 3.45);
+    
+    window.__timelines["06-livraison"] = tl;
+  })();
+  </script>
+</template>

@@ -4,17 +4,17 @@ duration: 66s
 message: "DTL — un seul partenaire de confiance pour transporter, livrer, décorer, importer et nourrir : appelez le +225 07 79 84 22 76"
 arc: Hook → Question → Brand reveal → Feature-Benefit Cascade (7 services) → Récap → CTA → Brand outro
 audience: "Particuliers, parents, entreprises et commerçants en Côte d'Ivoire"
-mode: collaborative
-music: upbeat energetic afro-pop corporate promo, punchy drums
+mode: autonomous
+music: none
 ---
 
 ## Frame 1 — Ne swipez pas
 
 - scene: "NE SWIPEZ PAS" en typo 3D orange géante qui claque à l'écran sur fond bleu marine, flèches de vitesse
-- voiceover: "Attendez… ne swipez pas !"
-- duration: 2.5s
+- voiceover: "Attendez… ne swipez pas ! Cette vidéo est pour vous."
+- duration: 2.581s
 - transition_in: cut
-- status: outline
+- status: animated
 - src: compositions/frames/01-ne-swipez-pas.html
 - type: hook
 - persuasion: Pattern interrupt / direct address
@@ -29,9 +29,9 @@ keyMessage: ce qui suit vous concerne.
 
 - scene: trois mots défilent en relais — TRAJET / LIVRAISON / ÉVÉNEMENT — puis la question « Quelqu'un de FIABLE ? » dans une bulle de chat en verre avec curseur
 - voiceover: "Un trajet, une livraison, un événement à préparer… Vous cherchez quelqu'un de fiable ?"
-- duration: 4.5s
+- duration: 4.565s
 - transition_in: zoom-through
-- status: outline
+- status: animated
 - src: compositions/frames/02-question.html
 - type: pain_point
 - persuasion: Pain validation (rule of three)
@@ -45,10 +45,10 @@ keyMessage: vous avez besoin d'un partenaire fiable.
 ## Frame 3 — DTL, votre partenaire de confiance
 
 - scene: le logo DTL se construit sur une plaque blanche lumineuse (flèche orange qui traverse), puis la ligne « Votre partenaire de confiance » apparaît
-- voiceover: "Découvrez DTL, DIBI Transport et Logistique : votre partenaire de confiance !"
-- duration: 5s
+- voiceover: "Découvrez Dé Té El, DIBI Transport et Logistique : votre partenaire de confiance !"
+- duration: 4.971s
 - transition_in: zoom-through
-- status: outline
+- status: animated
 - src: compositions/frames/03-brand-reveal.html
 - type: product_intro
 - persuasion: Promise / brand authority
@@ -63,9 +63,9 @@ keyMessage: DTL est la réponse.
 
 - scene: carte en verre « 01 · TRANSPORT » ; un bus scolaire jaune stylisé roule sur une route qui défile, bulles « Écoles » « Entreprises » « Voyages »
 - voiceover: "Transport de personnes et transport scolaire : vos enfants et vos équipes voyagent en toute sécurité."
-- duration: 6s
+- duration: 5.611s
 - transition_in: push-slide LEFT
-- status: outline
+- status: animated
 - src: compositions/frames/04-transport.html
 - type: feature_showcase
 - persuasion: Feature-to-benefit translation (sécurité)
@@ -80,9 +80,9 @@ keyMessage: transport sûr pour enfants et équipes.
 
 - scene: carte « 02 · VTC » ; une voiture en icône glisse, épingle de carte GPS qui pulse, puces « Chauffeurs pros » « Flotte entretenue »
 - voiceover: "VTC et gestion de véhicules : des chauffeurs pros, une flotte bien entretenue."
-- duration: 5s
+- duration: 4.395s
 - transition_in: push-slide LEFT
-- status: outline
+- status: animated
 - src: compositions/frames/05-vtc.html
 - type: feature_showcase
 - persuasion: Feature-to-benefit translation (professionnalisme)
@@ -97,9 +97,9 @@ keyMessage: chauffeurs pros, véhicules fiables.
 
 - scene: carte « 03 · LIVRAISON » ; trois icônes (repas, colis, marchandises) tombent dans un scooter de livraison qui file avec une traînée orange ; mots RAPIDE · PARTOUT · À L'HEURE
 - voiceover: "Livraison de repas, de colis et de marchandises : rapide, partout, à l'heure."
-- duration: 6s
+- duration: 4.117s
 - transition_in: push-slide LEFT
-- status: outline
+- status: animated
 - src: compositions/frames/06-livraison.html
 - type: feature_showcase
 - persuasion: Rule of three
@@ -113,10 +113,10 @@ keyMessage: on livre tout, vite.
 ## Frame 7 — Décoration
 
 - scene: carte « 04 · DÉCORATION » ; ballons, guirlandes et confettis orange/bleu jaillissent autour du mot DÉCORATION
-- voiceover: "Décoration : nous sublimons vos événements et vos espaces."
-- duration: 4.5s
+- voiceover: "Décoration : mariages, anniversaires, cérémonies… nous sublimons vos événements et vos espaces."
+- duration: 5.312s
 - transition_in: blur-crossfade
-- status: outline
+- status: animated
 - src: compositions/frames/07-decoration.html
 - type: feature_showcase
 - persuasion: Aspiration
@@ -130,10 +130,10 @@ keyMessage: vos événements deviennent beaux.
 ## Frame 8 — Import-export
 
 - scene: carte « 05 · IMPORT-EXPORT » ; globe stylisé, arcs de trajets bateau/avion qui partent de la Côte d'Ivoire vers le monde
-- voiceover: "Import-export : nous ouvrons vos marchandises au monde."
-- duration: 4.5s
+- voiceover: "Import-export : vos marchandises voyagent de la Côte d'Ivoire vers le monde, et du monde jusqu'à vous."
+- duration: 5.419s
 - transition_in: push-slide LEFT
-- status: outline
+- status: animated
 - src: compositions/frames/08-import-export.html
 - type: feature_showcase
 - persuasion: Future pacing (scale)
@@ -147,10 +147,10 @@ keyMessage: DTL vous connecte au monde.
 ## Frame 9 — Logistique pour les entreprises
 
 - scene: carte « 06 · LOGISTIQUE » ; checklist en verre qui se coche (Réception ✓ Stockage ✓ Expédition ✓ Suivi ✓) ; punchline « Vous vendez. On s'occupe du reste. »
-- voiceover: "Logistique pour les entreprises : vous vendez, on s'occupe du reste."
-- duration: 5s
+- voiceover: "Logistique pour les entreprises : réception, préparation, expédition, suivi… Vous vendez, on s'occupe du reste."
+- duration: 6.741s
 - transition_in: push-slide LEFT
-- status: outline
+- status: animated
 - src: compositions/frames/09-logistique.html
 - type: benefit_highlight
 - persuasion: Friction reduction
@@ -165,9 +165,9 @@ keyMessage: concentrez-vous sur votre business.
 
 - scene: carte « 07 · ÉLEVAGE » ; trois médaillons poulet / lapin / caille qui pop en cascade, badge « Frais & de qualité »
 - voiceover: "Et l'élevage de poulets, de lapins et de cailles : des produits frais et de qualité."
-- duration: 5.5s
+- duration: 4.032s
 - transition_in: blur-crossfade
-- status: outline
+- status: animated
 - src: compositions/frames/10-elevage.html
 - type: feature_showcase
 - persuasion: Rule of three + quality
@@ -181,10 +181,10 @@ keyMessage: produits frais directement de DTL.
 ## Frame 11 — Sept services, un seul partenaire
 
 - scene: les 7 pastilles de services s'assemblent en grille autour du « D » de DTL ; mots FIABILITÉ · RAPIDITÉ · PROFESSIONNALISME
-- voiceover: "Fiabilité, rapidité, professionnalisme : avec DTL, ça bouge !"
-- duration: 5s
+- voiceover: "Fiabilité, rapidité, professionnalisme : avec Dé Té El, ça bouge !"
+- duration: 4.245s
 - transition_in: zoom-through
-- status: outline
+- status: animated
 - src: compositions/frames/11-recap.html
 - type: benefit_highlight
 - persuasion: Value stacking
@@ -198,10 +198,10 @@ keyMessage: un seul partenaire pour tout.
 ## Frame 12 — Appelez-nous
 
 - scene: interface en verre façon téléphone : le numéro +225 07 79 84 22 76 se tape chiffre par chiffre, un curseur clique sur un bouton orange « APPELER » et un bouton vert WhatsApp pulse
-- voiceover: "Contactez-nous dès maintenant au plus 225, 07 79 84 22 76 !"
-- duration: 7s
+- voiceover: "Appelez-nous ou écrivez-nous sur WhatsApp dès maintenant : plus deux cent vingt-cinq, zéro sept, soixante-dix-neuf, quatre-vingt-quatre, vingt-deux, soixante-seize !"
+- duration: 9.131s
 - transition_in: zoom-through
-- status: outline
+- status: animated
 - src: compositions/frames/12-cta.html
 - type: cta
 - persuasion: Urgency-to-act / friction reduction
@@ -215,10 +215,10 @@ keyMessage: appelez le +225 07 79 84 22 76.
 ## Frame 13 — DTL, on vous transporte plus loin
 
 - scene: lockup final — logo DTL sur plaque blanche, slogan « On vous transporte plus loin ! », numéro rappelé en bas, flèche orange qui file hors champ
-- voiceover: "DTL, on vous transporte plus loin !"
-- duration: 4s
+- voiceover: "Dé Té El, DIBI Transport et Logistique. On vous transporte plus loin !"
+- duration: 4.117s
 - transition_in: crossfade
-- status: outline
+- status: animated
 - src: compositions/frames/13-outro.html
 - type: branding
 - persuasion: Brand memory

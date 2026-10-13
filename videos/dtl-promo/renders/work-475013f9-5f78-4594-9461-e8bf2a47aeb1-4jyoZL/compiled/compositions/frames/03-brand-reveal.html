@@ -1,0 +1,87 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+@font-face { font-family: "Anton"; src: url("assets/fonts/Anton-400.woff2") format("woff2"); font-weight: 400; }
+@font-face { font-family: "Montserrat"; src: url("assets/fonts/Montserrat-var.woff2") format("woff2"); font-weight: 100 900; }
+
+#root { position: absolute; inset: 0; overflow: hidden; container-type: size; font-family: "Montserrat", sans-serif; color: #fff; }
+.f03-layer { position: absolute; inset: 0; }
+.f03-bg { position: absolute; inset: 0; background: radial-gradient(120% 80% at 50% 20%, #1B3F8F 0%, #0A1A44 60%, #060F2B 100%); }
+.f03-blob { position: absolute; border-radius: 50%; filter: blur(70px); }
+.f03-blobA { left: -200px; top: 120px; width: 760px; height: 760px; background: rgba(47,123,255,.55); }
+.f03-blobB { right: -260px; top: 1050px; width: 820px; height: 820px; background: rgba(34,211,238,.38); }
+.f03-spark { position: absolute; width: 46px; height: 46px; }
+.f03-cam { position: absolute; inset: 0; }
+.f03-abs { position: absolute; }
+.f03-center { position: absolute; left: 0; right: 0; display: flex; justify-content: center; }
+.f03-anton { font-family: "Anton", sans-serif; text-transform: uppercase; line-height: .92; }
+.f03-hot { color: #F19E14; text-shadow: 0 5px 0 #C9520F, 0 10px 0 #9C3F0B, 0 15px 0 #7A3009, 0 26px 40px rgba(0,0,0,.55); }
+.f03-white3d { color: #fff; text-shadow: 0 5px 0 #9DB5EE, 0 10px 0 #5A78C4, 0 15px 0 #2A4691, 0 26px 40px rgba(0,0,0,.55); }
+.f03-glass { background: rgba(255,255,255,.10); border: 2px solid rgba(255,255,255,.28); border-radius: 40px; backdrop-filter: blur(18px); box-shadow: inset 0 2px 0 rgba(255,255,255,.35), 0 30px 80px rgba(0,0,0,.35); }
+.f03-chip { display: inline-flex; align-items: center; gap: 18px; padding: 22px 40px; border-radius: 999px; font-weight: 800; font-size: 40px; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+.f03-chip.hot { background: linear-gradient(135deg, #F19E14 0%, #E2741B 60%, #C9520F 100%); box-shadow: 0 18px 40px rgba(226,116,27,.45), inset 0 2px 0 rgba(255,255,255,.45); }
+.f03-chip.glass { background: rgba(255,255,255,.12); border: 2px solid rgba(255,255,255,.32); backdrop-filter: blur(14px); }
+.f03-chip svg { width: 56px; height: 56px; }
+.f03-label { font-weight: 800; font-size: 34px; letter-spacing: .22em; text-transform: uppercase; color: #B9C6E8; }
+.f03-dots { position: absolute; top: 150px; left: 0; right: 0; display: flex; justify-content: center; gap: 16px; }
+.f03-dot { width: 64px; height: 12px; border-radius: 6px; background: rgba(255,255,255,.22); }
+.f03-dot.on { background: linear-gradient(90deg, #F19E14, #E2741B); box-shadow: 0 0 20px rgba(241,158,20,.8); }
+.f03-streak { position: absolute; height: 10px; border-radius: 5px; background: linear-gradient(90deg, rgba(241,158,20,0), #F19E14 60%, #E2741B); }
+
+    .f03-plate { position: absolute; left: 140px; top: 470px; width: 800px; height: 800px; border-radius: 64px; background: #fff; overflow: hidden; box-shadow: 0 0 0 10px rgba(241,158,20,.85), 0 0 120px rgba(241,158,20,.55), 0 40px 100px rgba(0,0,0,.5); }
+    .f03-plate img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .f03-ring { position: absolute; left: 90px; top: 420px; width: 900px; height: 900px; border-radius: 50%; border: 6px solid rgba(255,255,255,.35); }
+    
+  </style>
+  <div id="root" data-composition-id="03-brand-reveal" data-width="1080" data-height="1920" data-duration="4.971">
+  
+  <div id="f03-ground" class="clip f03-layer" data-start="0" data-duration="4.971" data-track-index="0">
+    <div class="f03-bg"></div>
+    <div id="f03-blobA" class="f03-blob f03-blobA"></div>
+    <div id="f03-blobB" class="f03-blob f03-blobB"></div>
+    <div id="f03-sp0" class="f03-spark" style="left:120px;top:300px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#fff"/></svg></div><div id="f03-sp1" class="f03-spark" style="left:930px;top:420px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#F19E14"/></svg></div><div id="f03-sp2" class="f03-spark" style="left:860px;top:1180px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#fff"/></svg></div><div id="f03-sp3" class="f03-spark" style="left:90px;top:1350px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#7FB2FF"/></svg></div><div id="f03-sp4" class="f03-spark" style="left:520px;top:210px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#7FB2FF"/></svg></div><div id="f03-sp5" class="f03-spark" style="left:980px;top:860px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#fff"/></svg></div>
+  </div>
+  <div id="f03-content" class="clip f03-layer" data-start="0" data-duration="4.971" data-track-index="1">
+    <div id="f03-cam" class="f03-cam">
+    
+    <div id="f03-kick" class="f03-center" style="top:230px"><div class="f03-anton f03-white3d" style="font-size:140px">DÉCOUVREZ</div></div>
+    <div id="f03-ring" class="f03-ring"></div>
+    <div id="f03-plate" class="f03-plate"><img id="f03-logo" src="assets/logo-dtl.jpg" alt="DTL"/></div>
+    <div id="f03-flash" class="f03-streak" style="left:-700px;top:850px;width:700px;height:26px;border-radius:13px"></div>
+    <div id="f03-tag" class="f03-center" style="top:1380px"><div id="f03-tagc" class="f03-chip hot"><span>VOTRE PARTENAIRE DE CONFIANCE</span></div></div>
+    
+    </div>
+  </div>
+  </div>
+  <script>
+  (function () {
+    var tl = gsap.timeline({ paused: true });
+    tl.fromTo("#f03-blobA", {x: -40, y: 0}, {x: 120, y: 90, duration: 4.971, ease: "none"}, 0);
+    tl.fromTo("#f03-blobB", {x: 40, y: 0}, {x: -140, y: -110, duration: 4.971, ease: "none"}, 0);
+    tl.fromTo("#f03-cam", {scale: 1}, {scale: 1.045, duration: 4.971, ease: "none"}, 0);
+    tl.fromTo("#f03-sp0", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 0.15);
+    tl.to("#f03-sp0", {rotation: 90, duration: 4.17, ease: "none"}, 0.70);
+    tl.fromTo("#f03-sp1", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 0.52);
+    tl.to("#f03-sp1", {rotation: 90, duration: 4.17, ease: "none"}, 1.07);
+    tl.fromTo("#f03-sp2", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 0.89);
+    tl.to("#f03-sp2", {rotation: 90, duration: 4.17, ease: "none"}, 1.44);
+    tl.fromTo("#f03-sp3", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 1.26);
+    tl.to("#f03-sp3", {rotation: 90, duration: 4.17, ease: "none"}, 1.81);
+    tl.fromTo("#f03-sp4", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 1.63);
+    tl.to("#f03-sp4", {rotation: 90, duration: 4.17, ease: "none"}, 2.18);
+    tl.fromTo("#f03-sp5", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 2.00);
+    tl.to("#f03-sp5", {rotation: 90, duration: 4.17, ease: "none"}, 2.55);
+    
+    tl.fromTo("#f03-kick", {y: -80, opacity: 0}, {y: 0, opacity: 1, duration: .45, ease: "back.out(2)"}, 0.05);
+    tl.fromTo("#f03-plate", {scale: 0, rotation: -12, opacity: 0}, {scale: 1, rotation: 0, opacity: 1, duration: .7, ease: "back.out(1.6)"}, 0.35);
+    tl.fromTo("#f03-logo", {clipPath: "inset(0 100% 0 0)"}, {clipPath: "inset(0 0% 0 0)", duration: .8, ease: "power3.inOut"}, 0.75);
+    tl.fromTo("#f03-flash", {x: 0}, {x: 2000, duration: .7, ease: "power2.in"}, 0.9);
+    tl.fromTo("#f03-ring", {scale: .6, opacity: 0}, {scale: 1.15, opacity: 1, duration: 1.2, ease: "power2.out"}, 0.5);
+    tl.to("#f03-ring", {scale: 1.35, opacity: 0, duration: 1.4, ease: "power1.out"}, 1.7);
+    tl.fromTo("#f03-plate", {y: 0}, {immediateRender: false, y: -30, duration: 3.77, ease: "sine.inOut"}, 1.1);
+    tl.fromTo("#f03-tag", {y: 80, opacity: 0, scale: .7}, {y: 0, opacity: 1, scale: 1, duration: .5, ease: "back.out(2)"}, 3.0);
+    
+    window.__timelines["03-brand-reveal"] = tl;
+  })();
+  </script>
+</template>

@@ -1,0 +1,88 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+@font-face { font-family: "Anton"; src: url("assets/fonts/Anton-400.woff2") format("woff2"); font-weight: 400; }
+@font-face { font-family: "Montserrat"; src: url("assets/fonts/Montserrat-var.woff2") format("woff2"); font-weight: 100 900; }
+
+#root { position: absolute; inset: 0; overflow: hidden; container-type: size; font-family: "Montserrat", sans-serif; color: #fff; }
+.f13-layer { position: absolute; inset: 0; }
+.f13-bg { position: absolute; inset: 0; background: radial-gradient(120% 80% at 50% 20%, #1B3F8F 0%, #0A1A44 60%, #060F2B 100%); }
+.f13-blob { position: absolute; border-radius: 50%; filter: blur(70px); }
+.f13-blobA { left: -200px; top: 120px; width: 760px; height: 760px; background: rgba(47,123,255,.55); }
+.f13-blobB { right: -260px; top: 1050px; width: 820px; height: 820px; background: rgba(34,211,238,.38); }
+.f13-spark { position: absolute; width: 46px; height: 46px; }
+.f13-cam { position: absolute; inset: 0; }
+.f13-abs { position: absolute; }
+.f13-center { position: absolute; left: 0; right: 0; display: flex; justify-content: center; }
+.f13-anton { font-family: "Anton", sans-serif; text-transform: uppercase; line-height: .92; }
+.f13-hot { color: #F19E14; text-shadow: 0 5px 0 #C9520F, 0 10px 0 #9C3F0B, 0 15px 0 #7A3009, 0 26px 40px rgba(0,0,0,.55); }
+.f13-white3d { color: #fff; text-shadow: 0 5px 0 #9DB5EE, 0 10px 0 #5A78C4, 0 15px 0 #2A4691, 0 26px 40px rgba(0,0,0,.55); }
+.f13-glass { background: rgba(255,255,255,.10); border: 2px solid rgba(255,255,255,.28); border-radius: 40px; backdrop-filter: blur(18px); box-shadow: inset 0 2px 0 rgba(255,255,255,.35), 0 30px 80px rgba(0,0,0,.35); }
+.f13-chip { display: inline-flex; align-items: center; gap: 18px; padding: 22px 40px; border-radius: 999px; font-weight: 800; font-size: 40px; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+.f13-chip.hot { background: linear-gradient(135deg, #F19E14 0%, #E2741B 60%, #C9520F 100%); box-shadow: 0 18px 40px rgba(226,116,27,.45), inset 0 2px 0 rgba(255,255,255,.45); }
+.f13-chip.glass { background: rgba(255,255,255,.12); border: 2px solid rgba(255,255,255,.32); backdrop-filter: blur(14px); }
+.f13-chip svg { width: 56px; height: 56px; }
+.f13-label { font-weight: 800; font-size: 34px; letter-spacing: .22em; text-transform: uppercase; color: #B9C6E8; }
+.f13-dots { position: absolute; top: 150px; left: 0; right: 0; display: flex; justify-content: center; gap: 16px; }
+.f13-dot { width: 64px; height: 12px; border-radius: 6px; background: rgba(255,255,255,.22); }
+.f13-dot.on { background: linear-gradient(90deg, #F19E14, #E2741B); box-shadow: 0 0 20px rgba(241,158,20,.8); }
+.f13-streak { position: absolute; height: 10px; border-radius: 5px; background: linear-gradient(90deg, rgba(241,158,20,0), #F19E14 60%, #E2741B); }
+
+    .f13-plate { position: absolute; left: 190px; top: 380px; width: 700px; height: 700px; border-radius: 60px; background: #fff; overflow: hidden; box-shadow: 0 0 0 10px rgba(241,158,20,.85), 0 0 140px rgba(241,158,20,.55), 0 40px 100px rgba(0,0,0,.5); }
+    .f13-plate img { width: 100%; height: 100%; object-fit: cover; }
+    
+  </style>
+  <div id="root" data-composition-id="13-outro" data-width="1080" data-height="1920" data-duration="4.117">
+  
+  <div id="f13-ground" class="clip f13-layer" data-start="0" data-duration="4.117" data-track-index="0">
+    <div class="f13-bg"></div>
+    <div id="f13-blobA" class="f13-blob f13-blobA"></div>
+    <div id="f13-blobB" class="f13-blob f13-blobB"></div>
+    <div id="f13-sp0" class="f13-spark" style="left:120px;top:300px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#fff"/></svg></div><div id="f13-sp1" class="f13-spark" style="left:930px;top:420px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#F19E14"/></svg></div><div id="f13-sp2" class="f13-spark" style="left:860px;top:1180px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#fff"/></svg></div><div id="f13-sp3" class="f13-spark" style="left:90px;top:1350px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#7FB2FF"/></svg></div><div id="f13-sp4" class="f13-spark" style="left:520px;top:210px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#7FB2FF"/></svg></div><div id="f13-sp5" class="f13-spark" style="left:980px;top:860px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#fff"/></svg></div>
+  </div>
+  <div id="f13-content" class="clip f13-layer" data-start="0" data-duration="4.117" data-track-index="1">
+    <div id="f13-cam" class="f13-cam">
+    
+    <div id="f13-plate" class="f13-plate"><img src="assets/logo-dtl.jpg" alt="DTL"/></div>
+    <div class="f13-center" style="top:1140px;flex-direction:column;align-items:center;gap:34px">
+      <div id="f13-s1" class="f13-anton f13-white3d" style="font-size:118px">ON VOUS TRANSPORTE</div>
+      <div id="f13-s2" class="f13-anton f13-hot" style="font-size:150px">PLUS LOIN !</div>
+    </div>
+    <div id="f13-tel" class="f13-center" style="top:180px"><div id="f13-telc" class="f13-chip hot"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<path d="M34 16 q-14 4 -14 22 q4 40 44 62 q18 6 26-8 l-14-16 q-8 6-16 2 q-14-8 -20-24 q-2-8 6-12 l-12-26z" fill="#FFFFFF"/>
+</svg><span>+225 07 79 84 22 76</span></div></div>
+    <div id="f13-ar" class="f13-streak" style="left:-900px;top:1500px;width:900px;height:22px;border-radius:11px"></div>
+    
+    </div>
+  </div>
+  </div>
+  <script>
+  (function () {
+    var tl = gsap.timeline({ paused: true });
+    tl.fromTo("#f13-blobA", {x: -40, y: 0}, {x: 120, y: 90, duration: 4.117, ease: "none"}, 0);
+    tl.fromTo("#f13-blobB", {x: 40, y: 0}, {x: -140, y: -110, duration: 4.117, ease: "none"}, 0);
+    tl.fromTo("#f13-cam", {scale: 1}, {scale: 1.045, duration: 4.117, ease: "none"}, 0);
+    tl.fromTo("#f13-sp0", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 0.15);
+    tl.to("#f13-sp0", {rotation: 90, duration: 3.32, ease: "none"}, 0.70);
+    tl.fromTo("#f13-sp1", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 0.52);
+    tl.to("#f13-sp1", {rotation: 90, duration: 3.32, ease: "none"}, 1.07);
+    tl.fromTo("#f13-sp2", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 0.89);
+    tl.to("#f13-sp2", {rotation: 90, duration: 3.32, ease: "none"}, 1.44);
+    tl.fromTo("#f13-sp3", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 1.26);
+    tl.to("#f13-sp3", {rotation: 90, duration: 3.32, ease: "none"}, 1.81);
+    tl.fromTo("#f13-sp4", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 1.63);
+    tl.to("#f13-sp4", {rotation: 90, duration: 3.32, ease: "none"}, 2.18);
+    tl.fromTo("#f13-sp5", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 2.00);
+    tl.to("#f13-sp5", {rotation: 90, duration: 3.32, ease: "none"}, 2.55);
+    
+    tl.fromTo("#f13-plate", {scale: .4, opacity: 0, rotation: 8}, {scale: 1, opacity: 1, rotation: 0, duration: .6, ease: "back.out(1.7)"}, 0.05);
+    tl.fromTo("#f13-tel", {y: -80, opacity: 0}, {y: 0, opacity: 1, duration: .45, ease: "back.out(2)"}, 0.6);
+    tl.fromTo("#f13-s1", {y: 60, opacity: 0}, {y: 0, opacity: 1, duration: .4, ease: "power3.out"}, 2.2);
+    tl.fromTo("#f13-s2", {scale: 2.3, opacity: 0}, {scale: 1, opacity: 1, duration: .35, ease: "expo.out"}, 2.8);
+    tl.fromTo("#f13-ar", {x: 0}, {x: 2200, duration: .8, ease: "power2.in"}, 3.0);
+    tl.fromTo("#f13-plate", {y: 0}, {immediateRender: false, y: -20, duration: 3.42, ease: "sine.inOut"}, 0.65);
+    
+    window.__timelines["13-outro"] = tl;
+  })();
+  </script>
+</template>

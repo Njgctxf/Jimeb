@@ -1,0 +1,115 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+@font-face { font-family: "Anton"; src: url("assets/fonts/Anton-400.woff2") format("woff2"); font-weight: 400; }
+@font-face { font-family: "Montserrat"; src: url("assets/fonts/Montserrat-var.woff2") format("woff2"); font-weight: 100 900; }
+
+#root { position: absolute; inset: 0; overflow: hidden; container-type: size; font-family: "Montserrat", sans-serif; color: #fff; }
+.f02-layer { position: absolute; inset: 0; }
+.f02-bg { position: absolute; inset: 0; background: radial-gradient(120% 80% at 50% 20%, #1B3F8F 0%, #0A1A44 60%, #060F2B 100%); }
+.f02-blob { position: absolute; border-radius: 50%; filter: blur(70px); }
+.f02-blobA { left: -200px; top: 120px; width: 760px; height: 760px; background: rgba(47,123,255,.55); }
+.f02-blobB { right: -260px; top: 1050px; width: 820px; height: 820px; background: rgba(34,211,238,.38); }
+.f02-spark { position: absolute; width: 46px; height: 46px; }
+.f02-cam { position: absolute; inset: 0; }
+.f02-abs { position: absolute; }
+.f02-center { position: absolute; left: 0; right: 0; display: flex; justify-content: center; }
+.f02-anton { font-family: "Anton", sans-serif; text-transform: uppercase; line-height: .92; }
+.f02-hot { color: #F19E14; text-shadow: 0 5px 0 #C9520F, 0 10px 0 #9C3F0B, 0 15px 0 #7A3009, 0 26px 40px rgba(0,0,0,.55); }
+.f02-white3d { color: #fff; text-shadow: 0 5px 0 #9DB5EE, 0 10px 0 #5A78C4, 0 15px 0 #2A4691, 0 26px 40px rgba(0,0,0,.55); }
+.f02-glass { background: rgba(255,255,255,.10); border: 2px solid rgba(255,255,255,.28); border-radius: 40px; backdrop-filter: blur(18px); box-shadow: inset 0 2px 0 rgba(255,255,255,.35), 0 30px 80px rgba(0,0,0,.35); }
+.f02-chip { display: inline-flex; align-items: center; gap: 18px; padding: 22px 40px; border-radius: 999px; font-weight: 800; font-size: 40px; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+.f02-chip.hot { background: linear-gradient(135deg, #F19E14 0%, #E2741B 60%, #C9520F 100%); box-shadow: 0 18px 40px rgba(226,116,27,.45), inset 0 2px 0 rgba(255,255,255,.45); }
+.f02-chip.glass { background: rgba(255,255,255,.12); border: 2px solid rgba(255,255,255,.32); backdrop-filter: blur(14px); }
+.f02-chip svg { width: 56px; height: 56px; }
+.f02-label { font-weight: 800; font-size: 34px; letter-spacing: .22em; text-transform: uppercase; color: #B9C6E8; }
+.f02-dots { position: absolute; top: 150px; left: 0; right: 0; display: flex; justify-content: center; gap: 16px; }
+.f02-dot { width: 64px; height: 12px; border-radius: 6px; background: rgba(255,255,255,.22); }
+.f02-dot.on { background: linear-gradient(90deg, #F19E14, #E2741B); box-shadow: 0 0 20px rgba(241,158,20,.8); }
+.f02-streak { position: absolute; height: 10px; border-radius: 5px; background: linear-gradient(90deg, rgba(241,158,20,0), #F19E14 60%, #E2741B); }
+
+    .f02-row { position: absolute; left: 90px; display: flex; align-items: center; gap: 30px; padding: 26px 46px 26px 30px; }
+    .f02-row svg { width: 120px; height: 120px; }
+    .f02-row span { font-family: "Anton"; font-size: 96px; text-transform: uppercase; }
+    .f02-bubble { position: absolute; left: 110px; top: 1080px; width: 860px; padding: 48px 56px; background: #fff; color: #0A1A44; border-radius: 48px; box-shadow: 0 30px 80px rgba(0,0,0,.45); }
+    .f02-bubble:after { content: ""; position: absolute; left: 90px; bottom: -36px; border: 22px solid transparent; border-top: 30px solid #fff; border-left: 30px solid #fff; }
+    .f02-q { font-weight: 800; font-size: 62px; line-height: 1.1; }
+    .f02-q b { font-family: "Anton"; font-weight: 400; font-size: 130px; color: #E2741B; display: block; letter-spacing: .01em; }
+    .f02-typing { display: flex; gap: 16px; }
+    .f02-typing i { width: 26px; height: 26px; border-radius: 50%; background: #9DB5EE; display: block; }
+    
+  </style>
+  <div id="root" data-composition-id="02-question" data-width="1080" data-height="1920" data-duration="4.565">
+  
+  <div id="f02-ground" class="clip f02-layer" data-start="0" data-duration="4.565" data-track-index="0">
+    <div class="f02-bg"></div>
+    <div id="f02-blobA" class="f02-blob f02-blobA"></div>
+    <div id="f02-blobB" class="f02-blob f02-blobB"></div>
+    <div id="f02-sp0" class="f02-spark" style="left:120px;top:300px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#fff"/></svg></div><div id="f02-sp1" class="f02-spark" style="left:930px;top:420px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#F19E14"/></svg></div><div id="f02-sp2" class="f02-spark" style="left:860px;top:1180px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#fff"/></svg></div><div id="f02-sp3" class="f02-spark" style="left:90px;top:1350px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#7FB2FF"/></svg></div><div id="f02-sp4" class="f02-spark" style="left:520px;top:210px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#7FB2FF"/></svg></div><div id="f02-sp5" class="f02-spark" style="left:980px;top:860px"><svg viewBox="0 0 40 40"><path d="M20 0 C22 14 26 18 40 20 C26 22 22 26 20 40 C18 26 14 22 0 20 C14 18 18 14 20 0Z" fill="#fff"/></svg></div>
+  </div>
+  <div id="f02-content" class="clip f02-layer" data-start="0" data-duration="4.565" data-track-index="1">
+    <div id="f02-cam" class="f02-cam">
+    
+    <div id="f02-r1" class="f02-row f02-glass" style="top:230px"><svg viewBox="0 0 140 110" xmlns="http://www.w3.org/2000/svg">
+<path d="M14 74 q0-16 16-18 l14-2 q14-22 34-22 q22 0 32 22 l8 2 q10 2 10 18 v10 h-114z" fill="#FFFFFF"/>
+<path d="M50 54 q10-16 28-16 q16 0 24 16z" fill="#2F7BFF"/>
+<rect x="14" y="70" width="114" height="6" fill="#E2741B"/>
+<circle cx="38" cy="86" r="12" fill="#112557"/><circle cx="102" cy="86" r="12" fill="#112557"/>
+</svg><span>UN TRAJET ?</span></div>
+    <div id="f02-r2" class="f02-row f02-glass" style="top:470px"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<path d="M60 14 l44 22 v50 l-44 22 l-44-22 v-50z" fill="#E2741B"/>
+<path d="M60 14 l44 22 l-44 22 l-44-22z" fill="#F19E14"/>
+<path d="M60 58 v50" stroke="#B5530F" stroke-width="4"/>
+<path d="M38 25 l44 22 v18" stroke="#FFFFFF" stroke-width="7" fill="none" opacity=".9"/>
+</svg><span>UNE LIVRAISON ?</span></div>
+    <div id="f02-r3" class="f02-row f02-glass" style="top:710px"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<ellipse cx="60" cy="48" rx="32" ry="38" fill="#E2741B"/>
+<ellipse cx="48" cy="34" rx="8" ry="12" fill="#fff" opacity=".5"/>
+<path d="M54 84 l6 8 l6-8z" fill="#E2741B"/>
+<path d="M60 92 q-8 12 0 24" stroke="#FFFFFF" stroke-width="3" fill="none"/>
+</svg><span>UN ÉVÉNEMENT ?</span></div>
+    <div id="f02-bub" class="f02-bubble">
+      <div id="f02-typing" class="f02-typing"><i></i><i></i><i></i></div>
+      <div id="f02-q" class="f02-q" style="position:absolute;left:56px;top:40px;right:40px">QUELQU'UN DE <b>FIABLE ?</b></div>
+    </div>
+    <div id="f02-cursor" class="f02-abs" style="left:0;top:0;width:90px;height:90px"><svg style="width:90px;height:90px" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg"><path d="M10 6 L80 44 L46 52 L34 86 Z" fill="#2F7BFF" stroke="#fff" stroke-width="6" stroke-linejoin="round"/></svg></div>
+    
+    </div>
+  </div>
+  </div>
+  <script>
+  (function () {
+    var tl = gsap.timeline({ paused: true });
+    tl.fromTo("#f02-blobA", {x: -40, y: 0}, {x: 120, y: 90, duration: 4.565, ease: "none"}, 0);
+    tl.fromTo("#f02-blobB", {x: 40, y: 0}, {x: -140, y: -110, duration: 4.565, ease: "none"}, 0);
+    tl.fromTo("#f02-cam", {scale: 1}, {scale: 1.045, duration: 4.565, ease: "none"}, 0);
+    tl.fromTo("#f02-sp0", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 0.15);
+    tl.to("#f02-sp0", {rotation: 90, duration: 3.77, ease: "none"}, 0.70);
+    tl.fromTo("#f02-sp1", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 0.52);
+    tl.to("#f02-sp1", {rotation: 90, duration: 3.77, ease: "none"}, 1.07);
+    tl.fromTo("#f02-sp2", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 0.89);
+    tl.to("#f02-sp2", {rotation: 90, duration: 3.77, ease: "none"}, 1.44);
+    tl.fromTo("#f02-sp3", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 1.26);
+    tl.to("#f02-sp3", {rotation: 90, duration: 3.77, ease: "none"}, 1.81);
+    tl.fromTo("#f02-sp4", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 1.63);
+    tl.to("#f02-sp4", {rotation: 90, duration: 3.77, ease: "none"}, 2.18);
+    tl.fromTo("#f02-sp5", {scale: 0, rotation: -40, opacity: 0}, {scale: 1, rotation: 0, opacity: 0.9, duration: 0.5, ease: "back.out(3)"}, 2.00);
+    tl.to("#f02-sp5", {rotation: 90, duration: 3.77, ease: "none"}, 2.55);
+    
+    tl.fromTo("#f02-r1", {x: -160, opacity: 0}, {x: 0, opacity: 1, duration: .45, ease: "back.out(1.8)"}, 0.05);
+    tl.fromTo("#f02-r2", {x: 160, opacity: 0}, {x: 0, opacity: 1, duration: .45, ease: "back.out(1.8)"}, 0.75);
+    tl.fromTo("#f02-r3", {x: -160, opacity: 0}, {x: 0, opacity: 1, duration: .45, ease: "back.out(1.8)"}, 1.45);
+    tl.fromTo("#f02-bub", {scale: .3, opacity: 0, transformOrigin: "15% 100%"}, {scale: 1, opacity: 1, duration: .45, ease: "back.out(2)"}, 2.55);
+    tl.set("#f02-q", {opacity: 0}, 0);
+    tl.fromTo("#f02-typing i", {y: 0}, {y: -16, duration: .18, ease: "power1.out", stagger: .09, yoyo: true, repeat: 1}, 2.7);
+    tl.to("#f02-typing", {opacity: 0, duration: .1}, 3.15);
+    tl.fromTo("#f02-q", {opacity: 0, y: 20}, {opacity: 1, y: 0, duration: .35, ease: "power3.out"}, 3.2);
+    tl.fromTo("#f02-q b", {scale: .5}, {scale: 1, duration: .5, ease: "elastic.out(1,.5)"}, 3.45);
+    tl.fromTo("#f02-bub", {height: 150}, {immediateRender: false, height: 300, duration: .3, ease: "power2.out"}, 3.15);
+    tl.fromTo("#f02-cursor", {x: 1100, y: 1700, opacity: 0}, {x: 820, y: 1290, opacity: 1, duration: .7, ease: "power3.out"}, 3.3);
+    tl.to("#f02-cursor", {scale: .8, duration: .1, yoyo: true, repeat: 1}, 4.05);
+    
+    window.__timelines["02-question"] = tl;
+  })();
+  </script>
+</template>
