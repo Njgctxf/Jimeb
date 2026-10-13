@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="assets/vendor/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Inter"; src: url("assets/fonts/Inter.woff2") format("woff2"); font-weight: 100 900; }
+      @font-face { font-family: "DM Serif Display"; src: url("assets/fonts/DMSerifDisplay.woff2") format("woff2"); font-weight: 400; }
+      @font-face { font-family: "Montserrat"; src: url("assets/fonts/Montserrat-var.woff2") format("woff2"); font-weight: 100 900; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #F4FAFF; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; font-family: "Inter", sans-serif; }
+      .layer { position: absolute; inset: 0; }
+      .abs { position: absolute; }
+      .row { position: absolute; left: 0; right: 0; display: flex; justify-content: center; align-items: center; }
+      .w { display: inline-block; white-space: pre; }
+
+      /* ── scene A: white world ── */
+      #bgWhite { background: radial-gradient(90% 60% at 50% 45%, #FFFFFF 0%, #EEF7FF 70%, #DDEEFF 100%); }
+      #line { font-weight: 600; font-size: 74px; color: #1E2A44; letter-spacing: -0.02em; white-space: nowrap; }
+      #line .dtl { font-weight: 900; color: #C95A0C; }
+      #hiDot { width: 46px; height: 46px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #9FF3FF, #18C8EE 60%, #0A9BD6); box-shadow: 0 10px 30px rgba(24,200,238,.45); }
+      .pill { position: relative; height: 116px; border-radius: 30px; overflow: visible; }
+      .pill .skin { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; }
+      #pillA .skin { background: linear-gradient(135deg, #8FDCFF 0%, #55B4FF 55%, #3D8DFF 100%); box-shadow: 0 22px 60px rgba(61,141,255,.35), inset 0 3px 0 rgba(255,255,255,.65), inset 0 -6px 18px rgba(20,60,200,.25); }
+      #pillA .skin:after, .gloss:after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 48%; background: linear-gradient(180deg, rgba(255,255,255,.45), rgba(255,255,255,0)); }
+      .ptxt { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 600; font-size: 60px; letter-spacing: -0.01em; white-space: nowrap; text-shadow: 0 2px 10px rgba(20,60,180,.25); }
+      #glowA { position: absolute; left: -60px; right: -60px; top: -40px; bottom: -40px; border-radius: 60px; background: linear-gradient(90deg, #FFB347, #FF5FA2, #FFD86B, #FF7A3D); filter: blur(34px); }
+      #streaks .st { position: absolute; width: 6px; border-radius: 3px; background: linear-gradient(180deg, rgba(31,216,242,0), #1FD8F2 30%, #0FA8E8 70%, rgba(31,216,242,0)); }
+      #flash { background: radial-gradient(40% 25% at 50% 52%, #FFFFFF 0%, rgba(255,255,255,.95) 40%, rgba(190,240,255,.7) 75%, rgba(160,220,255,0) 100%); }
+
+      /* ── scene B/C/D: blue world ── */
+      #bgBlue { background: linear-gradient(165deg, #1347E8 0%, #0B23A6 50%, #050B5E 100%); overflow: hidden; }
+      .blob { position: absolute; border-radius: 50%; filter: blur(90px); }
+      #panel { position: absolute; border-radius: 56px; background: linear-gradient(160deg, rgba(150,200,255,.30), rgba(80,120,255,.22) 60%, rgba(120,90,255,.30)); border: 3px solid rgba(255,255,255,.35); box-shadow: inset 0 3px 0 rgba(255,255,255,.4), 0 40px 120px rgba(0,10,80,.45); backdrop-filter: blur(22px); overflow: hidden; }
+      #seed { position: absolute; left: 50%; top: 50%; width: 120px; height: 120px; margin: -60px 0 0 -60px; border-radius: 26px; background: linear-gradient(135deg, #79B6FF, #3D6BFF); box-shadow: 0 0 60px rgba(120,180,255,.9), 0 0 0 10px rgba(160,200,255,.25); }
+      .svc { position: absolute; left: 50px; right: 50px; height: 128px; border-radius: 30px; display: flex; align-items: center; gap: 26px; padding: 0 30px; color: #fff; font-weight: 700; font-size: 46px; letter-spacing: -0.01em; white-space: nowrap; background: linear-gradient(90deg, #3E63FF 0%, #5B8CFF 100%); box-shadow: 0 16px 40px rgba(10,30,160,.4), inset 0 3px 0 rgba(255,255,255,.45); overflow: hidden; }
+      .svc img { width: 84px; height: 84px; flex: none; }
+      #pillB { position: absolute; border-radius: 40px; background: linear-gradient(135deg, #4A72FF 0%, #2F55F0 60%, #3B3FD8 100%); box-shadow: 0 30px 80px rgba(5,15,110,.5), inset 0 3px 0 rgba(255,255,255,.45); overflow: hidden; }
+      #pillBtxt { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 0 56px; color: #fff; font-weight: 700; font-size: 66px; line-height: 1.12; letter-spacing: -0.02em; }
+      #pillBtxt .em { color: #9FE8FF; }
+      .scr { position: absolute; inset: 0; overflow: hidden; }
+      .scr .hero { position: absolute; width: 380px; height: 380px; left: 130px; top: 250px; }
+      .scr .sat { position: absolute; width: 150px; height: 150px; }
+      .scr .chip { position: absolute; left: 34px; top: 34px; padding: 12px 22px; border-radius: 999px; background: rgba(10,10,50,.38); border: 2px solid rgba(255,255,255,.4); color: #fff; font-weight: 800; font-size: 28px; letter-spacing: .08em; }
+      .scr .shade { position: absolute; left: 0; right: 0; bottom: 0; height: 52%; background: linear-gradient(180deg, rgba(10,10,40,0) 0%, rgba(10,10,40,.55) 60%, rgba(10,10,40,.75) 100%); }
+      .scr .cap { position: absolute; left: 0; right: 0; bottom: 120px; text-align: center; color: #fff; text-shadow: 0 6px 24px rgba(0,0,0,.35); }
+      .scr .small { font-weight: 600; font-size: 36px; letter-spacing: .01em; opacity: .95; }
+      .scr .big { font-family: "DM Serif Display", serif; font-size: 104px; line-height: 1; margin-top: 10px; }
+      .scr .rays { position: absolute; left: 50%; top: 440px; width: 1400px; height: 1400px; margin: -700px 0 0 -700px; background: repeating-conic-gradient(rgba(255,255,255,.14) 0deg 8deg, rgba(255,255,255,0) 8deg 22deg); border-radius: 50%; }
+      #card { position: absolute; overflow: hidden; }
+      #cardFlash { position: absolute; inset: 0; background: #fff; }
+      .mini { position: absolute; width: 200px; height: 200px; border-radius: 40px; display: flex; align-items: center; justify-content: center; background: linear-gradient(160deg, rgba(255,255,255,.55), rgba(190,220,255,.35)); border: 3px solid rgba(255,255,255,.7); box-shadow: 0 24px 60px rgba(0,10,80,.45); backdrop-filter: blur(16px); }
+      .mini img { width: 140px; height: 140px; }
+      #ripple { width: 200px; height: 200px; border-radius: 50%; border: 8px solid rgba(255,255,255,.9); }
+      #logoPlate { width: 420px; height: 420px; border-radius: 70px; background: #fff; overflow: hidden; box-shadow: 0 0 0 8px rgba(255,255,255,.35), 0 0 120px rgba(120,200,255,.6), 0 40px 100px rgba(0,10,80,.5); }
+      #logoPlate img { width: 100%; height: 100%; object-fit: cover; }
+      #phonePill { height: 140px; padding: 0 54px 0 34px; border-radius: 999px; display: flex; align-items: center; gap: 22px; color: #fff; font-weight: 800; font-size: 60px; letter-spacing: .01em; white-space: nowrap; background: linear-gradient(135deg, #E2741B 0%, #C9520F 55%, #A53F08 100%); text-shadow: 0 3px 10px rgba(80,20,0,.45); box-shadow: 0 24px 70px rgba(226,116,27,.55), inset 0 3px 0 rgba(255,255,255,.55); }
+      #phonePill img { width: 96px; height: 96px; }
+      #callLbl { color: #CFE8FF; font-weight: 700; font-size: 40px; letter-spacing: .22em; }
+      #cursor { width: 120px; height: 120px; left: 0; top: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="26.5">
+
+      <!-- ═════ WHITE WORLD (0 – 6.9s) ═════ -->
+      <div id="sceneA" class="clip layer" data-start="0" data-duration="6.9" data-track-index="0">
+        <div id="bgWhite" class="layer"></div>
+        <svg id="starA1" class="abs" style="left:-420px;top:-200px;width:900px;height:900px" viewBox="-450 -450 900 900">
+          <defs>
+            <linearGradient id="armA" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#7FF0FF"/><stop offset="1" stop-color="#16C6EE"/></linearGradient>
+            <filter id="softA" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="5"/><feDropShadow dx="18" dy="26" stdDeviation="18" flood-color="#0A6FA8" flood-opacity=".35"/></filter>
+          </defs>
+          <g filter="url(#softA)" stroke="url(#armA)" stroke-width="86" stroke-linecap="round">
+            <line x1="0" y1="0" x2="400" y2="0"/><line x1="0" y1="0" x2="200" y2="346"/><line x1="0" y1="0" x2="-200" y2="346"/><line x1="0" y1="0" x2="-400" y2="0"/><line x1="0" y1="0" x2="-200" y2="-346"/><line x1="0" y1="0" x2="200" y2="-346"/>
+          </g>
+        </svg>
+        <svg id="starA2" class="abs" style="left:690px;top:1500px;width:700px;height:700px" viewBox="-350 -350 700 700">
+          <defs>
+            <linearGradient id="petA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2E7BFF"/><stop offset="1" stop-color="#1FD8F2"/></linearGradient>
+            <filter id="softB" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="4"/><feDropShadow dx="12" dy="20" stdDeviation="14" flood-color="#0A4FA8" flood-opacity=".35"/></filter>
+          </defs>
+          <g filter="url(#softB)" fill="url(#petA)">
+            <ellipse cx="0" cy="-150" rx="38" ry="150"/><ellipse cx="0" cy="-150" rx="38" ry="150" transform="rotate(60)"/><ellipse cx="0" cy="-150" rx="38" ry="150" transform="rotate(120)"/><ellipse cx="0" cy="-150" rx="38" ry="150" transform="rotate(180)"/><ellipse cx="0" cy="-150" rx="38" ry="150" transform="rotate(240)"/><ellipse cx="0" cy="-150" rx="38" ry="150" transform="rotate(300)"/>
+          </g>
+        </svg>
+
+        <div id="lineRow" class="row" style="top:850px;height:120px">
+          <div id="line"><span class="w" id="wSalut">Salut,</span> <span class="w">nous</span> <span class="w">sommes</span> <span class="w dtl">DTL</span></div>
+        </div>
+        <div id="hiDot" class="abs" style="left:517px;top:700px"></div>
+
+        <div id="pillRow" class="row" style="top:852px;height:116px">
+          <div id="pillA" class="pill" style="width:200px">
+            <div id="glowA"></div>
+            <div class="skin"></div>
+            <div class="ptxt" id="tA1">Transport &amp; Logistique</div>
+            <div class="ptxt" id="tA2">Votre partenaire de confiance</div>
+            <div class="ptxt" id="tA3">On fait quoi pour vous ?</div>
+          </div>
+        </div>
+        <div id="streaks" class="layer"></div>
+        <div id="flash" class="layer"></div>
+      </div>
+
+      <!-- ═════ BLUE WORLD (5.9 – 26.5s) ═════ -->
+      <div id="sceneB" class="clip layer" data-start="5.9" data-duration="20.6" data-track-index="1">
+        <div id="bgBlue" class="layer">
+          <div id="blob1" class="blob" style="left:-260px;top:-160px;width:900px;height:900px;background:#1FD8F2;opacity:.75"></div>
+          <div id="blob2" class="blob" style="left:520px;top:620px;width:860px;height:860px;background:#22C4F5;opacity:.6"></div>
+          <div id="blob3" class="blob" style="left:-200px;top:1300px;width:800px;height:800px;background:#3A2BD8;opacity:.75"></div>
+          <div id="blob4" class="blob" style="left:600px;top:-200px;width:600px;height:600px;background:#0A1A8A;opacity:.8"></div>
+          <svg id="starB1" class="abs" style="left:-560px;top:-260px;width:1200px;height:1200px" viewBox="-600 -600 1200 1200">
+            <filter id="softW" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="16"/></filter>
+            <g filter="url(#softW)" stroke="#FFFFFF" stroke-width="54" stroke-linecap="round" opacity=".92">
+              <line x1="0" y1="0" x2="520" y2="0"/><line x1="0" y1="0" x2="260" y2="450"/><line x1="0" y1="0" x2="-260" y2="450"/><line x1="0" y1="0" x2="-520" y2="0"/><line x1="0" y1="0" x2="-260" y2="-450"/><line x1="0" y1="0" x2="260" y2="-450"/>
+            </g>
+          </svg>
+          <svg id="starB2" class="abs" style="left:560px;top:1180px;width:800px;height:800px" viewBox="-400 -400 800 800">
+            <filter id="softW2" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="8"/></filter>
+            <g filter="url(#softW2)" stroke="#FFFFFF" stroke-width="34" stroke-linecap="round">
+              <line x1="0" y1="0" x2="330" y2="0"/><line x1="0" y1="0" x2="165" y2="286"/><line x1="0" y1="0" x2="-165" y2="286"/><line x1="0" y1="0" x2="-330" y2="0"/><line x1="0" y1="0" x2="-165" y2="-286"/><line x1="0" y1="0" x2="165" y2="-286"/>
+            </g>
+          </svg>
+        </div>
+
+        <div id="panel" style="left:130px;top:300px;width:300px;height:300px">
+          <div id="seed"></div>
+          <div id="svcs"></div>
+        </div>
+
+        <div id="pillB" style="left:90px;top:830px;width:900px;height:260px">
+          <div id="pillBtxt"><div id="pb1">Voici ce qu'on fait</div><div id="pb2"><span class="w">pour</span> <span class="w em">nos</span> <span class="w em">clients.</span></div></div>
+          <div id="card" class="layer"><div id="screens" class="layer"></div><div id="cardFlash"></div></div>
+          <div id="pillCtxt" class="ptxt" style="font-weight:700;font-size:58px">Prêt à travailler avec nous ?</div>
+        </div>
+
+        <div id="minis" class="layer"></div>
+
+        <div id="logoRow" class="row" style="top:300px;height:420px"><div id="logoPlate"><img src="assets/logo-dtl.jpg" alt="DTL" /></div></div>
+        <div id="callRow" class="row" style="top:1180px;height:60px"><div id="callLbl">APPELEZ-NOUS</div></div>
+        <div id="phoneRow" class="row" style="top:1260px;height:140px"><div id="phonePill"><img src="assets/emoji/telephone_receiver.png" alt="" /><span>+225 07 79 84 22 76</span></div></div>
+        <div id="ripple" class="abs" style="left:0;top:0"></div>
+      </div>
+
+      <!-- the 3D cursor lives above everything -->
+      <div id="cursorLayer" class="clip layer" data-start="0" data-duration="26.5" data-track-index="5">
+        <svg id="cursor" class="abs" viewBox="0 0 120 120">
+          <defs>
+            <linearGradient id="cg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8FE9FF"/><stop offset=".45" stop-color="#2BB8F5"/><stop offset="1" stop-color="#1E5BEA"/></linearGradient>
+            <linearGradient id="cg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1E5BEA"/><stop offset="1" stop-color="#0D2FA8"/></linearGradient>
+            <filter id="cs" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="6" dy="12" stdDeviation="8" flood-color="#06247A" flood-opacity=".45"/></filter>
+          </defs>
+          <g filter="url(#cs)">
+            <path d="M14 12 L104 58 L60 66 L42 108 Z" fill="url(#cg)"/>
+            <path d="M60 66 L42 108 L104 58 Z" fill="url(#cg2)" opacity=".55"/>
+            <path d="M22 22 L70 46 L46 52 Z" fill="#fff" opacity=".45"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <script>
+      document.fonts.ready.then(function () {
+        var tl = gsap.timeline({ paused: true });
+        var $ = function (s) { return document.querySelector(s); };
+        var root = $("#root");
+
+        function rect(el) {
+          var r = el.getBoundingClientRect(), o = root.getBoundingClientRect();
+          return { x: r.left - o.left, y: r.top - o.top, w: r.width, h: r.height, cx: r.left - o.left + r.width / 2, cy: r.top - o.top + r.height / 2 };
+        }
+        function split(el) {
+          var parts = el.textContent.split(" "); el.textContent = "";
+          return parts.map(function (p, i) {
+            var s = document.createElement("span"); s.className = "w"; s.textContent = p + (i < parts.length - 1 ? " " : ""); el.appendChild(s);
+            return s;
+          });
+        }
+        function reveal(spans, t, stagger, dur) {
+          tl.fromTo(spans, { opacity: 0, y: 28, filter: "blur(10px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: dur || 0.38, stagger: stagger || 0.07, ease: "power3.out" }, t);
+        }
+        function seeded(seed) { var s = seed; return function () { s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; }; }
+
+        // ── build dynamic DOM (deterministic) ──
+        var rnd = seeded(11), streaks = $("#streaks");
+        for (var i = 0; i < 46; i++) {
+          var st = document.createElement("div"); st.className = "st";
+          var h = 300 + rnd() * 1300;
+          st.style.left = Math.round(rnd() * 1074) + "px"; st.style.top = Math.round(rnd() * (1920 - h)) + "px"; st.style.height = Math.round(h) + "px";
+          st.style.opacity = (0.45 + rnd() * 0.55).toFixed(2); st.style.width = (3 + Math.round(rnd() * 7)) + "px";
+          streaks.appendChild(st);
+        }
+        var SVCS = [
+          ["bus", "Transport &amp; scolaire"], ["taxi", "VTC &amp; véhicules"], ["motor_scooter", "Livraison express"],
+          ["party_popper", "Décoration"], ["ship", "Import-Export"], ["delivery_truck", "Logistique entreprises"], ["chicken", "Élevage"]
+        ];
+        var svcBox = $("#svcs");
+        SVCS.forEach(function (s, i) {
+          var d = document.createElement("div"); d.className = "svc gloss"; d.id = "svc" + i; d.style.top = (64 + i * 152) + "px";
+          d.innerHTML = '<img src="assets/emoji/' + s[0] + '.png" alt=""/><span class="lbl">' + s[1] + "</span>";
+          svcBox.appendChild(d);
+        });
+        var SCR = [
+          { bg: "linear-gradient(160deg,#FFD24D 0%,#FF9A1F 55%,#F26B0F 100%)", hero: "bus", sats: [["school", 40, 70, -12], ["backpack", 470, 690, 10]], small: "Transport de personnes &amp;", big: "Scolaire" },
+          { bg: "linear-gradient(160deg,#8A7CFF 0%,#4B3BE0 55%,#23138F 100%)", hero: "taxi", sats: [["key", 460, 90, 14], ["oncoming_automobile", 30, 680, -8]], small: "VTC &amp; gestion de", big: "Véhicules" },
+          { bg: "linear-gradient(160deg,#3FF0D8 0%,#00B3B8 50%,#00668F 100%)", hero: "motor_scooter", sats: [["package", 40, 80, -10], ["steaming_bowl", 460, 660, 8]], small: "Repas · colis · marchandises", big: "Livrés vite", minis: [["hamburger", -150, 230], ["package", 560, 820]] },
+          { bg: "linear-gradient(160deg,#FF8AC4 0%,#FF3D8B 50%,#A80E6E 100%)", hero: "party_popper", sats: [["balloon", 470, 60, 10], ["confetti_ball", 30, 650, -12], ["bouquet", 470, 640, 6]], small: "Mariages · anniversaires", big: "Décoration" },
+          { bg: "linear-gradient(160deg,#6FD1FF 0%,#1E90FF 50%,#0B3BB0 100%)", hero: "ship", sats: [["airplane", 440, 70, -6], ["world_map", 30, 660, 8]], small: "Côte d'Ivoire ⇄ le monde", big: "Import-Export" },
+          { bg: "linear-gradient(160deg,#FFE58A 0%,#FFC21F 45%,#D99100 100%)", hero: "delivery_truck", sats: [["clipboard", 40, 80, -10], ["check_mark_button", 470, 660, 10]], small: "Logistique pour les", big: "Entreprises", minis: [["factory", -150, 760], ["check_mark_button", 560, 200]] },
+          { bg: "linear-gradient(160deg,#9CF08A 0%,#3CC46A 50%,#137A45 100%)", hero: "chicken", sats: [["rabbit", 460, 640, 6], ["hatching_chick", 40, 80, -10], ["egg", 40, 660, 14]], small: "Poulets · lapins · cailles", big: "Élevage" }
+        ];
+        var scrBox = $("#screens"), minis = $("#minis");
+        SCR.forEach(function (s, i) {
+          var d = document.createElement("div"); d.className = "scr"; d.id = "scr" + i; d.style.background = s.bg;
+          var h = '<div class="rays"></div><div class="chip">0' + (i + 1) + " / 07</div>";
+          s.sats.forEach(function (a, k) { h += '<img class="sat" id="sat' + i + "_" + k + '" src="assets/emoji/' + a[0] + '.png" style="left:' + a[1] + "px;top:" + a[2] + 'px" alt=""/>'; });
+          h += '<img class="hero" src="assets/emoji/' + s.hero + '.png" alt=""/>';
+          h += '<div class="shade"></div><div class="cap"><div class="small">' + s.small + '</div><div class="big"' + (s.big.length > 10 ? ' style="font-size:86px"' : "") + ">" + s.big + "</div></div>";
+          d.innerHTML = h; scrBox.appendChild(d);
+          (s.minis || []).forEach(function (m, k) {
+            var mm = document.createElement("div"); mm.className = "mini"; mm.id = "mini" + i + "_" + k;
+            mm.style.left = (220 + m[1]) + "px"; mm.style.top = (380 + m[2]) + "px";
+            mm.innerHTML = '<img src="assets/emoji/' + m[0] + '.png" alt=""/>'; minis.appendChild(mm);
+          });
+        });
+
+        // ── measure (before any tween touches transforms) ──
+        var lineSpans = Array.prototype.slice.call(document.querySelectorAll("#line .w"));
+        var salutR = rect($("#wSalut")), lineR = rect($("#line"));
+        var widths = ["#tA1", "#tA2", "#tA3"].map(function (s) {
+          var el = $(s); el.style.position = "static"; el.style.display = "inline-block";
+          var w = el.getBoundingClientRect().width; el.style.position = ""; el.style.display = ""; return Math.round(w + 110);
+        });
+        var svcWords = SVCS.map(function (s, i) { return split(document.querySelector("#svc" + i + " .lbl")); });
+        var pbWords = split($("#pb1")).concat(Array.prototype.slice.call(document.querySelectorAll("#pb2 .w")));
+        var pcWords = split($("#pillCtxt"));
+        var bigWords = SCR.map(function (s, i) { return split(document.querySelector("#scr" + i + " .big")); });
+        var smallEls = SCR.map(function (s, i) { return document.querySelector("#scr" + i + " .small"); });
+
+        // ── ambient: stars + blobs drift for the whole film ──
+        tl.fromTo("#starA1", { rotation: 0 }, { rotation: 38, duration: 6.9, ease: "none" }, 0);
+        tl.fromTo("#starA2", { rotation: 0 }, { rotation: -50, duration: 6.9, ease: "none" }, 0);
+        tl.fromTo("#starB1", { rotation: 0 }, { rotation: 55, duration: 20.6, ease: "none" }, 5.9);
+        tl.fromTo("#starB2", { rotation: 0 }, { rotation: -70, duration: 20.6, ease: "none" }, 5.9);
+        tl.fromTo("#blob1", { x: 0, y: 0 }, { x: 260, y: 300, duration: 20.6, ease: "sine.inOut" }, 5.9);
+        tl.fromTo("#blob2", { x: 0, y: 0 }, { x: -380, y: 200, duration: 20.6, ease: "sine.inOut" }, 5.9);
+        tl.fromTo("#blob3", { x: 0, y: 0 }, { x: 300, y: -260, duration: 20.6, ease: "sine.inOut" }, 5.9);
+        tl.fromTo("#blob4", { x: 0, y: 0 }, { x: -200, y: 340, duration: 20.6, ease: "sine.inOut" }, 5.9);
+
+        // ════════ SCENE A ════════
+        var dx = 540 - salutR.cx, dy = 0;
+        // dot drops & bounces, "Salut" pops big in cyan
+        tl.fromTo("#hiDot", { y: -500, scale: 1 }, { y: 0, duration: 0.32, ease: "bounce.out" }, 0);
+        tl.fromTo("#wSalut", { x: dx, scale: 2.6, color: "#18C8EE", opacity: 0 }, { opacity: 1, duration: 0.12, ease: "none" }, 0.08);
+        tl.fromTo("#hiDot", { scale: 1, opacity: 1 }, { immediateRender: false, scale: 0, opacity: 0, duration: 0.18, ease: "back.in(2)" }, 0.4);
+        tl.to("#wSalut", { x: 0, scale: 1, color: "#1E2A44", duration: 0.45, ease: "expo.inOut" }, 0.42);
+        tl.fromTo(lineSpans.slice(1, 3), { opacity: 0, x: 40, color: "#18C8EE", filter: "blur(8px)" }, { opacity: 1, x: 0, color: "#1E2A44", filter: "blur(0px)", duration: 0.35, stagger: 0.14, ease: "power3.out" }, 0.62);
+        tl.fromTo(lineSpans[3], { opacity: 0, x: 40, scale: 1.5, filter: "blur(8px)" }, { opacity: 1, x: 0, scale: 1, filter: "blur(0px)", duration: 0.4, ease: "back.out(2.4)" }, 0.9);
+        // cursor flies in, then shoves the line off to the left
+        tl.fromTo("#cursor", { x: 1200, y: 1500, rotation: 25, opacity: 1 }, { x: lineR.x + lineR.w + 10, y: 925, rotation: 0, duration: 0.5, ease: "power3.out" }, 1.0);
+        tl.to("#cursor", { x: 360, duration: 0.45, ease: "power2.in" }, 1.5);
+        tl.to("#line", { x: -760, filter: "blur(14px)", opacity: 0, duration: 0.45, ease: "power2.in" }, 1.55);
+        // glass pill wipes in
+        tl.fromTo("#pillA", { width: 120, opacity: 0, scale: 0.6 }, { width: widths[0], opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.6)" }, 1.75);
+        tl.fromTo("#tA1", { opacity: 0, filter: "blur(12px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.35 }, 1.95);
+        tl.set(["#tA2", "#tA3"], { opacity: 0 }, 0);
+        tl.set("#glowA", { opacity: 0 }, 0);
+        tl.to("#cursor", { x: 540 + widths[0] / 2 - 40, y: 930, duration: 0.45, ease: "power3.out" }, 2.0);
+        // rainbow-glow morph #1
+        function morph(t, from, to, w) {
+          tl.to("#glowA", { opacity: 1, scale: 1.08, duration: 0.22, ease: "power2.out" }, t);
+          tl.to(from, { opacity: 0, filter: "blur(14px)", duration: 0.2 }, t);
+          tl.to("#pillA", { width: w, duration: 0.45, ease: "expo.inOut" }, t + 0.05);
+          tl.to("#cursor", { x: 540 + w / 2 - 40, duration: 0.45, ease: "expo.inOut" }, t + 0.05);
+          tl.fromTo(to, { opacity: 0, filter: "blur(14px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.3 }, t + 0.25);
+          tl.to("#glowA", { opacity: 0, scale: 1, duration: 0.35, ease: "power2.in" }, t + 0.3);
+        }
+        morph(2.75, "#tA1", "#tA2", widths[1]);
+        morph(3.7, "#tA2", "#tA3", widths[2]);
+        tl.to("#cursor", { keyframes: { x: [540 + widths[2] / 2 - 40, 520, 600, 540 + widths[2] / 2 - 40], y: [930, 960, 950, 930] }, duration: 0.9, ease: "sine.inOut" }, 4.15);
+        // pill collapses into a glowing square, then everything goes to light
+        tl.to("#tA3", { opacity: 0, filter: "blur(10px)", duration: 0.2 }, 5.05);
+        tl.to("#pillA", { width: 150, height: 150, borderRadius: 40, duration: 0.4, ease: "expo.inOut" }, 5.1);
+        tl.to("#glowA", { opacity: 1, duration: 0.3 }, 5.15);
+        tl.to("#cursor", { x: 590, y: 960, duration: 0.4, ease: "expo.inOut" }, 5.1);
+        tl.to("#pillA", { scale: 2.2, duration: 0.6, ease: "power2.in" }, 5.5);
+        tl.to("#cursor", { opacity: 0, scale: 0.4, duration: 0.25 }, 5.55);
+        tl.fromTo("#flash", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1.6, duration: 0.55, ease: "power2.in" }, 5.55);
+        tl.fromTo("#streaks .st", { scaleY: 0, opacity: 0 }, { scaleY: 1, opacity: 1, duration: 0.35, stagger: { each: 0.012, from: "center" }, ease: "power3.out" }, 5.7);
+        tl.to("#streaks", { x: 120, duration: 0.9, ease: "none" }, 5.7);
+        tl.to("#sceneA", { opacity: 0, duration: 0.5, ease: "power2.in" }, 6.3);
+
+        // ════════ SCENE B ════════
+        tl.fromTo("#bgBlue", { scale: 1.25, filter: "brightness(2.2)" }, { scale: 1, filter: "brightness(1)", duration: 1.1, ease: "expo.out" }, 6.2);
+        // glass card rises with a glowing seed, then opens into a tall panel
+        tl.fromTo("#panel", { x: 260, y: 1800, opacity: 0 }, { y: 1100, opacity: 1, duration: 0.5, ease: "expo.out" }, 6.55);
+        tl.to("#panel", { x: 0, y: 0, width: 820, height: 1170, duration: 0.65, ease: "expo.inOut" }, 7.05);
+        tl.fromTo("#seed", { scale: 1, opacity: 1 }, { scale: 1.6, opacity: 0, duration: 0.45, ease: "power2.in", immediateRender: false }, 7.25);
+        SVCS.forEach(function (s, i) {
+          var t = 7.55 + i * 0.36;
+          tl.fromTo("#svc" + i, { scaleX: 0.2, opacity: 0, transformOrigin: "0% 50%" }, { scaleX: 1, opacity: 1, duration: 0.42, ease: "expo.out" }, t);
+          tl.fromTo("#svc" + i + " img", { scale: 0, rotation: -40 }, { scale: 1, rotation: 0, duration: 0.5, ease: "back.out(2.5)" }, t + 0.1);
+          reveal(svcWords[i], t + 0.14, 0.06, 0.32);
+        });
+        tl.fromTo("#svcs", { y: 0 }, { y: -18, duration: 2.6, ease: "sine.inOut" }, 7.6);
+        // push-in & hand-off to the wide pill
+        tl.to("#panel", { scale: 1.18, filter: "blur(10px)", opacity: 0, duration: 0.55, ease: "power2.in" }, 10.3);
+        tl.fromTo("#pillB", { scale: 0.4, opacity: 0, filter: "blur(10px)" }, { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.5, ease: "expo.out" }, 10.55);
+        tl.set(["#card", "#pillCtxt"], { opacity: 0 }, 0);
+        reveal(pbWords, 10.7, 0.09, 0.36);
+        tl.fromTo("#pillB", { y: 0 }, { y: -14, duration: 1.1, ease: "sine.inOut", immediateRender: false }, 11.0);
+
+        // ════════ SCENE C — the showcase card ════════
+        tl.to("#pillBtxt", { opacity: 0, filter: "blur(12px)", duration: 0.25 }, 12.1);
+        tl.to("#pillB", { x: 130, y: -450, width: 640, height: 1140, borderRadius: 52, duration: 0.6, ease: "expo.inOut",
+          boxShadow: "0 0 0 6px rgba(120,230,255,.75), 0 0 80px rgba(80,210,255,.75), 0 40px 120px rgba(0,10,80,.6)" }, 12.15);
+        tl.to("#card", { opacity: 1, duration: 0.2 }, 12.6);
+        var T0 = 12.65, SL = 1.37;
+        SCR.forEach(function (s, i) {
+          var t = T0 + i * SL, id = "#scr" + i;
+          tl.fromTo(id, { opacity: 0 }, { opacity: 1, duration: 0.01 }, t);
+          if (i < SCR.length - 1) tl.to(id, { opacity: 0, duration: 0.01 }, t + SL);
+          tl.fromTo(id + " .rays", { rotation: 0 }, { rotation: 30, duration: SL + 0.2, ease: "none" }, t);
+          tl.fromTo(id + " .hero", { scale: 0.3, rotation: -18, y: 120 }, { scale: 1, rotation: 0, y: 0, duration: 0.55, ease: "back.out(1.8)" }, t);
+          tl.fromTo(id + " .hero", { y: 0 }, { y: -26, duration: SL - 0.5, ease: "sine.inOut", immediateRender: false }, t + 0.55);
+          s.sats.forEach(function (a, k) {
+            tl.fromTo("#sat" + i + "_" + k, { scale: 0, rotation: a[3] * 3 }, { scale: 1, rotation: a[3], duration: 0.45, ease: "back.out(2.6)" }, t + 0.18 + k * 0.1);
+          });
+          tl.fromTo(smallEls[i], { opacity: 0, y: 20 }, { opacity: 0.95, y: 0, duration: 0.3, ease: "power3.out" }, t + 0.2);
+          tl.fromTo(bigWords[i], { opacity: 0, y: 40, scale: 1.4, filter: "blur(8px)" }, { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.4, stagger: 0.08, ease: "expo.out" }, t + 0.32);
+          tl.fromTo("#cardFlash", { opacity: i === 0 ? 0.9 : 0.55 }, { opacity: 0, duration: 0.25, ease: "power2.out", immediateRender: i === 0 }, t);
+          tl.fromTo("#pillB", { scale: 1.04 }, { scale: 1, duration: 0.3, ease: "power2.out", immediateRender: false }, t);
+          (s.minis || []).forEach(function (m, k) {
+            tl.fromTo("#mini" + i + "_" + k, { scale: 0, opacity: 0, rotation: k ? 12 : -12 }, { scale: 1, opacity: 1, rotation: k ? 6 : -6, duration: 0.45, ease: "back.out(2)" }, t + 0.35 + k * 0.15);
+            tl.to("#mini" + i + "_" + k, { scale: 0, opacity: 0, duration: 0.2, ease: "back.in(2)" }, t + SL - 0.2);
+          });
+        });
+        tl.set(".mini", { opacity: 0 }, 0);
+        tl.fromTo("#pillB", { rotationY: -10, transformPerspective: 1600 }, { rotationY: 10, duration: SL * 7, ease: "sine.inOut", immediateRender: false }, T0);
+
+        // ════════ SCENE D — CTA ════════
+        var TC = T0 + SL * 7; // ≈ 22.24
+        tl.to("#card", { opacity: 0, duration: 0.15 }, TC);
+        tl.to("#pillB", { x: 20, y: 70, width: 860, height: 140, borderRadius: 40, rotationY: 0, duration: 0.55, ease: "expo.inOut",
+          boxShadow: "0 0 0 0px rgba(120,230,255,0), 0 0 0px rgba(80,210,255,0), 0 30px 80px rgba(5,15,110,.5)" }, TC);
+        tl.fromTo("#pillCtxt", { opacity: 0 }, { opacity: 1, duration: 0.01 }, TC + 0.45);
+        reveal(pcWords, TC + 0.45, 0.08, 0.34);
+        tl.fromTo("#cursor", { x: -200, y: 1500, rotation: -20, opacity: 1, scale: 1 }, { x: 870, y: 1020, rotation: 0, duration: 0.6, ease: "power3.out", immediateRender: false }, TC + 0.9);
+        tl.to("#cursor", { scale: 0.8, duration: 0.09, yoyo: true, repeat: 1 }, TC + 1.6);
+        tl.to("#pillB", { scale: 0.95, duration: 0.09, yoyo: true, repeat: 1 }, TC + 1.6);
+        tl.fromTo("#ripple", { x: 820, y: 940, scale: 0.2, opacity: 1 }, { scale: 2.2, opacity: 0, duration: 0.6, ease: "power2.out" }, TC + 1.65);
+        tl.set("#ripple", { opacity: 0 }, 0);
+        tl.fromTo("#logoPlate", { scale: 0, rotation: -14, opacity: 0 }, { scale: 1, rotation: 0, opacity: 1, duration: 0.6, ease: "back.out(1.7)" }, TC + 1.8);
+        tl.fromTo("#callLbl", { opacity: 0, y: 20, scaleX: 1.4 }, { opacity: 1, y: 0, scaleX: 1, duration: 0.5, ease: "expo.out" }, TC + 2.1);
+        tl.fromTo("#phonePill", { scale: 0.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(2)" }, TC + 2.25);
+        tl.fromTo("#phonePill img", { rotation: -30 }, { rotation: 15, duration: 0.12, yoyo: true, repeat: 7, ease: "sine.inOut" }, TC + 2.7);
+        tl.to("#cursor", { x: 930, y: 1600, opacity: 0, duration: 0.6, ease: "power3.inOut" }, TC + 2.5);
+        tl.fromTo("#logoPlate", { y: 0 }, { y: -16, duration: 1.8, ease: "sine.inOut", immediateRender: false }, TC + 2.4);
+        tl.set(["#logoPlate", "#callLbl", "#phonePill"], { opacity: 0 }, 0);
+
+        window.__timelines["main"] = tl;
+      });
+    </script>
+  </body>
+</html>
