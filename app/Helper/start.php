@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 use App\Models\EmailSetting;
 use App\Models\GlobalSetting;
