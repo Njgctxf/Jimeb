@@ -30,6 +30,7 @@
 
     <!-- Styles -->
     @livewireStyles
+    @include('sections.jimbe_theme', ['brand' => false])
 
     <style>
         :root {

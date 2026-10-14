@@ -116,6 +116,9 @@ if (!function_exists('module_enabled') || !module_enabled('Subdomain')) {
     Route::get('/change-locale/{locale}', [HomeController::class, 'changeLocale'])->name('change.locale');
 }
 
+// Copie du template Framer (vitrine), en cours d'adaptation pour Jimbe
+Route::get('/vitrine', [HomeController::class, 'vitrine'])->name('framer.home');
+
 Route::get('/restaurant-signup', [HomeController::class, 'signup'])->name('restaurant_signup');
 Route::get('/customer-logout', [HomeController::class, 'customerLogout'])->name('customer_logout');
 Route::get('page/{slug}', [CustomMenuController::class, 'index'])->name('customMenu');

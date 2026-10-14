@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 namespace Database\Seeders;
 
@@ -17,9 +17,9 @@ class GlobalSettingSeeder extends Seeder
     public function run(): void
     {
         $setting = new GlobalSetting();
-        $setting->name = 'Jimeb';
-        $setting->theme_hex = '#A78BFA';
-        $setting->theme_rgb = '167, 139, 250';
+        $setting->name = 'Jimbe';
+        $setting->theme_hex = '#055049';
+        $setting->theme_rgb = '5, 80, 73';
         $setting->hash = md5(microtime());
         $setting->installed_url = config('app.url');
         $setting->facebook_link = 'https://www.facebook.com/';

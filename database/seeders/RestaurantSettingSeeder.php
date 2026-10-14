@@ -98,9 +98,9 @@ class RestaurantSettingSeeder extends Seeder
             $setting->name = $companyName;
             $setting->address = $i === 0 ? $jaipur['address'] : fake()->address();
             $setting->phone_number = fake()->e164PhoneNumber();
-            $setting->timezone = $country?->countries_code === 'IN' ? 'Asia/Kolkata' : 'America/New_York';
-            $setting->theme_hex = '#A78BFA';
-            $setting->theme_rgb = '167, 139, 250';
+            $setting->timezone = $country?->countries_code === 'CI' ? 'Africa/Abidjan' : ($country?->countries_code === 'IN' ? 'Asia/Kolkata' : 'America/New_York');
+            $setting->theme_hex = '#055049';
+            $setting->theme_rgb = '5, 80, 73';
             $setting->email = str()->slug($companyName, '.') . '@example.com';
             $setting->country_id = $country->id;
             $setting->package_id = 1;
@@ -110,7 +110,10 @@ class RestaurantSettingSeeder extends Seeder
             $setting->instagram_link = 'https://www.instagram.com/';
             $setting->twitter_link = 'https://www.twitter.com/';
             $setting->google_business_link = 'https://business.google.com/';
-            $setting->customer_site_language = 'en';
+            $setting->customer_site_language = 'fr';
+            $setting->allow_customer_delivery_orders = false;
+            $setting->allow_customer_pickup_orders = false;
+            $setting->table_required = true;
             $setting->save();
 
             foreach ($branches as $location) {

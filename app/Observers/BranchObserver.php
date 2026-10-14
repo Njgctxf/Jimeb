@@ -128,6 +128,9 @@ class BranchObserver
                 'type' => $defaultOrderTypesSlug[$index],
                 'enable_token_number' => true,
                 'show_order_number_on_board' => true,
+                // Jimbe : service sur place uniquement (livraison / à emporter désactivés)
+                'is_active' => $defaultOrderTypesSlug[$index] === 'dine_in',
+                'enable_from_customer_site' => $defaultOrderTypesSlug[$index] === 'dine_in',
             ]);
         }
 

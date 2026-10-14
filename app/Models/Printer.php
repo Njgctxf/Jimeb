@@ -40,7 +40,7 @@ class Printer extends Model
 
         // Kitchen module key as fallback for shared wording
         if ($this->name === 'Default Kitchen') {
-            return __('kitchen::modules.menu.defaultKitchen');
+            return __('modules.menu.defaultKitchen');
         }
 
         return (string) $this->name;

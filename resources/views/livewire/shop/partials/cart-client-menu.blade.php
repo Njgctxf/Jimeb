@@ -85,250 +85,140 @@
             </div>
         </div>
 
-        <div class="flex min-w-0 max-w-full flex-col overflow-x-hidden px-4 mt-4 mb-4">
-            <div class="grid grid-cols-2 gap-3 lg:grid-cols-4 sm:gap-4">
-                <a href="javascript:;" @click.prevent="setMenuId(null)"
-                    :class="menuId === null ? 'tt-shop-menu-card--active bg-skin-base dark:bg-skin-base' : 'tt-shop-menu-card--idle bg-white dark:bg-gray-700'"
-                    class="tt-shop-menu-card flex items-center border shadow-sm rounded-lg hover:shadow-md transition dark:border-gray-600">
-                    <div class="p-2 sm:p-3 w-full">
-                        <div class="flex items-center gap-3">
-                            <div class="hidden p-2 bg-gray-100 rounded-md sm:block dark:bg-gray-600">
-                                <svg class="tt-shop-menu-card__icon flex-shrink-0 size-5 fill-current text-gray-800 dark:text-gray-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 409.221 409.221">
-                                    <path d="M387.059 389.218H372.73v-18.114h14.327c5.523 0 10-4.477 10-10 0-55.795-42.81-101.781-97.305-106.843v-17.29c0-5.523-4.477-10-10-10s-10 4.477-10 10v17.29c-54.496 5.062-97.305 51.048-97.305 106.843 0 5.523 4.477 10 10 10h14.327v18.114h-14.327c-5.523 0-10 4.477-10 10s4.477 10 10 10h24.13q.197.004.393 0h145.564l.196.002.196-.002h24.133c5.523 0 10-4.477 10-10s-4.478-10-10-10m-34.33 0H226.772v-18.114h125.957zm-149.714-38.113c4.978-43.447 41.978-77.305 86.736-77.305s81.758 33.858 86.736 77.305zM131.63 97.306c-29.383 0-52.4 16.809-52.4 38.267 0 21.457 23.017 38.265 52.4 38.265s52.399-16.808 52.399-38.265c0-21.459-23.016-38.267-52.399-38.267m0 56.531c-19.094 0-32.4-9.625-32.4-18.265s13.306-18.267 32.4-18.267c19.093 0 32.399 9.627 32.399 18.267s-13.306 18.265-32.399 18.265m23.553 235.383H32.162V68.652h198.936v166.52c0 5.523 4.477 10 10 10s10-4.477 10-10V58.652c0-5.523-4.477-10-10-10h-4.701V10A10.002 10.002 0 0 0 225.215.07L20.979 24.397a10 10 0 0 0-8.817 9.93V399.22c0 5.523 4.477 10 10 10h133.021c5.523 0 10-4.477 10-10s-4.477-10-10-10M32.162 43.206l184.235-21.944v27.391H32.162zm82.627 317.362c-5.523 0-10-4.477-10-10s4.477-10 10-10h33.681c5.523 0 10 4.477 10 10s-4.477 10-10 10z" />
-                                </svg>
-                            </div>
-                            <div class="grow">
-                                <h3 class="tt-shop-menu-card__title font-semibold text-xs lg:text-base text-gray-800 dark:text-neutral-200"
-                                    x-text="labels.showAll"></h3>
-                            </div>
-                        </div>
+        <link rel="stylesheet" href="{{ asset('css/jimbe-shop.css') }}?v={{ @filemtime(public_path('css/jimbe-shop.css')) }}">
+
+        <div class="jb-shop" id="jb-top" x-show="cfg.showMenu !== false" x-cloak>
+            {{-- Barre du haut --}}
+            <div class="jb-top">
+                <div class="jb-top__brand">
+                    <div class="jb-top__logo"><x-restaurant-logo :restaurant="$restaurant" class="h-8" /></div>
+                    <div class="min-w-0">
+                        <div class="jb-top__hello" x-text="(new Date().getHours() < 12 ? @js(__('modules.shop.goodMorning')) : (new Date().getHours() < 18 ? @js(__('modules.shop.goodAfternoon')) : @js(__('modules.shop.goodEvening')))) + ' 👋'"></div>
+                        <div class="jb-top__name">{{ $restaurant->name }}</div>
                     </div>
-                </a>
-
-                <template x-for="(m, index) in menus" :key="'menu-card-' + m.id">
-                    <div x-show="showAllMenus || index < 7" x-transition>
-                        <a href="javascript:;" @click.prevent="setMenuId(m.id)"
-                            :class="menuId === m.id ? 'tt-shop-menu-card--active bg-skin-base dark:bg-skin-base' : 'tt-shop-menu-card--idle bg-white dark:bg-gray-700'"
-                            class="tt-shop-menu-card flex flex-col border shadow-sm rounded-lg hover:shadow-md transition dark:border-gray-600">
-                            <div class="p-2 sm:p-3">
-                                <div class="flex items-center gap-3">
-                                    <svg class="tt-shop-menu-card__icon flex-shrink-0 size-5 fill-current text-gray-800 dark:text-gray-100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 409.221 409.221">
-                                        <path d="M387.059 389.218H372.73v-18.114h14.327c5.523 0 10-4.477 10-10 0-55.795-42.81-101.781-97.305-106.843v-17.29c0-5.523-4.477-10-10-10s-10 4.477-10 10v17.29c-54.496 5.062-97.305 51.048-97.305 106.843 0 5.523 4.477 10 10 10h14.327v18.114h-14.327c-5.523 0-10 4.477-10 10s4.477 10 10 10h24.13q.197.004.393 0h145.564l.196.002.196-.002h24.133c5.523 0 10-4.477 10-10s-4.478-10-10-10m-34.33 0H226.772v-18.114h125.957zm-149.714-38.113c4.978-43.447 41.978-77.305 86.736-77.305s81.758 33.858 86.736 77.305zM131.63 97.306c-29.383 0-52.4 16.809-52.4 38.267 0 21.457 23.017 38.265 52.4 38.265s52.399-16.808 52.399-38.265c0-21.459-23.016-38.267-52.399-38.267m0 56.531c-19.094 0-32.4-9.625-32.4-18.265s13.306-18.267 32.4-18.267c19.093 0 32.399 9.627 32.399 18.267s-13.306 18.265-32.399 18.265m23.553 235.383H32.162V68.652h198.936v166.52c0 5.523 4.477 10 10 10s10-4.477 10-10V58.652c0-5.523-4.477-10-10-10h-4.701V10A10.002 10.002 0 0 0 225.215.07L20.979 24.397a10 10 0 0 0-8.817 9.93V399.22c0 5.523 4.477 10 10 10h133.021c5.523 0 10-4.477 10-10s-4.477-10-10-10M32.162 43.206l184.235-21.944v27.391H32.162zm82.627 317.362c-5.523 0-10-4.477-10-10s4.477-10 10-10h33.681c5.523 0 10 4.477 10 10s-4.477 10-10 10z" />
-                                    </svg>
-                                    <div class="grow min-w-0">
-                                        <h3 class="tt-shop-menu-card__title font-semibold text-xs lg:text-base truncate text-gray-800 dark:text-neutral-200"
-                                            x-text="m.name"></h3>
-                                        <p class="tt-shop-menu-card__meta text-sm hidden sm:block truncate text-gray-500 dark:text-neutral-500">
-                                            <span x-text="m.items_count"></span> <span x-text="labels.itemLabel"></span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </template>
-
-                <template x-if="menus.length === 0">
-                    <div class="inline-flex items-center col-span-2 dark:text-gray-400" x-text="labels.noMenuAdded"></div>
-                </template>
-            </div>
-
-            <template x-if="menus.length > 8">
-                <div class="flex justify-center mt-4" x-cloak>
-                    <button type="button" @click="showAllMenus = !showAllMenus"
-                        class="flex items-center gap-1 text-sm text-skin-base hover:underline">
-                        <span x-text="showAllMenus ? labels.showLess : labels.showMore"></span>
-                        <svg class="w-4 h-4 transition-transform duration-200" :class="{ 'rotate-180': showAllMenus }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
+                </div>
+                <div class="jb-top__actions">
+                    <button type="button" class="jb-ibtn" aria-label="@lang('app.callWaiter')"
+                        @click="document.querySelector('[wire\\:click=callWaiter]')?.click()">
+                        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"/></svg>
+                    </button>
+                    <button type="button" class="jb-ibtn" aria-label="@lang('modules.order.viewCart')" @click="callLw('showCartItems')">
+                        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007Z"/></svg>
+                        <span class="jb-badge" x-show="cartCount() > 0" x-text="cartCount()"></span>
                     </button>
                 </div>
-            </template>
-        </div>
+            </div>
 
-        <div class="mx-4 mt-6 min-w-0 max-w-full overflow-x-hidden">
-            <div class="relative min-w-0 lg:hidden" @click.away="catDdOpen = false">
-                <button type="button" @click="catDdOpen = !catDdOpen"
-                    class="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg px-4 py-2.5 flex items-center justify-between shadow-sm hover:bg-gray-50 transition-colors duration-200">
-                    <span class="text-sm font-medium truncate" x-text="categoryDropdownLabel()"></span>
-                    <svg class="w-4 h-4 transition-transform duration-200" :class="{ 'rotate-180': catDdOpen }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                    </svg>
+            {{-- Recherche --}}
+            <label class="jb-search">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/></svg>
+                <input type="text" x-model.debounce.300ms="search" placeholder="@lang('modules.shop.search')">
+            </label>
+
+            {{-- Bannière --}}
+            <div class="jb-hero">
+                <span class="jb-hero__tag">@lang('modules.shop.heroTag')</span>
+                <h2>@lang('modules.shop.heroTitle')</h2>
+                <p>@lang('modules.shop.heroSub')</p>
+                <button type="button" class="jb-hero__cta" @click="document.getElementById('jb-menu')?.scrollIntoView({behavior: 'smooth'})">
+                    @lang('modules.shop.heroCta') <span>→</span>
                 </button>
-                <div x-show="catDdOpen" x-cloak x-transition
-                    class="absolute inset-x-0 z-50 mt-2 max-w-full overflow-hidden bg-white rounded-lg shadow-lg dark:bg-gray-700">
-                    <div class="overflow-y-auto max-h-80">
-                        <button type="button" @click="setCategory(null); catDdOpen = false"
-                            class="w-full px-4 py-2.5 text-left text-sm hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
-                            :class="filterCategoryId === null ? 'bg-gray-50 dark:bg-gray-600 text-skin-base' : 'text-gray-700 dark:text-gray-200'"
-                            x-text="labels.showAll"></button>
-                        <template x-for="c in visibleCategories()" :key="'cat-m-' + c.id">
-                            <button type="button" @click="setCategory(c.id); catDdOpen = false"
-                                class="w-full px-4 py-2.5 text-left text-sm hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors flex items-center justify-between"
-                                :class="filterCategoryId === c.id ? 'bg-gray-50 dark:bg-gray-600 text-skin-base' : 'text-gray-700 dark:text-gray-200'">
-                                <span x-text="c.name"></span>
-                                <span class="px-2 py-1 text-xs text-gray-600 bg-gray-100 rounded-full dark:bg-gray-600 dark:text-gray-300" x-text="c.count"></span>
-                            </button>
-                        </template>
-                    </div>
-                </div>
+                <div class="jb-hero__emoji">🍽️</div>
+                <span class="jb-hero__bubble b1">🍗</span><span class="jb-hero__bubble b2">🥗</span><span class="jb-hero__bubble b3">🥤</span>
             </div>
 
-            <div class="hidden p-2 rounded-md lg:block group bg-gray-50 dark:bg-gray-800">
-                <nav class="flex gap-2 overflow-x-auto group-hover:[&::-webkit-scrollbar-thumb]:bg-gray-300 dark:group-hover:[&::-webkit-scrollbar-thumb]:bg-gray-600 [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-track]:hidden [&::-webkit-scrollbar-thumb]:rounded-full py-2" aria-label="Categories">
-                    <button type="button" @click="setCategory(null)"
-                        class="px-4 py-2 text-sm font-medium rounded-lg transition-colors whitespace-nowrap"
-                        :class="filterCategoryId === null ? 'bg-skin-base text-white shadow-sm' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'"
-                        x-text="labels.showAll"></button>
-                    <template x-for="c in visibleCategories()" :key="'cat-d-' + c.id">
-                        <button type="button" @click="setCategory(c.id)"
-                            class="px-4 py-2 text-sm font-medium rounded-lg transition-colors inline-flex items-center gap-2 whitespace-nowrap"
-                            :class="filterCategoryId === c.id ? 'bg-skin-base text-white shadow-sm' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'">
-                            <span x-text="c.name"></span>
-                            <span class="px-2 py-0.5 text-xs rounded-full"
-                                :class="filterCategoryId === c.id ? 'bg-white/20 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'"
-                                x-text="c.count"></span>
-                        </button>
+            {{-- Menus --}}
+            <div class="jb-chips" x-show="menus.length > 0">
+                <button type="button" class="jb-chip" :class="menuId === null ? 'is-active' : ''" @click="setMenuId(null)">
+                    <div class="jb-chip__c">🍴</div><span class="jb-chip__t">@lang('modules.shop.all')</span>
+                </button>
+                <template x-for="m in menus" :key="'jb-m-' + m.id">
+                    <button type="button" class="jb-chip" :class="menuId === m.id ? 'is-active' : ''" @click="setMenuId(m.id)">
+                        <div class="jb-chip__c">
+                            <span x-text="window.jbEmoji(m.name)"></span>
+                            <template x-if="menuThumb(m.id)"><img :src="menuThumb(m.id)" alt="" loading="lazy" onerror="this.style.display='none'" style="position:absolute;inset:0"></template>
+                        </div>
+                        <span class="jb-chip__t" x-text="m.name"></span>
+                    </button>
+                </template>
+            </div>
+
+            {{-- Promos --}}
+            <div id="jb-promos" x-show="promoItems().length > 0 && !(search || '').trim()" x-cloak>
+                <div class="jb-sec"><h3>@lang('modules.shop.promos') 🔥</h3></div>
+                <div class="jb-promos">
+                    <template x-for="item in promoItems()" :key="'jb-p-' + item.id">
+                        @include('livewire.shop.partials.jimbe-card')
                     </template>
-                </nav>
-            </div>
-        </div>
-
-        <div class="mx-4 my-6 grid min-w-0 max-w-full grid-cols-1 gap-4 overflow-x-hidden sm:grid-cols-3 sm:items-center">
-            <div class="col-span-full md:col-span-2">
-                <input type="text" x-model.debounce.400ms="search"
-                    class="block w-full rounded-md shadow-sm border-gray-300 dark:bg-gray-800 dark:border-gray-600 dark:text-white focus:border-skin-base focus:ring-skin-base"
-                    :placeholder="labels.searchPlaceholder" />
-            </div>
-            <div class="flex flex-row flex-wrap items-center justify-end w-full col-span-2 gap-4 mt-2 md:col-span-1 sm:w-auto">
-                @if ($clientShopBrowseConfig['showVeg'] ?? false)
-                    <label class="inline-flex items-center cursor-pointer">
-                        <input type="checkbox" x-model="showVeg" class="sr-only peer">
-                        <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
-                        <span class="text-sm font-medium text-gray-900 ms-3 dark:text-gray-300">{{ $clientShopBrowseConfig['labels']['typeVeg'] }}</span>
-                    </label>
-                @endif
-                @if ($clientShopBrowseConfig['showHalal'] ?? false)
-                    <label class="inline-flex items-center cursor-pointer">
-                        <input type="checkbox" x-model="showHalal" class="sr-only peer">
-                        <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
-                        <span class="text-sm font-medium text-gray-900 ms-3 dark:text-gray-300">{{ $clientShopBrowseConfig['labels']['typeHalal'] }}</span>
-                    </label>
-                @endif
-            </div>
-        </div>
-
-        <div class="min-w-0 max-w-full overflow-x-hidden px-4 mb-32 space-y-4 lg:gap-8" x-show="cfg.showMenu" x-cloak>
-            <template x-for="group in groupedForDisplay()" :key="'grp-' + group.key">
-                <div>
-                    <h3 class="my-4 text-base font-semibold text-gray-900 lg:text-xl dark:text-white" x-text="group.key"></h3>
-                    <div class="space-y-4 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-8">
-                        <template x-for="item in group.items" :key="'it-' + item.id">
-                            <div :class="item.in_stock ? 'bg-white dark:bg-gray-900' : 'bg-gray-100 dark:bg-gray-800'"
-                                class="flex min-w-0 max-w-full items-center justify-between gap-4 border shadow-sm rounded-lg hover:shadow-md transition dark:border-gray-600 dark:lg:bg-gray-900 dark:shadow-sm lg:rounded-md">
-                                <div class="flex min-w-0 w-full gap-3 p-3 cursor-pointer sm:gap-4"
-                                    @click="openItemDetail(item.id)">
-                                    <template x-if="!cfg.hideImages">
-                                        <img class="object-cover w-16 h-16 rounded-md cursor-pointer lg:w-24 lg:h-24" :src="item.item_photo_url" :alt="item.item_name"
-                                            @click="openItemDetail(item.id)" />
-                                    </template>
-                                    <div class="flex flex-col w-full gap-1 text-sm font-normal text-gray-500 lg:text-base dark:text-gray-400">
-                                        <div class="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm font-semibold text-gray-900 lg:text-base dark:text-white cursor-pointer hover:opacity-90"
-                                            @click="openItemDetail(item.id)">
-                                            <span class="inline-flex min-w-0 flex-1 items-center">
-                                                <img :src="typeIconUrl(item.type)" class="h-4 mr-1 shrink-0" alt="" />
-                                                <span class="min-w-0 break-words" x-text="item.item_name"></span>
-                                            </span>
-                                        </div>
-                                        <template x-if="cfg && cfg.euAllergensEnabled !== false && item.eu_allergens_display && item.eu_allergens_display.length">
-                                            <div class="flex w-full min-w-0 flex-wrap gap-1.5" @click.stop>
-                                                <template x-for="row in item.eu_allergens_display" :key="'eu-card-' + item.id + '-' + row.key">
-                                                    <span class="inline-flex max-w-full items-center gap-1.5 rounded-md border border-amber-200/85 bg-amber-50/95 px-2 py-1 dark:border-amber-700/50 dark:bg-amber-950/35">
-                                                        <img :src="row.icon" alt="" class="h-4 w-4 shrink-0 object-contain" width="16" height="16" loading="lazy" />
-                                                        <span class="max-w-[12rem] truncate text-xs font-medium leading-tight text-gray-800 dark:text-gray-100 sm:max-w-[14rem]" x-text="row.label"></span>
-                                                    </span>
-                                                </template>
-                                            </div>
-                                        </template>
-                                        <template x-if="item.dietary_labels_display && item.dietary_labels_display.length">
-                                            <div class="flex w-full min-w-0 flex-wrap gap-1.5" @click.stop
-                                                role="group"
-                                                :aria-label="labels.dietaryLabelsHeading">
-                                                <template x-for="row in item.dietary_labels_display" :key="'diet-card-' + item.id + '-' + row.key">
-                                                    <span class="inline-flex max-w-full items-center gap-1.5 rounded-md border border-emerald-200/85 bg-emerald-50/95 px-2 py-1 dark:border-emerald-700/50 dark:bg-emerald-950/35">
-                                                        <img :src="row.icon" alt="" class="h-4 w-4 shrink-0 object-contain" width="16" height="16" loading="lazy" />
-                                                        <span class="max-w-[12rem] truncate text-xs font-medium leading-tight text-emerald-900 dark:text-emerald-100 sm:max-w-[14rem]" x-text="row.label"></span>
-                                                    </span>
-                                                </template>
-                                            </div>
-                                        </template>
-                                        <template x-if="item.description">
-                                            <div class="w-full text-xs font-normal text-gray-500 cursor-pointer lg:text-sm dark:text-gray-400"
-                                                @click="openItemDetail(item.id)"
-                                                x-text="truncate(item.description, 50)"></div>
-                                        </template>
-                                        <template x-if="item.preparation_time">
-                                            <div class="inline-flex items-center my-1 text-xs font-normal text-gray-700 dark:text-gray-400 max-w-56">
-                                                <span x-text="labels.preparationTime + ' : ' + item.preparation_time + ' ' + labels.minutes"></span>
-                                            </div>
-                                        </template>
-                                        <div class="flex items-center justify-between w-full" @click.stop>
-                                            <div>
-                                                <template x-if="item.variations_count == 0">
-                                                    <span class="font-semibold text-gray-900 dark:text-white" x-text="itemPriceLabel(item)"></span>
-                                                </template>
-                                            </div>
-                                            {{-- x-show (not nested template x-if) so controls appear after init() merges cfg inside x-for --}}
-                                            <div class="flex flex-col items-end gap-2 shrink-0" x-show="cfg.canCreateOrder">
-                                                <div class="text-red-500" x-show="!item.in_stock" x-text="labels.outOfStock"></div>
-                                                <div class="flex flex-col items-end gap-2 w-full min-w-0 sm:w-auto" x-show="item.in_stock && cfg.allowCustomerOrders">
-                                                    <div class="relative flex items-center justify-start max-w-24 me-2" x-show="(cartItemQty[item.id] || 0) > 0">
-                                                        <button type="button" class="h-8 p-3 border border-gray-300 bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 rounded-s-md"
-                                                            @click="item.variations_count > 0 ? callLw('subCartItems', item.id) : (item.modifier_groups_count > 0 ? callLw('subModifiers', item.id) : browseCartMutate('dec', item.id, item.variations_count, item.modifier_groups_count))">
-                                                            <svg class="w-2 h-2 text-gray-900 dark:text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/></svg>
-                                                        </button>
-                                                        <input type="text" readonly :value="cartItemQty[item.id] || 0"
-                                                            class="min-w-10 bg-white border-x-0 border-gray-300 h-8 text-center text-gray-900 text-sm block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white" />
-                                                        <button type="button" class="h-8 p-3 border border-gray-300 bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 rounded-e-md"
-                                                            @click="(item.variations_count > 0 || item.modifier_groups_count > 0) ? callLw('addCartItems', item.id, item.variations_count, item.modifier_groups_count) : browseCartMutate('inc', item.id, item.variations_count, item.modifier_groups_count)">
-                                                            <svg class="w-2 h-2 text-gray-900 dark:text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/></svg>
-                                                        </button>
-                                                    </div>
-                                                    <button type="button"
-                                                        x-show="(cartItemQty[item.id] || 0) <= 0 && cfg.orderLimitOk"
-                                                        class="inline-flex items-center px-3 py-2 text-sm font-medium text-white border border-transparent rounded-md shadow-sm bg-skin-base hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-skin-base"
-                                                        @click.stop="browseCartMutate('add', item.id, item.variations_count, item.modifier_groups_count)"
-                                                        x-text="labels.add"></button>
-                                                </div>
-                                                <button type="button" class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600"
-                                                    x-show="item.in_stock && !cfg.allowCustomerOrders && item.variations_count > 0"
-                                                    @click="callLw('showItemVariations', item.id)">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="w-4 h-4 ltr:mr-1 rtl:ml-1" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/></svg>
-                                                    <span x-text="labels.showVariations + ' (' + item.variations_count + ')'"></span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </template>
-                    </div>
                 </div>
-            </template>
+            </div>
 
-            <template x-if="groupedForDisplay().length === 0">
-                <div class="flex flex-col items-center justify-center p-6 text-center text-gray-500 dark:text-gray-400">
-                    <svg width="100" height="100" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none">
-                        <path d="M4 14a8 8 0 0 1 16 0z" fill="#e5e7eb" />
-                        <rect x="3" y="14" width="18" height="2.5" rx=".5" fill="#d1d5db" />
-                        <circle cx="12" cy="4.5" r=".8" fill="#9ca3af" />
-                        <circle cx="9.5" cy="10" r=".5" fill="#4b5563" />
-                        <circle cx="14.5" cy="10" r=".5" fill="#4b5563" />
-                    </svg>
-                    <span class="text-lg" x-text="labels.noItemAdded"></span>
+            {{-- Tous les plats --}}
+            <div id="jb-menu" x-show="cfg.showMenu" x-cloak>
+                <div class="jb-sec">
+                    <h3 x-text="menuId === null ? @js(__('modules.shop.allDishes')) : ((menus.find(m => m.id === menuId) || {}).name || '')"></h3>
+                    <span class="text-xs" style="color:#8a7f78" x-text="flatItems().length + ' ' + @js(__('modules.shop.dishes'))"></span>
                 </div>
-            </template>
+                <div class="jb-grid">
+                    <template x-for="item in flatItems()" :key="'jb-i-' + item.id">
+                        @include('livewire.shop.partials.jimbe-card')
+                    </template>
+                </div>
+                <template x-if="flatItems().length === 0">
+                    <div class="jb-empty" x-text="labels.noItemAdded"></div>
+                </template>
+            </div>
 
+            {{-- Mini barre panier --}}
+            <button type="button" class="jb-mini" x-show="cartCount() > 0" x-cloak x-transition @click="callLw('showCartItems')">
+                <span><b x-text="cartCount()"></b> <span x-text="cartCount() > 1 ? @js(__('modules.shop.dishes')) : @js(__('modules.shop.dish'))"></span></span>
+                <span>@lang('modules.shop.viewCart') →</span>
+            </button>
+
+            <script>
+                window.jbEmoji = window.jbEmoji || function (text) {
+                    const t = (text || '').toLowerCase();
+                    const map = [
+                        [/poulet|chicken|volaille|wing|aile/, '🍗'], [/burger|hamburger/, '🍔'], [/pizza/, '🍕'],
+                        [/poisson|fish|crevette|shrimp|thon|capitaine/, '🐟'], [/salade|salad|legume|veg/, '🥗'],
+                        [/riz|rice|biryani|attieke|attiéké|foutou|placali|alloco/, '🍚'], [/soupe|soup|sauce|ragout|ragoût/, '🍲'],
+                        [/pain|naan|roti|bread|sandwich/, '🥖'], [/frite|fries|chips/, '🍟'], [/pates|pâtes|noodle|spaghetti/, '🍝'],
+                        [/dessert|gateau|gâteau|cake|glace|ice/, '🍰'], [/cafe|café|coffee|the |thé/, '☕'],
+                        [/boisson|drink|jus|juice|soda|eau|water|biere|bière|cocktail|bissap|gnamakoudji/, '🥤'],
+                        [/viande|beef|boeuf|bœuf|steak|grill|brochette|mouton|porc/, '🥩'], [/oeuf|œuf|egg|omelette/, '🍳'],
+                        [/fruit|mangue|ananas|banane/, '🍍'], [/entree|entrée|starter|spring|nem/, '🥟'],
+                    ];
+                    for (const [re, e] of map) { if (re.test(t)) return e; }
+                    return '🍽️';
+                };
+            </script>
+
+            {{-- Navigation du bas --}}
+            <nav class="jb-nav" aria-label="Navigation">
+                <button type="button" class="is-on" @click="window.scrollTo({top: 0, behavior: 'smooth'})">
+                    <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955a1.126 1.126 0 0 1 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/></svg>
+                    @lang('modules.shop.navHome')
+                </button>
+                <button type="button" @click="document.getElementById('jb-menu')?.scrollIntoView({behavior: 'smooth'})">
+                    <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z"/></svg>
+                    @lang('modules.shop.navMenu')
+                </button>
+                <button type="button" class="jb-nav__main" @click="callLw('showCartItems')">
+                    <i>
+                        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007Z"/></svg>
+                        <span class="jb-badge" x-show="cartCount() > 0" x-text="cartCount()"></span>
+                    </i>
+                    <span>@lang('modules.shop.navCart')</span>
+                </button>
+                <button type="button" @click="(document.getElementById('jb-promos') && promoItems().length ? document.getElementById('jb-promos') : document.getElementById('jb-menu'))?.scrollIntoView({behavior: 'smooth'})">
+                    <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6Z"/></svg>
+                    @lang('modules.shop.navPromos')
+                </button>
+                <button type="button" @click="document.querySelector('[wire\\:click=callWaiter]')?.click()">
+                    <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"/></svg>
+                    @lang('modules.shop.navWaiter')
+                </button>
+            </nav>
         </div>
 
         <div x-show="itemDetailOpen" x-cloak x-transition.opacity
@@ -355,6 +245,14 @@
                                         class="max-h-48 max-w-full w-auto h-auto object-contain"
                                         loading="lazy"
                                         decoding="async" />
+                                </div>
+                            </template>
+                            <template x-if="!cfg.hideImages && (selectedPreviewItem.extra_photo_urls || []).length">
+                                <div class="flex gap-2 overflow-x-auto px-3 pt-2 shrink-0">
+                                    <template x-for="u in selectedPreviewItem.extra_photo_urls" :key="u">
+                                        <img :src="u" alt="" class="h-16 w-16 shrink-0 rounded-md object-cover cursor-pointer" loading="lazy"
+                                            @click="selectedPreviewItem = { ...selectedPreviewItem, item_photo_url: u }" />
+                                    </template>
                                 </div>
                             </template>
                             <div class="flex flex-col flex-1 min-h-0 gap-2 px-4 pb-4 overflow-y-auto"
@@ -384,7 +282,7 @@
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 shrink-0">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
-                                            <span x-text="labels.preparationTime + ' ' + selectedPreviewItem.preparation_time + ' ' + labels.minutes"></span>
+                                            <span x-text="labels.preparationTime + ' ' + (selectedPreviewItem.preparation_time >= 60 ? Math.floor(selectedPreviewItem.preparation_time / 60) + ' h' + (selectedPreviewItem.preparation_time % 60 ? ' ' + String(selectedPreviewItem.preparation_time % 60).padStart(2, '0') + ' min' : '') : selectedPreviewItem.preparation_time + ' ' + labels.minutes)"></span>
                                         </div>
                                     </template>
                                     <template x-if="cfg && cfg.euAllergensEnabled !== false && selectedPreviewItem.eu_allergens_display && selectedPreviewItem.eu_allergens_display.length">
@@ -423,7 +321,10 @@
                                             </ul>
                                         </div>
                                     </template>
-                                    <p class="text-base font-semibold text-gray-900 dark:text-white" x-text="itemPriceLabel(selectedPreviewItem)"></p>
+                                    <p class="text-base font-semibold text-gray-900 dark:text-white">
+                                        <span x-text="itemPriceLabel(selectedPreviewItem)"></span>
+                                        <span x-show="selectedPreviewItem.original_price_label" class="ml-1 text-sm font-normal text-gray-400 line-through" x-text="selectedPreviewItem.original_price_label"></span>
+                                    </p>
                                 </div>
                             </div>
                         </div>

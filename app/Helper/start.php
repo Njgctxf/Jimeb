@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 use App\Models\EmailSetting;
 use App\Models\GlobalSetting;
@@ -1643,5 +1643,24 @@ if (! function_exists('paypal_js_currency')) {
     function paypal_js_currency(?string $code = null): string
     {
         return \App\Services\PaypalCurrency::jsSdkCode($code);
+    }
+}
+
+if (!function_exists('prep_time_label')) {
+    /**
+     * Durée de préparation lisible : « 18 min », « 1 h », « 1 h 20 min ».
+     */
+    function prep_time_label(?int $minutes): string
+    {
+        $minutes = max(0, (int) $minutes);
+
+        if ($minutes < 60) {
+            return $minutes . ' ' . __('modules.menu.minutes');
+        }
+
+        $hours = intdiv($minutes, 60);
+        $rest = $minutes % 60;
+
+        return $hours . ' h' . ($rest > 0 ? ' ' . str_pad((string) $rest, 2, '0', STR_PAD_LEFT) . ' min' : '');
     }
 }

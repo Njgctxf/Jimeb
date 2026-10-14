@@ -117,7 +117,7 @@ class GlobalSetting extends BaseModel
 
     public function logoUrl(): Attribute
     {
-        return Attribute::get(fn(): string => $this->logo ? asset_url_local_s3('logo/' . $this->logo) : asset('img/logo.png'));
+        return Attribute::get(fn(): string => $this->logo ? asset_url_local_s3('logo/' . $this->logo) : asset('img/mobilo-mark.svg'));
     }
 
     public function darkLogoUrl(): Attribute
@@ -129,7 +129,7 @@ class GlobalSetting extends BaseModel
 
             return $this->logo
                 ? asset_url_local_s3('logo/' . $this->logo)
-                : asset('img/logo.png');
+                : asset('img/mobilo-mark.svg');
         });
     }
 

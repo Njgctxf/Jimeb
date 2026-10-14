@@ -99,11 +99,31 @@ class QrCodes extends Component
         return $items;
     }
 
+    public function mount(): void
+    {
+        // Génère automatiquement le QR code du restaurant s'il n'existe pas encore
+        try {
+            $branch = branch();
+            if ($branch && !FileStorage::where('filename', $branch->getQrCodeFileName())->exists()) {
+                $branch->generateQrCode();
+            }
+        } catch (\Throwable $e) {
+            report($e);
+        }
+    }
+
     public function render()
     {
         $areasWithTables = Area::with('tables')->get();
+        $branch = branch();
+        $restaurant = restaurant();
 
         return view('livewire.qr-code.qr-codes', [
+            'branchQrUrl' => $branch->qRCodeUrl,
+            'branchVisitUrl' => route('table_order', [$restaurant->id])
+                . '?branch=' . $branch->unique_hash
+                . '&hash=' . $restaurant->hash
+                . '&from_qr=1',
             'tables' => $areasWithTables,
             'areas' => $areasWithTables,
             'printableQrItems' => $this->buildPrintableQrItems($areasWithTables),

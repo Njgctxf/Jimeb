@@ -164,6 +164,8 @@
         'baseColorHex' => restaurantOrGlobalSetting()->theme_hex,
     ])
 
+    @include('sections.jimbe_theme')
+
 
     @if (File::exists(public_path() . '/css/app-custom.css'))
         <link href="{{ asset('css/app-custom.css') }}" rel="stylesheet">

@@ -22,7 +22,7 @@ class KotPlace extends Model
     public function getTranslatedNameAttribute(): string
     {
         if ($this->name === 'Default Kitchen') {
-            return __('kitchen::modules.menu.defaultKitchen');
+            return __('modules.menu.defaultKitchen');
         }
 
         return (string) $this->name;

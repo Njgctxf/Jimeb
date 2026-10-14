@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 $PRODUCT = 'jimeb';
 $ENVATO_ID = 55116396;

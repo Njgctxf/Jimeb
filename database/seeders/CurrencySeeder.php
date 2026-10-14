@@ -17,6 +17,18 @@ class CurrencySeeder extends Seeder
     {
         $currencies = [
             [
+                'currency_name' => 'Franc CFA',
+                'currency_symbol' => 'FCFA',
+                'currency_code' => 'XOF',
+                'restaurant_id' => $restaurant->id,
+                'currency_position' => 'right_with_space',
+                'no_of_decimal' => 0,
+                'thousand_separator' => ' ',
+                'decimal_separator' => ',',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
                 'currency_name' => 'Rupee',
                 'currency_symbol' => '₹',
                 'currency_code' => 'INR',
@@ -68,9 +80,9 @@ class CurrencySeeder extends Seeder
 
         Currency::insert($currencies);
 
-        // Set the restaurant's currency_id to the USD currency
+        // Set the restaurant's currency_id to the Franc CFA (XOF)
         $usdCurrency = Currency::where('restaurant_id', $restaurant->id)
-            ->where('currency_code', 'USD')
+            ->where('currency_code', 'XOF')
             ->first();
 
         if ($usdCurrency) {

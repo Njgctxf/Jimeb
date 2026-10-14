@@ -1,0 +1,60 @@
+{
+  "_apexcharts-CHlfv2MA.js": {
+    "file": "assets/apexcharts-CHlfv2MA.js",
+    "name": "apexcharts"
+  },
+  "_datepicker-DLZKEe4X.css": {
+    "file": "assets/datepicker-DLZKEe4X.css",
+    "src": "_datepicker-DLZKEe4X.css"
+  },
+  "_datepicker-DmevhsUw.js": {
+    "file": "assets/datepicker-DmevhsUw.js",
+    "name": "datepicker",
+    "css": [
+      "assets/datepicker-DLZKEe4X.css"
+    ]
+  },
+  "_sweetalert2-BQxta0Da.js": {
+    "file": "assets/sweetalert2-BQxta0Da.js",
+    "name": "sweetalert2"
+  },
+  "_ui-JbaDayTD.js": {
+    "file": "assets/ui-JbaDayTD.js",
+    "name": "ui",
+    "imports": [
+      "_vendor-B4eqZLqC.js"
+    ]
+  },
+  "_vendor-B4eqZLqC.js": {
+    "file": "assets/vendor-B4eqZLqC.js",
+    "name": "vendor"
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-DcjKx7ej.css",
+    "src": "resources/css/app.css",
+    "isEntry": true,
+    "name": "app",
+    "names": [
+      "app.css"
+    ]
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-BLl3BBXD.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "imports": [
+      "_vendor-B4eqZLqC.js",
+      "_ui-JbaDayTD.js",
+      "_apexcharts-CHlfv2MA.js",
+      "_sweetalert2-BQxta0Da.js",
+      "_datepicker-DmevhsUw.js"
+    ]
+  },
+  "resources/js/pos-offline.js": {
+    "file": "assets/pos-offline-CpV3jq7F.js",
+    "name": "pos-offline",
+    "src": "resources/js/pos-offline.js",
+    "isEntry": true
+  }
+}

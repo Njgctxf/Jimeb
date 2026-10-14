@@ -19,33 +19,36 @@
                         </svg> @lang('app.showFilter')
                     </x-secondary-button>
                 
-                    <x-menu.copy-to-branches-button scope="menu_items" class="shrink-0" />
-
-                    <x-secondary-link href="{{ route('menu-items.entities.sort') }}" class="shrink-0">
-                        @lang('modules.menu.sortMenuItems')
-                    </x-secondary-link>
-
-                    @if(user_can('Export Menu Item'))
-                        <x-secondary-link href="{{ route('menu-items.export') }}" wire:navigate class="shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download mr-1" viewBox="0 0 16 16">
-                                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-                                <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
-                            </svg>
-                            {{ __('modules.menu.exportMenuItems') }}
-                        </x-secondary-link>
-                    @endif
-
                     @php $menuItemStats = getRestaurantMenuItemStats(user()->restaurant_id); @endphp
+                    @php $canCreateDish = user_can('Create Menu Item') && ($menuItemStats['unlimited'] || $menuItemStats['current_count'] < $menuItemStats['menu_items_limit']); @endphp
 
-                    @if(user_can('Create Menu Item') && ($menuItemStats['unlimited'] || $menuItemStats['current_count'] < $menuItemStats['menu_items_limit']))
-                        <x-secondary-link href="{{ route('menu-items.bulk-import') }}" wire:navigate class="shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-upload mr-1" viewBox="0 0 16 16">
-                                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-                                <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
-                            </svg>
-                            {{ __('modules.menu.bulkUpload') }}
-                        </x-secondary-link>
+                    <x-dropdown align="left" width="48">
+                        <x-slot name="trigger">
+                            <x-secondary-button type="button" class="shrink-0">
+                                @lang('app.moreActions')
+                                <svg class="w-4 h-4 ltr:ml-1 rtl:mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/></svg>
+                            </x-secondary-button>
+                        </x-slot>
+                        <x-slot name="content">
+                            <a href="{{ route('menu-items.entities.sort') }}" wire:navigate class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600">@lang('modules.menu.sortMenuItems')</a>
+                            @if(user_can('Show Item Category'))
+                                <a href="{{ route('item-categories.index') }}" wire:navigate class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600">@lang('menu.itemCategories')</a>
+                            @endif
+                            @if(user_can('Show Menu Item'))
+                                <a href="{{ route('modifier-groups.index') }}" wire:navigate class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600">@lang('menu.modifierGroups')</a>
+                                <a href="{{ route('item-modifiers.index') }}" wire:navigate class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600">@lang('menu.itemModifiers')</a>
+                            @endif
+                            @if(user_can('Export Menu Item'))
+                                <a href="{{ route('menu-items.export') }}" wire:navigate class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600">@lang('modules.menu.exportMenuItems')</a>
+                            @endif
+                            @if($canCreateDish)
+                                <a href="{{ route('menu-items.bulk-import') }}" wire:navigate class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600">@lang('modules.menu.bulkUpload')</a>
+                            @endif
+                            <x-menu.copy-to-branches-button scope="menu_items" class="w-full !rounded-none !border-0 !shadow-none !justify-start" />
+                        </x-slot>
+                    </x-dropdown>
 
+                    @if($canCreateDish)
                         <x-primary-link href="{{ route('menu-items.create') }}" wire:navigate class="shrink-0">
                             @lang('modules.menu.addMenuItem')
                         </x-primary-link>

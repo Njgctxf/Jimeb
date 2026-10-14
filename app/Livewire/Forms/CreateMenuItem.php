@@ -35,20 +35,26 @@ class CreateMenuItem extends Component
     #[Validate('required')]
     public string $menu = '';
 
-    #[Validate('required')]
+    #[Validate('nullable')]
     public string $itemCategory = '';
 
     #[Validate('nullable|string')]
     public string $itemDescription = '';
 
     #[Validate('required|in:veg,non-veg,other,spicy,mild,sweet')]
-    public string $itemType = 'veg';
+    public string $itemType = 'other';
 
     #[Validate('required|numeric|min:0')]
     public string $itemPrice = '';
 
     #[Validate('nullable|integer|min:0')]
     public ?int $preparationTime = null;
+
+    #[Validate('integer|min:0|max:23')]
+    public int $prepHours = 0;
+
+    #[Validate('integer|min:0|max:59')]
+    public int $prepMinutes = 0;
 
     #[Validate('required|boolean')]
     public bool $isAvailable = true;
@@ -61,6 +67,11 @@ class CreateMenuItem extends Component
 
     #[Validate(\App\Support\ImageUpload::NULLABLE_MIMES_MAX_2048)]
     public $itemImageTemp;
+
+    public string $promoPrice = '';
+
+    /** Photos supplémentaires (uploads multiples) */
+    public array $galleryTemp = [];
 
     public ?string $itemImage = null;
 
@@ -437,6 +448,10 @@ class CreateMenuItem extends Component
     {
         $this->updateTranslation();
 
+        if ($this->itemCategory === '') {
+            $this->itemCategory = (string) \App\Support\DefaultSection::id();
+        }
+
         $this->cleanupEmptyVariations();
 
         if ($this->hasVariations && empty($this->variationName)) {
@@ -488,6 +503,32 @@ class CreateMenuItem extends Component
 
         $rules['selectedDietaryLabels'] = 'nullable|array';
         $rules['selectedDietaryLabels.*'] = 'string|in:' . implode(',', DietaryLabels::keys());
+
+        $this->validate([
+            'promoPrice' => ['nullable', 'numeric', 'min:0', 'lt:itemPrice'],
+            'galleryTemp.*' => \App\Support\ImageUpload::IMAGE_MIMES_MAX_2048,
+        ], [
+            'promoPrice.lt' => __('modules.menu.promoPriceLower'),
+        ]);
+    }
+
+    /** Prix payé par le client (promo si valide) et prix normal à conserver. */
+    private function effectivePrices(): array
+    {
+        $normal = (float) $this->itemPrice;
+        $promo = trim($this->promoPrice) !== '' ? (float) $this->promoPrice : null;
+
+        if ($promo !== null && $promo > 0 && $promo < $normal) {
+            return [$promo, $normal];
+        }
+
+        return [$normal, null];
+    }
+
+    public function removeGalleryPhoto(int $index): void
+    {
+        unset($this->galleryTemp[$index]);
+        $this->galleryTemp = array_values($this->galleryTemp);
     }
 
     private function getValidationMessages(): array
@@ -512,6 +553,14 @@ class CreateMenuItem extends Component
             : (string) $filled->keys()->first();
     }
 
+    /** Durée de préparation en minutes (heures x 60 + minutes), ou null si vide. */
+    private function preparationMinutesTotal(): ?int
+    {
+        $total = max(0, (int) $this->prepHours) * 60 + min(59, max(0, (int) $this->prepMinutes));
+
+        return $total > 0 ? $total : null;
+    }
+
     private function createMenuItem(): MenuItem
     {
         $primaryLocale = $this->getPrimaryItemNameLocale();
@@ -520,14 +569,15 @@ class CreateMenuItem extends Component
             'item_name' => is_string($this->translationNames[$primaryLocale] ?? null)
                 ? trim($this->translationNames[$primaryLocale])
                 : ($this->translationNames[$primaryLocale] ?? ''),
-            'price' => $this->hasVariations ? 0 : (float) $this->itemPrice,
+            'price' => $this->hasVariations ? 0 : $this->effectivePrices()[0],
+            'original_price' => $this->hasVariations ? null : $this->effectivePrices()[1],
             'item_category_id' => $this->itemCategory,
             'description' => $this->translationDescriptions[$primaryLocale] ?? null,
             'is_available' => $this->isAvailable,
             'sell_by_weight' => $this->sellByWeight,
             'type' => $this->itemType,
             'menu_id' => $this->menu,
-            'preparation_time' => $this->preparationTime,
+            'preparation_time' => $this->preparationMinutesTotal(),
             'kot_place_id' => $this->kitchenType,
             'tax_inclusive' => $this->isTaxModeItem ? $this->taxInclusive : false,
             'dietary_labels' => DietaryLabels::normalize($this->selectedDietaryLabels),
@@ -576,6 +626,14 @@ class CreateMenuItem extends Component
 
     private function handleImageUpload(MenuItem $menuItem): void
     {
+        if (!empty($this->galleryTemp)) {
+            $extra = [];
+            foreach ($this->galleryTemp as $photo) {
+                $extra[] = Files::uploadLocalOrS3($photo, 'item', width: 350);
+            }
+            $menuItem->update(['extra_images' => $extra]);
+        }
+
         if ($this->itemImageTemp) {
             $menuItem->update([
                 'image' => Files::uploadLocalOrS3($this->itemImageTemp, 'item', width: 350),
@@ -670,10 +728,14 @@ class CreateMenuItem extends Component
         $this->itemCategory = '';
         $this->itemPrice = '';
         $this->itemDescription = '';
-        $this->itemType = 'veg';
+        $this->itemType = 'other';
         $this->itemImage = null;
         $this->itemImageTemp = null;
+        $this->promoPrice = '';
+        $this->galleryTemp = [];
         $this->preparationTime = null;
+        $this->prepHours = 0;
+        $this->prepMinutes = 0;
         $this->variationName = [];
         $this->variationPrice = [];
         $this->variationOrderTypePrices = [];
@@ -961,8 +1023,8 @@ class CreateMenuItem extends Component
 
     private function saveItemPricingData(int $menuItemId): void
     {
-        $basePrice = (float)$this->itemPrice;
-        $this->createPricingRecords($menuItemId, $basePrice, $this->orderTypePrices, $this->baseDeliveryPrice);
+        // Les prix par type de commande ne sont plus saisis : tous suivent le prix effectif (promo ou normal)
+        $this->createPricingRecords($menuItemId, $this->effectivePrices()[0], [], '');
     }
 
     private function createPricingRecords(

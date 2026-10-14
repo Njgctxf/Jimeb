@@ -18,6 +18,18 @@ class GlobalCurrencySeeder extends Seeder
     public function addCurrencies()
     {
         GlobalCurrency::firstOrCreate([
+            'currency_code' => 'XOF'
+        ], [
+            'currency_name' => 'Franc CFA',
+            'currency_symbol' => 'FCFA',
+            'currency_code' => 'XOF',
+            'currency_position' => 'right_with_space',
+            'no_of_decimal' => 0,
+            'thousand_separator' => ' ',
+            'decimal_separator' => ',',
+        ]);
+
+        GlobalCurrency::firstOrCreate([
             'currency_code' => 'USD'
         ], [
             'currency_name' => 'Dollars',

@@ -2,19 +2,35 @@
 
 @section('content')
 
-<div class="p-4 block  dark:bg-gray-800 dark:border-gray-700">
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3">
-        <h1 class="text-base font-semibold text-gray-900 dark:text-white leading-tight">@lang('menu.dashboard')</h1>
+@php
+    $jbNow = now()->timezone(timezone());
+    $jbFr = str_starts_with(app()->getLocale(), 'fr');
+    $jbHour = (int) $jbNow->format('G');
+    $jbHello = $jbFr
+        ? ($jbHour < 12 ? 'Bonjour' : ($jbHour < 18 ? 'Bon après-midi' : 'Bonsoir'))
+        : ($jbHour < 12 ? 'Good morning' : ($jbHour < 18 ? 'Good afternoon' : 'Good evening'));
+    $jbName = explode(' ', trim(user()->name ?? ''))[0] ?? '';
+@endphp
 
-        <div class="text-xs text-gray-400 mt-0.5 inline-flex items-center gap-1 font-medium dark:text-white flex-wrap sm:flex-nowrap">
-            @php
-                $currentDateTime = now()->timezone(timezone());
-            @endphp
-            {{ $currentDateTime->translatedFormat('l') }}, {{ $currentDateTime->format(dateFormat() . ', ' . timeFormat()) }}
+<section class="jb-hero-card" aria-label="@lang('menu.dashboard')">
+    <div class="jb-hero-card__text">
+        <span class="jb-hero-card__date">
+            {{ $jbNow->translatedFormat('l') }}, {{ $jbNow->format(dateFormat() . ', ' . timeFormat()) }}
+        </span>
+        <h1>{{ $jbHello }}{{ $jbName ? ', ' . $jbName : '' }} 👋</h1>
+        <p>{{ $jbFr ? "Voici le service d'aujourd'hui : commandes, tables et réservations en un coup d'œil." : "Here is today's service: orders, tables and reservations at a glance." }}</p>
+        <div class="jb-hero-card__actions">
+            <a href="{{ route('pos.index') }}" class="jb-hero-btn jb-hero-btn--light">{{ $jbFr ? 'Nouvelle commande' : 'New order' }}</a>
+            <a href="{{ route('tables.index') }}" class="jb-hero-btn">{{ $jbFr ? 'Tables' : 'Tables' }}</a>
+            <a href="{{ route('reservations.index') }}" class="jb-hero-btn">{{ $jbFr ? 'Réservations' : 'Reservations' }}</a>
         </div>
     </div>
-
-</div>
+    <div class="jb-hero-card__art" aria-hidden="true">
+        <img class="jb-hero-card__tile jb-hero-card__tile--a" src="{{ asset('landing/framer/TnplamgRY2ukmt782azuiyKM8Vw.png') }}" alt="">
+        <img class="jb-hero-card__tile jb-hero-card__tile--b" src="{{ asset('landing/framer/e4YhOBRLMApy4qwgKe4RHRIHk0.png') }}" alt="">
+        <img class="jb-hero-card__clip" src="{{ asset('landing/framer/PBpuxqRpmPqftU0hol2DVhW7bus.png') }}" alt="">
+    </div>
+</section>
 
 @if (
     (!empty(global_setting()->vapid_public_key) && !empty(global_setting()->vapid_private_key))

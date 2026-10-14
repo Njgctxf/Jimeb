@@ -13,14 +13,32 @@
                         </div>
                     </form>
                 </div>
-                <div class="inline-flex flex-wrap gap-2 sm:gap-x-4">
-                    <x-menu.copy-to-branches-button scope="menus" class="shrink-0" />
-                    <x-secondary-link href="javascript:;" x-on:click.prevent="assignTableModalOpen = true">
-                        @lang('modules.menu.assignTableToMenu')
-                    </x-secondary-link>
-                <x-secondary-link href="{{ route('menu-items.entities.sort') }}">
-                    @lang('modules.menu.sortMenuItems')
-                </x-secondary-link>
+                <div class="inline-flex flex-wrap items-center gap-2 sm:gap-x-3">
+                    @if(user_can('Show Item Category'))
+                        <x-secondary-link href="{{ route('item-categories.index') }}" wire:navigate>
+                            @lang('menu.itemCategories')
+                        </x-secondary-link>
+                    @endif
+
+                    <x-dropdown align="right" width="48">
+                        <x-slot name="trigger">
+                            <x-secondary-button type="button">
+                                @lang('app.moreActions')
+                                <svg class="w-4 h-4 ltr:ml-1 rtl:mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/></svg>
+                            </x-secondary-button>
+                        </x-slot>
+                        <x-slot name="content">
+                            <a href="javascript:;" x-on:click.prevent="assignTableModalOpen = true"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600">
+                                @lang('modules.menu.assignTableToMenu')
+                            </a>
+                            <a href="{{ route('menu-items.entities.sort') }}" wire:navigate
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600">
+                                @lang('modules.menu.sortMenuItems')
+                            </a>
+                            <x-menu.copy-to-branches-button scope="menus" class="w-full !rounded-none !border-0 !shadow-none !justify-start" />
+                        </x-slot>
+                    </x-dropdown>
 
                 @if(user_can('Create Menu'))
                     <x-button type='button' data-drawer-target="drawer-create-product-default"

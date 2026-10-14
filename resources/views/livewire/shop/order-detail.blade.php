@@ -128,7 +128,7 @@
                     @endphp
 
                     @if ($timeValue)
-                        @lang($timeLabel): {{ $timeValue }} @lang('modules.menu.minutes')
+                        @lang($timeLabel): {{ ($timeLabel === 'modules.menu.preparationTime') ? prep_time_label($timeValue) : $timeValue . ' ' . __('modules.menu.minutes') }}
                         <span>(@lang('app.approx'))</span>
                     @else
                         @lang('modules.delivery.estimatedTimeUnavailable')

@@ -228,6 +228,7 @@ return array(
     'dontCopyPermissions' => 'Don\'t copy permissions',
     'responsePrinter' => 'Response Printer',
     'manage' => 'Manage',
+  'moreActions' => 'More',
     'warning' => 'Warning',
     'roleDeleteWarning' => 'Are you sure you want to delete this role? All users with this role will be reassigned to the selected role.',
     'selectNewRoleForUsers' => 'Please select which role you want to assign to users who currently have this role.',

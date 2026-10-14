@@ -44,10 +44,7 @@
 
         @if (user_can('Show Order'))
             <div class="min-w-0 w-full">
-                @include('livewire.dashboard.today-order-list', [
-                    'waiterOrders' => $waiterOrders,
-                    'orders' => $orders,
-                ])
+                @livewire('dashboard.today-order-list')
             </div>
         @endif
     </div>

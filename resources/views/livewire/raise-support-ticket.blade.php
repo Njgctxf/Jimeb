@@ -1,4 +1,4 @@
-﻿{{-- Open/close is client-side only; listen for open-raise-support-ticket or legacy show-raise-support-ticket --}}
+{{-- Open/close is client-side only; listen for open-raise-support-ticket or legacy show-raise-support-ticket --}}
 <div
     x-data="{
         open: false,

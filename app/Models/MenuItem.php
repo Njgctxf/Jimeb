@@ -63,7 +63,22 @@ class MenuItem extends BaseModel
         'show_on_customer_site' => 'boolean',
         'eu_allergen_keys' => 'array',
         'dietary_labels' => 'array',
+        'extra_images' => 'array',
     ];
+
+    /** URLs de toutes les photos du plat (principale + supplémentaires). */
+    public function galleryUrls(): array
+    {
+        $urls = [];
+        if ($this->image) {
+            $urls[] = $this->item_photo_url;
+        }
+        foreach ((array) $this->extra_images as $file) {
+            $urls[] = asset_url_local_s3('item/' . $file);
+        }
+
+        return $urls;
+    }
 
     protected $appends = [
         'item_photo_url',

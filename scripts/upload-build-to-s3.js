@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Uploads Vite build output (public/build) to AWS S3 when CDN_ENABLED=true.
  * Run after `vite build`. Reads .env from project root.
  */

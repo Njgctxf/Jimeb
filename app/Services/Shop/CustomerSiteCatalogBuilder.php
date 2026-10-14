@@ -158,6 +158,14 @@ class CustomerSiteCatalogBuilder
                 'description' => $item->getTranslatedValue('description', $locale),
                 'type' => $item->type,
                 'item_photo_url' => $item->item_photo_url,
+                'extra_photo_urls' => collect((array) $item->extra_images)
+                    ->map(fn ($f) => asset_url_local_s3('item/' . $f))->values()->all(),
+                'original_price_label' => ($item->original_price !== null && (float) $item->original_price > (float) $item->price)
+                    ? currency_format((float) $item->original_price, $restaurant->currency_id)
+                    : null,
+                'discount_percent' => ($item->original_price !== null && (float) $item->original_price > (float) $item->price && (float) $item->original_price > 0)
+                    ? (int) round((1 - (float) $item->price / (float) $item->original_price) * 100)
+                    : null,
                 'preparation_time' => $item->preparation_time,
                 'in_stock' => IngredientStockGuard::resolveInStockForCatalog(
                     (int) $shopBranch->id,

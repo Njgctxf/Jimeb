@@ -39,26 +39,13 @@
                                 <x-sidebar-dropdown-menu :name='__("menu.menu")' icon='menu' :active='request()->routeIs(["menus.*", "menu-items.*", "item-categories.*", "item-modifiers.*", "modifier-groups.*"])'>
                                     @if($this->hasModule('Menu'))
                                         @if(user_can('Show Menu'))
-                                            @livewire('sidebar-dropdown-menu', ['name' => __('menu.menus'), 'link' => route('menus.index'), 'active' => request()->routeIs('menus.index')])
+                                            @livewire('sidebar-dropdown-menu', ['name' => __('menu.menus'), 'link' => route('menus.index'), 'active' => request()->routeIs(['menus.index', 'item-categories.index'])])
                                         @endif
                                     @endif
 
                                     @if($this->hasModule('Menu Item'))
                                         @if(user_can('Show Menu Item'))
-                                            @livewire('sidebar-dropdown-menu', ['name' => __('menu.menuItem'), 'link' => route('menu-items.index'), 'active' => request()->routeIs(['menu-items.index', 'menu-items.bulk-import', 'menu-items.entities.sort', 'menu-items.create', 'menu-items.edit'])])
-                                        @endif
-                                    @endif
-
-                                    @if($this->hasModule('Item Category'))
-                                        @if(user_can('Show Item Category'))
-                                            @livewire('sidebar-dropdown-menu', ['name' => __('menu.itemCategories'), 'link' => route('item-categories.index'), 'active' => request()->routeIs('item-categories.index')])
-                                        @endif
-                                    @endif
-
-                                    @if($this->hasModule('Menu Item'))
-                                        @if(user_can('Show Menu Item'))
-                                            @livewire('sidebar-dropdown-menu', ['name' => __('menu.modifierGroups'), 'link' => route('modifier-groups.index'), 'active' => request()->routeIs('modifier-groups.index', 'modifier-groups.create', 'modifier-groups.edit')])
-                                            @livewire('sidebar-dropdown-menu', ['name' => __('menu.itemModifiers'), 'link' => route('item-modifiers.index'), 'active' => request()->routeIs('item-modifiers.index')])
+                                            @livewire('sidebar-dropdown-menu', ['name' => __('menu.menuItem'), 'link' => route('menu-items.index'), 'active' => request()->routeIs(['menu-items.index', 'menu-items.bulk-import', 'menu-items.export', 'menu-items.entities.sort', 'menu-items.create', 'menu-items.edit', 'modifier-groups.*', 'item-modifiers.*'])])
                                         @endif
                                     @endif
                                 </x-sidebar-dropdown-menu>

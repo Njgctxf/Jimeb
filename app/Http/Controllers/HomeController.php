@@ -74,6 +74,16 @@ class HomeController extends Controller
             return response(file_get_contents($global->landing_site_url));
         }
 
+        return $this->vitrine();
+    }
+
+    /**
+     * Ancienne page d'accueil (thème d'origine), conservée en secours.
+     */
+    public function legacyLanding()
+    {
+        $global = global_setting();
+
         $this->modules = Module::where('is_superadmin', 0)->pluck('name')->toArray();
         $this->PackageFeatures = Package::ADDITIONAL_FEATURES;
 
@@ -110,6 +120,35 @@ class HomeController extends Controller
         }
 
         return view('landing.dynamic-index', compact('packages', 'AllModulesWithFeature', 'trialPackage', 'monthlyPackages', 'annualPackages', 'lifetimePackages', 'customMenu', 'frontDetails', 'frontFeatures', 'frontReviews', 'frontFaqs', 'frontContact'));
+    }
+
+    /**
+     * Nouvelle page d'accueil (copie du template Framer adaptée à Jimbe).
+     * Les forfaits viennent de la base ; les autres textes sont rédigés dans la vue.
+     */
+    public function vitrine()
+    {
+        $modules = Module::where('is_superadmin', 0)->pluck('name')->toArray();
+        $allModulesWithFeature = array_merge($modules, Package::ADDITIONAL_FEATURES);
+
+        $packages = Package::with('modules')
+            ->where('package_type', '!=', PackageType::DEFAULT)
+            ->where('package_type', '!=', PackageType::TRIAL)
+            ->where('is_private', false)
+            ->orderBy('sort_order', 'asc')
+            ->get();
+
+        $trialPackage = Package::where('package_type', PackageType::TRIAL)->first();
+        $customMenu = CustomMenu::orderBy('sort_order')->get();
+        $frontContact = Contact::first();
+
+        return view('framer.home', [
+            'packages' => $packages,
+            'allModulesWithFeature' => $allModulesWithFeature,
+            'trialPackage' => $trialPackage,
+            'customMenu' => $customMenu,
+            'frontContact' => $frontContact,
+        ]);
     }
 
     public function signup()

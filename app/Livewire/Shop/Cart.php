@@ -146,6 +146,11 @@ class Cart extends Component
     public $showQrCode = false;
     public $showPaymentDetail = false;
     public $showTableModal = false;
+
+    /** Formulaire de commande Jimbe (nom + table + téléphone facultatif) */
+    public $guestName = '';
+    public $guestPhone = '';
+    public $guestTable = '';
     public $canCreateOrder;
     public $orderBeingProcessed = false;
     public $showModifiersModal = false;
@@ -2486,6 +2491,17 @@ class Cart extends Component
     #[On('showCartItems')]
     public function showCartItems()
     {
+        // Pré-remplit le formulaire de commande
+        if (empty($this->guestName) && !empty($this->customer?->name)) {
+            $this->guestName = $this->customer->name;
+        }
+        if (empty($this->guestPhone) && !empty($this->customer?->phone)) {
+            $this->guestPhone = $this->customer->phone;
+        }
+        if (empty($this->guestTable) && !empty($this->tableID)) {
+            $this->guestTable = $this->tableID;
+        }
+
         $this->showCart = true;
         $this->showMenu = false;
         $this->dispatch('shop-client-show-menu', showMenu: false);
@@ -2613,6 +2629,54 @@ class Cart extends Component
         }
 
         $this->placeOrder($this->payNow);
+    }
+
+    /**
+     * Jimbe : commande en une étape. Le client indique son nom, sa table (et un téléphone facultatif)
+     * puis appuie sur « Commander ».
+     */
+    public function submitGuestOrder()
+    {
+        $this->validate([
+            'guestName' => 'required|string|max:80',
+            'guestPhone' => 'nullable|string|max:25',
+            'guestTable' => 'required',
+        ], [
+            'guestName.required' => __('modules.shop.nameRequired'),
+            'guestTable.required' => __('modules.shop.tableRequired'),
+        ]);
+
+        $table = Table::where('hash', $this->guestTable)
+            ->where('branch_id', $this->shopBranch->id)
+            ->first();
+
+        if (!$table) {
+            $this->addError('guestTable', __('modules.shop.tableRequired'));
+            return;
+        }
+
+        $name = trim($this->guestName);
+        $phone = trim((string) $this->guestPhone) ?: null;
+
+        if (!$this->customer || $this->customer->name !== $name) {
+            $this->customer = Customer::create([
+                'restaurant_id' => $this->restaurant->id,
+                'name' => $name,
+                'phone' => $phone,
+                'phone_code' => $this->restaurant->phone_code ?? null,
+            ]);
+        } elseif ($phone && $this->customer->phone !== $phone) {
+            $this->customer->phone = $phone;
+            $this->customer->save();
+        }
+
+        session(['customer' => $this->customer]);
+        $this->customerId = $this->customer->id;
+
+        $this->tableID = $table->hash;
+        $this->getTable = false;
+
+        return $this->placeOrder(false);
     }
 
     public function selectTableOrder($tableID = null)

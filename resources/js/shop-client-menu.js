@@ -295,6 +295,27 @@ document.addEventListener('alpine:init', () => {
             });
         },
 
+        /** Jimbe : nombre total d'articles dans le panier */
+        cartCount() {
+            return Object.values(this.cartItemQty || {}).reduce((n, q) => n + Number(q || 0), 0);
+        },
+
+        /** Jimbe : photo représentative d'un menu (1er plat avec photo) */
+        menuThumb(menuId) {
+            const it = this.items.find((i) => Number(i.menu_id) === Number(menuId) && i.item_photo_url && !String(i.item_photo_url).includes('food.svg'));
+            return it ? it.item_photo_url : null;
+        },
+
+        /** Jimbe : plats en promotion */
+        promoItems() {
+            return this.items.filter((i) => i.original_price_label && i.is_available !== false);
+        },
+
+        /** Jimbe : liste à plat des plats filtrés (sans regroupement par section) */
+        flatItems() {
+            return this.groupedForDisplay().flatMap((g) => g.items);
+        },
+
         filteredItems() {
             const menuId = this.menuId;
             const categoryId = this.filterCategoryId;

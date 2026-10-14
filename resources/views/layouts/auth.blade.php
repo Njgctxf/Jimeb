@@ -51,6 +51,8 @@
         'baseColorHex' => $globalSetting->theme_hex,
     ])
 
+    @include('sections.jimbe_theme')
+
     <script>
         if (localStorage.getItem('color-theme') === 'dark') {
             document.documentElement.classList.add('dark')
@@ -85,8 +87,23 @@
             <div class="tooltip-arrow" data-popper-arrow></div>
         </div>
 
-        <div
-            class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
+        <div class="jb-auth">
+            <aside class="jb-auth__art" aria-hidden="true">
+                <img class="jb-auth__pattern" src="{{ asset('landing/framer/lUXkjPHYIkhxTA6EKaah1icpg.png') }}" alt="">
+                <div class="jb-auth__brand">
+                    <img src="{{ asset('landing/framer/ecnC3SLFLuiRCRwPccplmpDSY.png') }}" alt="" width="170" height="42">
+                </div>
+                <div class="jb-auth__copy">
+                    <h2>Simple pour vous.<br>Meilleur pour vos clients.</h2>
+                    <p>Commandes, menu QR, réservations et caisse : tout votre restaurant au même endroit.</p>
+                </div>
+                <div class="jb-auth__stage">
+                    <div class="jb-art-card jb-art-card--a"><img src="{{ asset('landing/framer/TnplamgRY2ukmt782azuiyKM8Vw.png') }}" alt=""><img class="jb-art-clip" src="{{ asset('landing/framer/PBpuxqRpmPqftU0hol2DVhW7bus.png') }}" alt=""></div>
+                    <div class="jb-art-card jb-art-card--b"><img src="{{ asset('landing/framer/e4YhOBRLMApy4qwgKe4RHRIHk0.png') }}" alt=""><img class="jb-art-clip" src="{{ asset('landing/framer/PBpuxqRpmPqftU0hol2DVhW7bus.png') }}" alt=""></div>
+                    <div class="jb-art-card jb-art-card--c"><img src="{{ asset('landing/framer/mLxRMBkrwwHGCftOANUhjYQUKs.png') }}" alt=""><img class="jb-art-clip" src="{{ asset('landing/framer/PBpuxqRpmPqftU0hol2DVhW7bus.png') }}" alt=""></div>
+                </div>
+            </aside>
+            <div class="jb-auth__main">
             <div class="flex flex-col justify-center items-center space-y-4">
                 <a class="flex gap-2 items-center text-xl font-medium dark:text-white app-logo">
                     <x-restaurant-logo :restaurant="$appTheme" class="h-8" />
@@ -105,6 +122,7 @@
                 </div>
             @endif
         </div>
+            </div>
     </div>
 
     @livewireScripts

@@ -1,0 +1,11 @@
+/* Marque : couleur principale du logiciel (vert Mobilo). Chargé après le thème des paramètres, donc prioritaire. */
+:root {
+    --color-base: 5, 80, 73;
+    --livewire-progress-bar-color: #055049;
+}
+
+/* En mode sombre, un vert plus clair garde un contraste lisible */
+html.dark {
+    --color-base: 40, 168, 150;
+    --livewire-progress-bar-color: #28a896;
+}

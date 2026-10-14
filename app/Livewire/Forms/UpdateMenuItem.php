@@ -54,6 +54,12 @@ class UpdateMenuItem extends Component
     #[Validate('nullable|integer|min:0')]
     public ?int $preparationTime = null;
 
+    #[Validate('integer|min:0|max:23')]
+    public int $prepHours = 0;
+
+    #[Validate('integer|min:0|max:59')]
+    public int $prepMinutes = 0;
+
     #[Validate('required')]
     public $isAvailable = '1';
 
@@ -71,6 +77,14 @@ class UpdateMenuItem extends Component
 
     #[Validate(\App\Support\ImageUpload::NULLABLE_MIMES_MAX_2048)]
     public $itemImageTemp;
+
+    public string $promoPrice = '';
+
+    /** Nouvelles photos supplémentaires (uploads multiples) */
+    public array $galleryTemp = [];
+
+    /** Photos supplémentaires déjà enregistrées (noms de fichiers) */
+    public array $extraImages = [];
 
     public ?string $itemImage = null;
 
@@ -190,8 +204,16 @@ class UpdateMenuItem extends Component
         // Load basic data
         $this->menu = (string)$this->menuItem->menu_id;
         $this->itemCategory = (string)$this->menuItem->item_category_id;
-        $this->itemPrice = (string)$this->menuItem->price;
+        if ($this->menuItem->original_price !== null && (float) $this->menuItem->original_price > (float) $this->menuItem->price) {
+            $this->itemPrice = (string) (float) $this->menuItem->original_price;
+            $this->promoPrice = (string) (float) $this->menuItem->price;
+        } else {
+            $this->itemPrice = (string)$this->menuItem->price;
+        }
+        $this->extraImages = array_values((array) $this->menuItem->extra_images);
         $this->preparationTime = $this->menuItem->preparation_time;
+        $this->prepHours = intdiv((int) $this->preparationTime, 60);
+        $this->prepMinutes = (int) $this->preparationTime % 60;
         $this->itemType = $this->menuItem->type;
         $this->isAvailable = $this->menuItem->is_available ? '1' : '0';
         $this->inStock = $this->menuItem->in_stock ? '1' : '0';
@@ -605,6 +627,14 @@ class UpdateMenuItem extends Component
     }
 
     // FORM SUBMISSION AND VALIDATION
+    /** Durée de préparation en minutes (heures x 60 + minutes), ou null si vide. */
+    private function preparationMinutesTotal(): ?int
+    {
+        $total = max(0, (int) $this->prepHours) * 60 + min(59, max(0, (int) $this->prepMinutes));
+
+        return $total > 0 ? $total : null;
+    }
+
     public function submitForm(): void
     {
         try {
@@ -697,11 +727,13 @@ class UpdateMenuItem extends Component
                 if ($isDelivery && !empty($orderType->is_default)) {
                     $rules['orderTypePrices.' . $orderType->id] = 'nullable|numeric|min:0';
                 } else {
-                    $rules['orderTypePrices.' . $orderType->id] = 'required|numeric|min:0';
+                    $rules['orderTypePrices.' . $orderType->id] = 'nullable|numeric|min:0';
                 }
             }
             $rules['itemPrice'] = 'required|numeric|min:0';
+            $rules['promoPrice'] = 'nullable|numeric|min:0|lt:itemPrice';
         }
+        $rules['galleryTemp.*'] = \App\Support\ImageUpload::IMAGE_MIMES_MAX_2048;
 
         // Validate image if present
         if ($this->itemImageTemp) {
@@ -783,11 +815,12 @@ class UpdateMenuItem extends Component
     {
         $updateData = [
             'item_name' => $this->translationNames[$this->globalLocale],
-            'price' => (!$this->hasVariations) ? $this->itemPrice : 0,
+            'price' => (!$this->hasVariations) ? $this->effectivePrices()[0] : 0,
+            'original_price' => (!$this->hasVariations) ? $this->effectivePrices()[1] : null,
             'item_category_id' => $this->itemCategory,
             'description' => $this->translationDescriptions[$this->globalLocale],
             'type' => $this->itemType,
-            'preparation_time' => $this->preparationTime,
+            'preparation_time' => $this->preparationMinutesTotal(),
             'menu_id' => $this->menu,
             'is_available' => $this->normalizeBoolean($this->isAvailable),
             'kot_place_id' => $this->kitchenType,
@@ -895,8 +928,50 @@ class UpdateMenuItem extends Component
         }
     }
 
+    /** Prix payé par le client (promo si valide) et prix normal à conserver. */
+    private function effectivePrices(): array
+    {
+        $normal = (float) $this->itemPrice;
+        $promo = trim($this->promoPrice) !== '' ? (float) $this->promoPrice : null;
+
+        if ($promo !== null && $promo > 0 && $promo < $normal) {
+            return [$promo, $normal];
+        }
+
+        return [$normal, null];
+    }
+
+    public function removeExtraImage(int $index): void
+    {
+        unset($this->extraImages[$index]);
+        $this->extraImages = array_values($this->extraImages);
+    }
+
+    public function removeGalleryPhoto(int $index): void
+    {
+        unset($this->galleryTemp[$index]);
+        $this->galleryTemp = array_values($this->galleryTemp);
+    }
+
+    private function syncExtraImages(MenuItem $menuItem): void
+    {
+        $previous = array_values((array) $menuItem->extra_images);
+        $kept = $this->extraImages;
+
+        foreach (array_diff($previous, $kept) as $removed) {
+            MenuItem::deleteImageFileIfUnreferenced($removed);
+        }
+        foreach ($this->galleryTemp as $photo) {
+            $kept[] = Files::uploadLocalOrS3($photo, 'item', width: 350, height: 350);
+        }
+
+        $menuItem->update(['extra_images' => array_values($kept) ?: null]);
+    }
+
     private function handleImageUpload(MenuItem $menuItem): void
     {
+        $this->syncExtraImages($menuItem);
+
         if ($this->itemImageTemp) {
             
             $newImage = Files::uploadLocalOrS3(
@@ -1053,6 +1128,8 @@ class UpdateMenuItem extends Component
         $this->itemImage = null;
         $this->itemImageTemp = null;
         $this->preparationTime = null;
+        $this->prepHours = 0;
+        $this->prepMinutes = 0;
         $this->variationName = [];
         $this->variationPrice = [];
         $this->variationIds = [];
@@ -1328,8 +1405,8 @@ class UpdateMenuItem extends Component
 
     private function saveItemPricingData(int $menuItemId): void
     {
-        $basePrice = (float)$this->itemPrice;
-        $this->createPricingRecords($menuItemId, $basePrice, $this->orderTypePrices, $this->baseDeliveryPrice);
+        // Les prix par type de commande ne sont plus saisis : tous suivent le prix effectif (promo ou normal)
+        $this->createPricingRecords($menuItemId, $this->effectivePrices()[0], [], '');
     }
 
     private function createPricingRecords(
