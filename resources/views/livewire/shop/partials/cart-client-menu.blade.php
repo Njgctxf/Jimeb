@@ -88,25 +88,31 @@
         <link rel="stylesheet" href="{{ asset('css/jimbe-shop.css') }}?v={{ @filemtime(public_path('css/jimbe-shop.css')) }}">
 
         <div class="jb-shop" id="jb-top" x-show="cfg.showMenu !== false" x-cloak>
-            {{-- Barre du haut --}}
+            {{-- Barre du haut : logo, table, panier --}}
             <div class="jb-top">
                 <div class="jb-top__brand">
                     <div class="jb-top__logo"><x-restaurant-logo :restaurant="$restaurant" class="h-8" /></div>
-                    <div class="min-w-0">
-                        <div class="jb-top__hello" x-text="(new Date().getHours() < 12 ? @js(__('modules.shop.goodMorning')) : (new Date().getHours() < 18 ? @js(__('modules.shop.goodAfternoon')) : @js(__('modules.shop.goodEvening')))) + ' 👋'"></div>
-                        <div class="jb-top__name">{{ $restaurant->name }}</div>
-                    </div>
+                    @if (!empty($table?->table_code))
+                        <div class="jb-table"><i></i>@lang('modules.shop.tableLabel', ['n' => $table->table_code])</div>
+                    @endif
                 </div>
                 <div class="jb-top__actions">
-                    <button type="button" class="jb-ibtn" aria-label="@lang('app.callWaiter')"
-                        @click="document.querySelector('[wire\\:click=callWaiter]')?.click()">
-                        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"/></svg>
-                    </button>
-                    <button type="button" class="jb-ibtn" aria-label="@lang('modules.order.viewCart')" @click="callLw('showCartItems')">
+                    <button type="button" class="jb-ibtn" id="jb-cart-top" aria-label="@lang('modules.order.viewCart')" @click="callLw('showCartItems')">
                         <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007Z"/></svg>
                         <span class="jb-badge" x-show="cartCount() > 0" x-text="cartCount()"></span>
                     </button>
                 </div>
+            </div>
+
+            {{-- Bannière d'accueil --}}
+            <div class="jb-hero">
+                <span class="jb-hero__mono" aria-hidden="true">{{ mb_strtoupper(mb_substr($restaurant->name, 0, 1)) }}</span>
+                <span class="jb-hero__tag">@lang('modules.shop.heroTag')</span>
+                <h2>@lang('modules.shop.welcomeAt', ['name' => $restaurant->name])</h2>
+                <p>@lang('modules.shop.heroSub')</p>
+                <button type="button" class="jb-hero__cta" @click="document.getElementById('jb-menu')?.scrollIntoView({behavior: 'smooth'})">
+                    @lang('modules.shop.heroCta') <span>→</span>
+                </button>
             </div>
 
             {{-- Recherche --}}
@@ -115,59 +121,43 @@
                 <input type="text" x-model.debounce.300ms="search" placeholder="@lang('modules.shop.search')">
             </label>
 
-            {{-- Bannière --}}
-            <div class="jb-hero">
-                <span class="jb-hero__tag">@lang('modules.shop.heroTag')</span>
-                <h2>@lang('modules.shop.heroTitle')</h2>
-                <p>@lang('modules.shop.heroSub')</p>
-                <button type="button" class="jb-hero__cta" @click="document.getElementById('jb-menu')?.scrollIntoView({behavior: 'smooth'})">
-                    @lang('modules.shop.heroCta') <span>→</span>
-                </button>
-                <div class="jb-hero__emoji">🍽️</div>
-                <span class="jb-hero__bubble b1">🍗</span><span class="jb-hero__bubble b2">🥗</span><span class="jb-hero__bubble b3">🥤</span>
-            </div>
-
-            {{-- Menus --}}
-            <div class="jb-chips" x-show="menus.length > 0">
-                <button type="button" class="jb-chip" :class="menuId === null ? 'is-active' : ''" @click="setMenuId(null)">
-                    <div class="jb-chip__c">🍴</div><span class="jb-chip__t">@lang('modules.shop.all')</span>
-                </button>
-                <template x-for="m in menus" :key="'jb-m-' + m.id">
-                    <button type="button" class="jb-chip" :class="menuId === m.id ? 'is-active' : ''" @click="setMenuId(m.id)">
-                        <div class="jb-chip__c">
-                            <span x-text="window.jbEmoji(m.name)"></span>
-                            <template x-if="menuThumb(m.id)"><img :src="menuThumb(m.id)" alt="" loading="lazy" onerror="this.style.display='none'" style="position:absolute;inset:0"></template>
-                        </div>
-                        <span class="jb-chip__t" x-text="m.name"></span>
-                    </button>
-                </template>
-            </div>
-
             {{-- Promos --}}
             <div id="jb-promos" x-show="promoItems().length > 0 && !(search || '').trim()" x-cloak>
                 <div class="jb-sec"><h3>@lang('modules.shop.promos') 🔥</h3></div>
-                <div class="jb-promos">
+                <div class="jb-dishes">
                     <template x-for="item in promoItems()" :key="'jb-p-' + item.id">
                         @include('livewire.shop.partials.jimbe-card')
                     </template>
                 </div>
             </div>
 
-            {{-- Tous les plats --}}
-            <div id="jb-menu" x-show="cfg.showMenu" x-cloak>
-                <div class="jb-sec">
-                    <h3 x-text="menuId === null ? @js(__('modules.shop.allDishes')) : ((menus.find(m => m.id === menuId) || {}).name || '')"></h3>
-                    <span class="text-xs" style="color:#8a7f78" x-text="flatItems().length + ' ' + @js(__('modules.shop.dishes'))"></span>
+            {{-- La carte : barre de catégories collée en haut + sections dans l'ordre --}}
+            <div id="jb-menu" x-show="cfg.showMenu" x-cloak x-data="jbSpy()" x-init="start()">
+                <div class="jb-cats" x-show="groupedForDisplay().length > 1">
+                    <div class="jb-cats__in" x-ref="scroller">
+                        <template x-for="(g, gi) in groupedForDisplay()" :key="'jb-c-' + gi + g.key">
+                            <button type="button" class="jb-cat" :class="active === gi ? 'is-active' : ''" :data-i="gi" @click="jump(gi)" x-text="g.key"></button>
+                        </template>
+                    </div>
                 </div>
-                <div class="jb-grid">
-                    <template x-for="item in flatItems()" :key="'jb-i-' + item.id">
-                        @include('livewire.shop.partials.jimbe-card')
-                    </template>
-                </div>
+
+                <template x-for="(g, gi) in groupedForDisplay()" :key="'jb-s-' + gi + g.key">
+                    <section class="jb-section" :id="'jb-sec-' + gi">
+                        <div class="jb-sec"><h3 x-text="g.key"></h3></div>
+                        <div class="jb-dishes">
+                            <template x-for="item in g.items" :key="'jb-i-' + item.id">
+                                @include('livewire.shop.partials.jimbe-card')
+                            </template>
+                        </div>
+                    </section>
+                </template>
+
                 <template x-if="flatItems().length === 0">
                     <div class="jb-empty" x-text="labels.noItemAdded"></div>
                 </template>
             </div>
+
+            <p class="jb-powered">@lang('modules.shop.poweredBy') <b>Mobilo</b></p>
 
             {{-- Mini barre panier --}}
             <button type="button" class="jb-mini" x-show="cartCount() > 0" x-cloak x-transition @click="callLw('showCartItems')">
@@ -176,31 +166,70 @@
             </button>
 
             <script>
-                window.jbEmoji = window.jbEmoji || function (text) {
-                    const t = (text || '').toLowerCase();
-                    const map = [
-                        [/poulet|chicken|volaille|wing|aile/, '🍗'], [/burger|hamburger/, '🍔'], [/pizza/, '🍕'],
-                        [/poisson|fish|crevette|shrimp|thon|capitaine/, '🐟'], [/salade|salad|legume|veg/, '🥗'],
-                        [/riz|rice|biryani|attieke|attiéké|foutou|placali|alloco/, '🍚'], [/soupe|soup|sauce|ragout|ragoût/, '🍲'],
-                        [/pain|naan|roti|bread|sandwich/, '🥖'], [/frite|fries|chips/, '🍟'], [/pates|pâtes|noodle|spaghetti/, '🍝'],
-                        [/dessert|gateau|gâteau|cake|glace|ice/, '🍰'], [/cafe|café|coffee|the |thé/, '☕'],
-                        [/boisson|drink|jus|juice|soda|eau|water|biere|bière|cocktail|bissap|gnamakoudji/, '🥤'],
-                        [/viande|beef|boeuf|bœuf|steak|grill|brochette|mouton|porc/, '🥩'], [/oeuf|œuf|egg|omelette/, '🍳'],
-                        [/fruit|mangue|ananas|banane/, '🍍'], [/entree|entrée|starter|spring|nem/, '🥟'],
-                    ];
-                    for (const [re, e] of map) { if (re.test(t)) return e; }
-                    return '🍽️';
+                // Révélation douce des plats au défilement
+                window.jbReveal = window.jbReveal || (function () {
+                    const io = 'IntersectionObserver' in window ? new IntersectionObserver((es) => {
+                        es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });
+                    }, { rootMargin: '0px 0px -6% 0px' }) : null;
+                    return (el) => { if (!io) { el.classList.add('is-in'); return; } io.observe(el); setTimeout(() => el.classList.add('is-in'), 1500); };
+                })();
+
+                // Le plat « vole » jusqu'au panier
+                window.jbFly = window.jbFly || function (btn) {
+                    try {
+                        const to = document.querySelector('.jb-nav__main i') || document.getElementById('jb-cart-top');
+                        if (!to || !btn.animate) return;
+                        const a = btn.getBoundingClientRect(), b = to.getBoundingClientRect();
+                        const dot = document.createElement('div');
+                        dot.className = 'jb-fly';
+                        dot.style.left = (a.left + a.width / 2 - 11) + 'px';
+                        dot.style.top = (a.top + a.height / 2 - 11) + 'px';
+                        document.body.appendChild(dot);
+                        const dx = (b.left + b.width / 2) - (a.left + a.width / 2), dy = (b.top + b.height / 2) - (a.top + a.height / 2);
+                        dot.animate([
+                            { transform: 'translate(0,0) scale(1)', opacity: 1 },
+                            { transform: 'translate(' + (dx * .5) + 'px,' + (dy * .5 - 60) + 'px) scale(1.1)', opacity: 1, offset: .5 },
+                            { transform: 'translate(' + dx + 'px,' + dy + 'px) scale(.3)', opacity: .6 },
+                        ], { duration: 650, easing: 'cubic-bezier(.4,0,.2,1)' }).onfinish = () => {
+                            dot.remove();
+                            to.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.18)' }, { transform: 'scale(1)' }], { duration: 320 });
+                        };
+                    } catch (e) {}
+                };
+
+                // Barre de catégories : suit le défilement et saute à la section
+                window.jbSpy = window.jbSpy || function () {
+                    return {
+                        active: 0,
+                        raf: null,
+                        start() {
+                            const on = () => { if (this.raf) return; this.raf = requestAnimationFrame(() => { this.raf = null; this.update(); }); };
+                            window.addEventListener('scroll', on, { passive: true });
+                            window.addEventListener('resize', on);
+                        },
+                        update() {
+                            const secs = [...document.querySelectorAll('.jb-section')];
+                            let cur = 0;
+                            secs.forEach((s, i) => { if (s.getBoundingClientRect().top <= 140) cur = i; });
+                            if (cur !== this.active) {
+                                this.active = cur;
+                                const sc = this.$refs.scroller;
+                                const chip = sc && sc.querySelector('[data-i="' + cur + '"]');
+                                if (chip) sc.scrollTo({ left: chip.offsetLeft - 24, behavior: 'smooth' });
+                            }
+                        },
+                        jump(i) {
+                            const el = document.getElementById('jb-sec-' + i);
+                            if (el) { this.active = i; el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+                        },
+                    };
                 };
             </script>
 
             {{-- Navigation du bas --}}
             <nav class="jb-nav" aria-label="Navigation">
-                <button type="button" class="is-on" @click="window.scrollTo({top: 0, behavior: 'smooth'})">
-                    <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955a1.126 1.126 0 0 1 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/></svg>
-                    @lang('modules.shop.navHome')
-                </button>
                 <button type="button" @click="document.getElementById('jb-menu')?.scrollIntoView({behavior: 'smooth'})">
-                    <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z"/></svg>
+                    <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg>
                     @lang('modules.shop.navMenu')
                 </button>
                 <button type="button" class="jb-nav__main" @click="callLw('showCartItems')">
@@ -210,7 +239,7 @@
                     </i>
                     <span>@lang('modules.shop.navCart')</span>
                 </button>
-                <button type="button" @click="(document.getElementById('jb-promos') && promoItems().length ? document.getElementById('jb-promos') : document.getElementById('jb-menu'))?.scrollIntoView({behavior: 'smooth'})">
+                <button type="button" x-show="promoItems().length > 0" x-cloak @click="document.getElementById('jb-promos')?.scrollIntoView({behavior: 'smooth'})">
                     <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6Z"/></svg>
                     @lang('modules.shop.navPromos')
                 </button>
