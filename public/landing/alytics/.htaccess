@@ -1,0 +1,4 @@
+# Les modules JavaScript de la vitrine doivent etre servis avec un type JS, sinon le navigateur refuse de les executer.
+<IfModule mod_mime.c>
+    AddType text/javascript .mjs .js
+</IfModule>
