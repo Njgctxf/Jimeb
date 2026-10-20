@@ -27,20 +27,33 @@
 /* Accueil : la ligne « No credit card required » est supprimée */
 .framer-nffykq { display: none !important; }
 
-/* Accueil : le bandeau de faux logos clients est remplacé, en attendant de vrais clients, par les types d'établissements visés */
-.framer-194jp0e { height: auto !important; min-height: 0 !important; }
+/* Accueil : le bandeau de faux logos clients est remplacé, en attendant de vrais clients, par les types
+   d'établissements visés, qui défilent comme l'ancien bandeau (liste répétée 4 fois, déplacée de 50 %). */
+.framer-194jp0e {
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 12%, #000 88%, transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 12%, #000 88%, transparent 100%);
+}
 .framer-194jp0e > * { display: none !important; }
 .framer-194jp0e::before {
-    content: "Restaurants  \2022  Maquis  \2022  Snacks  \2022  Caf\00e9s  \2022  Bars  \2022  Food trucks  \2022  Traiteurs";
+    content: "Restaurants   \2022   Maquis   \2022   Snacks   \2022   Caf\0000e9s   \2022   Bars   \2022   Food trucks   \2022   Traiteurs   \2022   Restaurants   \2022   Maquis   \2022   Snacks   \2022   Caf\0000e9s   \2022   Bars   \2022   Food trucks   \2022   Traiteurs   \2022   Restaurants   \2022   Maquis   \2022   Snacks   \2022   Caf\0000e9s   \2022   Bars   \2022   Food trucks   \2022   Traiteurs   \2022   Restaurants   \2022   Maquis   \2022   Snacks   \2022   Caf\0000e9s   \2022   Bars   \2022   Food trucks   \2022   Traiteurs   \2022   ";
     display: block;
-    text-align: center;
+    width: max-content;
+    white-space: pre;
     font-family: "Inter Tight", "Inter", sans-serif;
     font-weight: 600;
     font-size: 1.15rem;
-    line-height: 1.7;
+    line-height: 2;
     letter-spacing: -0.01em;
     color: #5c5c5c;
-    padding: 4px 8px;
+    animation: jb-defile 40s linear infinite;
+}
+.framer-194jp0e:hover::before { animation-play-state: paused; }
+@keyframes jb-defile { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) {
+    .framer-194jp0e::before { animation: none; white-space: normal; text-align: center; width: auto; }
 }
 
 /* Menu : « Integrations » n'est pas repris (les sections absentes du nouveau site ne sont pas liées) */
