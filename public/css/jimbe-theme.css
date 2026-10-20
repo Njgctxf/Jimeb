@@ -270,3 +270,16 @@ html.dark .jb-hero-card { background: radial-gradient(520px 300px at 108% -12%, 
 [data-pos-cart-order-actions] #saveBillPaymentBtn { font-size: .95rem !important; font-weight: 700; padding-top: .8rem !important; padding-bottom: .8rem !important; border-radius: 14px !important; }
 [data-pos-cart-order-actions] #saveDraftBtn { background: transparent !important; color: #92611a !important; border: 1.5px solid #d9b46a; font-size: .8rem !important; }
 [data-tooltip-target="tooltip-merge-tables"] { display: none !important; }
+
+/* Connexion / inscription : phrases d'accueil qui s'écrivent l'une après l'autre (remplace les tuiles flottantes) */
+.jb-auth__stage { display: flex; align-items: center; min-height: 220px; }
+.jb-typed {
+    margin: 0; min-height: 3.6em; font-family: var(--jb-head); font-weight: 500; color: #fff;
+    font-size: clamp(1.7rem, 2.6vw, 2.5rem); line-height: 1.2; letter-spacing: -.02em; max-width: 520px;
+}
+.jb-typed::after {
+    content: ""; display: inline-block; width: 3px; height: .95em; margin-left: 6px; vertical-align: -0.1em;
+    background: #f5a524; animation: jb-caret 1s steps(1) infinite;
+}
+@keyframes jb-caret { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .jb-typed::after { animation: none; } }

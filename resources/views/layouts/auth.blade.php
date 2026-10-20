@@ -98,9 +98,7 @@
                     <p>Menu QR, commandes à table et suivi en direct : tout votre restaurant au même endroit.</p>
                 </div>
                 <div class="jb-auth__stage">
-                    <div class="jb-art-card jb-art-card--a"><img src="{{ asset('landing/framer/TnplamgRY2ukmt782azuiyKM8Vw.png') }}" alt=""><img class="jb-art-clip" src="{{ asset('landing/framer/PBpuxqRpmPqftU0hol2DVhW7bus.png') }}" alt=""></div>
-                    <div class="jb-art-card jb-art-card--b"><img src="{{ asset('landing/framer/e4YhOBRLMApy4qwgKe4RHRIHk0.png') }}" alt=""><img class="jb-art-clip" src="{{ asset('landing/framer/PBpuxqRpmPqftU0hol2DVhW7bus.png') }}" alt=""></div>
-                    <div class="jb-art-card jb-art-card--c"><img src="{{ asset('landing/framer/mLxRMBkrwwHGCftOANUhjYQUKs.png') }}" alt=""><img class="jb-art-clip" src="{{ asset('landing/framer/PBpuxqRpmPqftU0hol2DVhW7bus.png') }}" alt=""></div>
+                    <p class="jb-typed" id="jb-typed" data-phrases='["Bienvenue sur Mobilo.","Ici, vos clients scannent, commandent, et vous servez.","Prêt à recevoir votre première commande ?"]'>Bienvenue sur Mobilo.</p>
                 </div>
             </aside>
             <div class="jb-auth__main">
@@ -125,6 +123,29 @@
             </div>
     </div>
 
+        <script>
+        (function () {
+            var el = document.getElementById('jb-typed');
+            if (!el) return;
+            var phrases;
+            try { phrases = JSON.parse(el.getAttribute('data-phrases')); } catch (e) { return; }
+            if (!phrases || !phrases.length) return;
+            if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            var p = 0, c = 0, deleting = false;
+            function tick() {
+                var phrase = phrases[p];
+                el.textContent = phrase.slice(0, c);
+                var delay;
+                if (!deleting && c < phrase.length) { c++; delay = 55; }
+                else if (!deleting) { deleting = true; delay = 1800; }
+                else if (c > 0) { c--; delay = 22; }
+                else { deleting = false; p = (p + 1) % phrases.length; delay = 450; }
+                setTimeout(tick, delay);
+            }
+            el.textContent = '';
+            tick();
+        })();
+    </script>
     @livewireScripts
     @include('layouts.update-uri')
 </body>
