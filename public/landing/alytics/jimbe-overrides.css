@@ -70,3 +70,6 @@ h1.framer-text, h2.framer-text, h3.framer-text, h4.framer-text { text-transform:
 .framer-pday1z { display: none !important; }
 a[href$="blog"], a[href$="blog.html"] { display: none !important; }
 [class*="framer-"]:has(> a[href$="blog"]), [class*="framer-"]:has(> a[href$="blog.html"]) { display: none !important; }
+
+/* Sections masquées en attendant de vrais contenus : Intégrations (logos d'outils) et Témoignages (faux clients) */
+.framer-10of8j7, .framer-150cz2t { display: none !important; }
