@@ -1,0 +1,11 @@
+/*
+ * Ajustements Jimbe par-dessus l'export Framer « Alytics » (chargé après les styles du template).
+ * Les couleurs sont remplacées directement dans les fichiers de l'export (voir la charte graphique).
+ */
+
+/* Bandeau promotionnel du créateur du template (« New Release », « Get Figma », « Unlock for $49 ») */
+.framer-af6bc1 { display: none !important; }
+
+/* Crédits du créateur dans le pied de page : « Template by … » et « Built in Framer » */
+.framer-anvkv6,
+.framer-7blpl0 a[data-styles-preset="SNmekgwHz"] { display: none !important; }

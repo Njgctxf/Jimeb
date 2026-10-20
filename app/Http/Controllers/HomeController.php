@@ -137,6 +137,12 @@ class HomeController extends Controller
         // Les chemins de l'export sont relatifs : on les ancre sur son dossier.
         $html = preg_replace('/<head>/', '<head><base href="' . asset('landing/alytics') . '/">', $html, 1);
 
+        // Ajustements Jimbe (retrait des éléments du créateur du template).
+        $v = filemtime(public_path('landing/alytics/jimbe-overrides.css'));
+        $head = '<link rel="stylesheet" href="jimbe-overrides.css?v=' . $v . '">'
+            . '<script src="jimbe-overrides.js?v=' . $v . '" data-signup="' . e(route('restaurant_signup', [], false)) . '"></script>';
+        $html = str_replace('</head>', $head . '</head>', $html);
+
         // Traceur d'analytique Framer du template : retiré.
         $html = preg_replace('/<script[^>]*\ssrc="script"[^>]*><\/script>/', '', $html);
 
