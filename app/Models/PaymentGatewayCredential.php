@@ -23,6 +23,8 @@ class PaymentGatewayCredential extends BaseModel
         'razorpay_key' => 'encrypted',
         'stripe_secret' => 'encrypted',
         'razorpay_secret' => 'encrypted',
+        'kadev_secret_key' => 'encrypted',
+        'kadev_webhook_secret' => 'encrypted',
     ];
 
 

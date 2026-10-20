@@ -315,6 +315,7 @@ Route::middleware(['auth', config('jetstream.auth_session'), 'verified', SuperAd
 
 Route::post('/webhook/billing-verify-webhook/{hash?}', [StripeWebhookController::class, 'verifyStripeWebhook'])->name('billing.verify-webhook');
 Route::post('/webhook/save-razorpay-webhook/{hash?}', [RazorpayWebhookController::class, 'saveInvoices'])->name('billing.save_razorpay-webhook');
+Route::post('/webhook/kadev-webhook/{hash}', [\App\Http\Controllers\KadevPaymentController::class, 'webhook'])->name('kadev.webhook');
 Route::post('/webhook/flutter-webhook/{hash}', [FlutterwavePaymentController::class, 'handleGatewayWebhook'])->name('flutterwave.webhook');
 Route::match(['get', 'post'], '/flutterwave/success', [FlutterwavePaymentController::class, 'paymentMainSuccess'])->name('flutterwave.success');
 Route::match(['get', 'post'], '/flutterwave/failed', [FlutterwavePaymentController::class, 'paymentFailed'])->name('flutterwave.failed');

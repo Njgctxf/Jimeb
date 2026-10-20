@@ -1502,6 +1502,19 @@ $disableOrderTypePopup = (bool) ($restaurant->disable_order_type_popup ?? false)
                             </x-secondary-button>
                         @endif
 
+                        @if ($paymentGateway->kadev_status)
+                            <x-secondary-button
+                                wire:click="initiateKadevPayment({{ $paymentOrder?->id ?: 'null' }})"
+                                wire:loading.attr="disabled"
+                                wire:loading.class="opacity-50 cursor-not-allowed"
+                                wire:target="initiateKadevPayment,placeOrder">
+                                <span class="inline-flex items-center">
+                                    <svg class="w-4 h-4 ltr:mr-1 rtl:ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M11 18h2"/></svg>
+                                    Mobile Money / Carte
+                                </span>
+                            </x-secondary-button>
+                        @endif
+
                         @if ($paymentGateway->is_qr_payment_enabled && $paymentGateway->qr_code_image_url)
                             <!-- Button -->
                             <x-secondary-button
@@ -2174,4 +2187,34 @@ $disableOrderTypePopup = (bool) ($restaurant->disable_order_type_popup ?? false)
         </x-slot>
     </x-dialog-modal>
     @endif
+@once
+<script>
+    document.addEventListener('livewire:init', () => {
+        Livewire.on('kadev-checkout', (event) => {
+            const d = Array.isArray(event) ? event[0] : event;
+            const run = () => {
+                KadevPay.checkout({
+                    public_key: d.publicKey,
+                    amount: d.amount,
+                    email: d.email,
+                    name: d.name || undefined,
+                    phone: d.phone || undefined,
+                    method: 'momo',
+                    metadata: { kadev_payment_id: d.paymentId, order_uuid: d.orderUuid },
+                    onSuccess: function (response) {
+                        const ref = (response && (response.reference || (response.data && response.data.reference))) || '';
+                        @this.call('confirmKadevPayment', d.paymentId, ref);
+                    },
+                    onClose: function () {}
+                });
+            };
+            if (window.KadevPay) { run(); return; }
+            const sc = document.createElement('script');
+            sc.src = d.sdk;
+            sc.onload = run;
+            document.head.appendChild(sc);
+        });
+    });
+</script>
+@endonce
 </div>

@@ -132,6 +132,12 @@ class PaymentSettings extends Component
     public $liveTlyncStoreToken;
     public $isTlyncEnabled;
 
+    public $kadevStatus = false;
+    public $kadevPublicKey;
+    public $kadevSecretKey;
+    public $kadevWebhookSecret;
+    public $isKadevEnabled = false;
+
     public function mount()
     {
          $settings = GlobalSetting::first();
@@ -175,6 +181,7 @@ class PaymentSettings extends Component
             'mollie' => $this->isGlobalMollieEnabled,
             'tap' => $this->isGlobalTapEnabled,
             'tlync' => $this->isGlobalTlyncEnabled,
+            'kadev' => true,
             'offline' => true,
             'qr_code' => true,
         ];
@@ -207,6 +214,7 @@ class PaymentSettings extends Component
             'mollie' => $this->isGlobalMollieEnabled,
             'tap' => $this->isGlobalTapEnabled,
             'tlync' => $this->isGlobalTlyncEnabled,
+            'kadev' => true,
             'offline' => true,
             'qr_code' => true,
         ];
@@ -234,6 +242,12 @@ class PaymentSettings extends Component
         $this->isRazorpayEnabled = $this->paymentGateway->razorpay_status;
         $this->isStripeEnabled = $this->paymentGateway->stripe_status;
         $this->isFlutterwaveEnabled = $this->paymentGateway->flutterwave_status;
+
+        $this->kadevStatus = (bool) ($this->paymentGateway->kadev_status ?? false);
+        $this->isKadevEnabled = $this->kadevStatus;
+        $this->kadevPublicKey = $this->paymentGateway->kadev_public_key;
+        $this->kadevSecretKey = $this->paymentGateway->kadev_secret_key;
+        $this->kadevWebhookSecret = $this->paymentGateway->kadev_webhook_secret;
 
         $this->enableQrPayment = (bool)$this->paymentGateway->is_qr_payment_enabled;
         $this->qrCodeImage = $this->paymentGateway->qr_code_image_url;
@@ -334,6 +348,9 @@ class PaymentSettings extends Component
         $hash = restaurant()->hash;
         $this->testFlutterwaveWebhookKey = $this->paymentGateway->flutterwave_webhook_secret_hash ? $this->paymentGateway->flutterwave_webhook_secret_hash : substr(md5($hash), 0, 10);
 
+        if ($this->activePaymentSetting === 'kadev') {
+            $this->webhookUrl = route('kadev.webhook', ['hash' => $hash]);
+        }
         if ($this->activePaymentSetting === 'flutterwave') {
             $this->webhookUrl = route('flutterwave.webhook', ['hash' => $hash]);
         }
@@ -357,6 +374,32 @@ class PaymentSettings extends Component
                 ? tlync_public_route('tlync.webhook', ['hash' => $hash])
                 : route('tlync.webhook', ['hash' => $hash]);
         }
+    }
+
+    public function submitFormKadev()
+    {
+        if ($this->kadevStatus) {
+            $this->validate([
+                'kadevPublicKey' => 'required|string|min:10|max:255',
+                'kadevSecretKey' => 'required|string|min:10|max:255',
+                'kadevWebhookSecret' => 'required|string|min:6|max:255',
+            ], [
+                'kadevPublicKey.required' => 'Indiquez votre clé publique Kadev Pay.',
+                'kadevSecretKey.required' => 'Indiquez votre clé secrète Kadev Pay.',
+                'kadevWebhookSecret.required' => 'Indiquez le secret webhook de Kadev Pay.',
+            ]);
+        }
+
+        $this->paymentGateway->update([
+            'kadev_status' => (bool) $this->kadevStatus,
+            'kadev_public_key' => $this->kadevStatus ? trim($this->kadevPublicKey) : $this->paymentGateway->kadev_public_key,
+            'kadev_secret_key' => $this->kadevStatus ? trim($this->kadevSecretKey) : $this->paymentGateway->kadev_secret_key,
+            'kadev_webhook_secret' => $this->kadevStatus ? trim($this->kadevWebhookSecret) : $this->paymentGateway->kadev_webhook_secret,
+        ]);
+
+        $this->isKadevEnabled = (bool) $this->kadevStatus;
+        $this->updatePaymentStatus();
+        $this->alertSuccess();
     }
 
     public function submitFormTlync()

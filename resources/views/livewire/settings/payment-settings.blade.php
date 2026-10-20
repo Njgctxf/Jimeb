@@ -256,6 +256,23 @@
                 @endif
 
                     <li class="min-w-0">
+                        <span wire:click="activeSetting('kadev')" @class([
+                            'inline-flex w-full min-w-0 items-center justify-center gap-1.5 cursor-pointer select-none border-b-2 px-1.5 py-3 text-center text-xs leading-tight sm:px-2 sm:text-sm rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300',
+                            'border-transparent' => $activePaymentSetting != 'kadev',
+                            'active border-skin-base dark:text-skin-base dark:border-skin-base text-skin-base' =>
+                                $activePaymentSetting == 'kadev',
+                        ])>
+                            <svg class="w-5 h-5 text-current" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M7 7h10a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Zm5 7.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/></svg>
+                            Mobile Money (Kadev Pay)
+                            <span @class([
+                                'flex h-2.5 w-2.5 shrink-0 rounded-full',
+                                'bg-green-500' => $isKadevEnabled,
+                                'bg-red-500' => !$isKadevEnabled,
+                            ])></span>
+                        </span>
+                    </li>
+
+                    <li class="min-w-0">
                         <span wire:click="activeSetting('offline')" @class([
                             'inline-flex w-full min-w-0 items-center justify-center gap-1.5 cursor-pointer select-none border-b-2 px-1.5 py-3 text-center text-xs leading-tight sm:px-2 sm:text-sm rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300',
                             'border-transparent' => $activePaymentSetting != 'offline',
@@ -1081,6 +1098,65 @@
                                 </button>
                             </div>
                             <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">@lang('modules.settings.tlyncWebhookHelp')</p>
+                        </div>
+                    @endif
+
+                    <div>
+                        <x-button>@lang('app.save')</x-button>
+                    </div>
+                </div>
+            </form>
+        @endif
+
+        <!-- Kadev Pay (Mobile Money et cartes, Côte d'Ivoire) -->
+        @if ($activePaymentSetting == 'kadev')
+            <form wire:submit="submitFormKadev">
+                <div class="grid gap-6">
+                    <p class="text-sm text-gray-600 dark:text-gray-400">
+                        Vos clients paient leur commande avec Orange Money, MTN, Moov, Wave ou une carte bancaire. L'argent va sur <b>votre</b> compte Kadev Pay.
+                        Créez votre compte sur <a href="https://pay.kadev.ci" target="_blank" rel="noopener" class="underline">pay.kadev.ci</a>, puis copiez vos clés depuis le tableau de bord.
+                        Les clés qui commencent par <code>kdvp_test_</code> et <code>kdvs_test_</code> sont des clés d'essai : aucun vrai argent ne bouge.
+                    </p>
+
+                    <div class="my-3">
+                        <x-label for="kadevStatus">
+                            <div class="flex items-center cursor-pointer">
+                                <x-checkbox name="kadevStatus" id="kadevStatus" wire:model.live='kadevStatus' />
+                                <div class="ms-2">Activer le paiement Mobile Money (Kadev Pay)</div>
+                            </div>
+                        </x-label>
+                    </div>
+
+                    @if ($kadevStatus)
+                        <div>
+                            <x-label for="kadevPublicKey" value="Clé publique" required/>
+                            <x-input id="kadevPublicKey" class="block w-full mt-1" type="text" wire:model='kadevPublicKey' placeholder="kdvp_test_…"/>
+                            <x-input-error for="kadevPublicKey" class="mt-2"/>
+                        </div>
+
+                        <div>
+                            <x-label for="kadevSecretKey" value="Clé secrète" required/>
+                            <x-input-password id="kadevSecretKey" class="block w-full mt-1" type="text" wire:model='kadevSecretKey'/>
+                            <x-input-error for="kadevSecretKey" class="mt-2"/>
+                        </div>
+
+                        <div>
+                            <x-label for="kadevWebhookSecret" value="Secret webhook" required/>
+                            <x-input-password id="kadevWebhookSecret" class="block w-full mt-1" type="text" wire:model='kadevWebhookSecret'/>
+                            <x-input-error for="kadevWebhookSecret" class="mt-2"/>
+                        </div>
+
+                        <div class="mt-4">
+                            <x-label :value="__('modules.settings.webhookUrl')" class="mb-1"/>
+                            <div class="flex items-center">
+                                <x-input id="webhook-url" class="block w-full" type="text" value="{{ $webhookUrl }}" readonly/>
+                                <button id="copy-button" type="button" onclick="copyWebhookUrl()" class="px-3 py-2 ml-2 text-white bg-gray-800 rounded-lg hover:bg-gray-700">
+                                    @lang('modules.settings.copyWebhookUrl')
+                                </button>
+                            </div>
+                            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                                Dans le tableau de bord Kadev Pay, collez cette adresse comme URL de webhook. C'est elle qui confirme les paiements : sans elle, les commandes ne passent pas en « payé ». L'adresse doit être en HTTPS et accessible depuis Internet.
+                            </p>
                         </div>
                     @endif
 

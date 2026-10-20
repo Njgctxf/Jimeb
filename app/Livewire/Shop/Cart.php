@@ -23,6 +23,8 @@ use App\Models\OrderItem;
 use App\Models\OrderType;
 use App\Models\TapPayment;
 use App\Models\TlyncPayment;
+use App\Models\KadevPayment;
+use App\Services\KadevPayService;
 use App\Services\TlyncPaymentService;
 use App\Models\EpayPayment;
 use App\Models\OrderCharge;
@@ -239,6 +241,9 @@ class Cart extends Component
         if ((bool) ($pg->tlync_status ?? false)) {
             $options[] = 'tlync';
         }
+        if ((bool) ($pg->kadev_status ?? false)) {
+            $options[] = 'kadev';
+        }
 
         if ((bool) ($pg->is_qr_payment_enabled ?? false) && !empty($pg->qr_code_image_url)) {
             $options[] = 'qr';
@@ -315,6 +320,7 @@ class Cart extends Component
             'mollie' => $this->initiateMolliePayment($orderId),
             'tap' => $this->initiateTapPayment($orderId),
             'tlync' => $this->initiateTlyncPayment($orderId),
+            'kadev' => $this->initiateKadevPayment($orderId),
             default => null,
         };
 
@@ -4240,6 +4246,69 @@ class Cart extends Component
         }
 
         return null;
+    }
+
+    /** Prépare un paiement Kadev Pay et ouvre le widget (Mobile Money / carte) dans le navigateur du client. */
+    public function initiateKadevPayment($id)
+    {
+        $this->showPaymentModal = false;
+
+        $order = Order::find($id);
+        $credentials = $this->restaurant->paymentGateways;
+
+        if (!$order || !$credentials?->kadev_status || !$credentials->kadev_public_key) {
+            session()->flash('flash.banner', __('messages.paymentInitiationFailedTryAgain'));
+            session()->flash('flash.bannerStyle', 'danger');
+
+            return $order ? redirect()->route('order_success', $order->uuid) : redirect()->back();
+        }
+
+        // Le montant vient toujours de la commande enregistrée, jamais du navigateur.
+        $kadevPayment = KadevPayment::create([
+            'order_id' => $order->id,
+            'amount' => $order->total,
+            'payment_status' => 'pending',
+        ]);
+
+        $customer = $this->customer ?? $order->customer;
+        $email = filter_var($customer?->email, FILTER_VALIDATE_EMAIL) ?: ('commande' . $order->id . '@' . (parse_url(config('app.url'), PHP_URL_HOST) ?: 'example.com'));
+
+        $this->dispatch('kadev-checkout', [
+            'sdk' => KadevPayService::sdkUrl(),
+            'publicKey' => $credentials->kadev_public_key,
+            'amount' => (int) round($order->total),
+            'email' => $email,
+            'name' => $customer?->name ?? $this->customerName ?? null,
+            'phone' => $customer?->phone ?? $this->customerPhone ?? null,
+            'paymentId' => $kadevPayment->id,
+            'orderUuid' => $order->uuid,
+            'successUrl' => route('order_success', $order->uuid),
+        ]);
+    }
+
+    /** Appelé après le widget : on ne croit jamais le navigateur, on vérifie auprès de Kadev Pay. */
+    public function confirmKadevPayment($paymentId, $reference)
+    {
+        $payment = KadevPayment::find($paymentId);
+        $order = $payment?->order;
+        $credentials = $this->restaurant->paymentGateways;
+
+        if (!$payment || !$order || (int) $order->branch?->restaurant_id !== (int) $this->restaurant->id || !$credentials) {
+            return redirect()->back();
+        }
+
+        $service = app(KadevPayService::class);
+        $result = $service->verify($credentials, (string) $reference);
+
+        if ($result && $result['status'] === 'paid') {
+            $service->markPaid($payment, (string) $reference, $result['amount']);
+        } else {
+            // Le webhook peut encore confirmer le paiement : la page de commande affichera l'état réel.
+            session()->flash('flash.banner', 'Paiement en cours de confirmation. Votre commande sera validée dès réception.');
+            session()->flash('flash.bannerStyle', 'warning');
+        }
+
+        return redirect()->route('order_success', $order->uuid);
     }
 
     public function initiateTlyncPayment($id)
