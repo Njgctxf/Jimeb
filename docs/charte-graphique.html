@@ -3,88 +3,83 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Charte graphique Jimbe</title>
+<title>Charte graphique</title>
 <link rel="stylesheet" href="../public/css/jimbe-tokens.css">
 <style>
   *, *::before, *::after { box-sizing: border-box; }
   body { margin: 0; background: var(--jb-white); color: var(--jb-ink); font-family: var(--jb-body); font-size: 16px; line-height: 1.65; }
-  h1, h2, h3, h4 { font-family: var(--jb-head); line-height: 1.15; margin: 0; }
-  h1 { font-size: clamp(2.4rem, 6vw, 4rem); font-weight: 800; }
-  h2 { font-size: 2rem; font-weight: 800; color: var(--jb-blue-900); }
-  h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 8px; }
+  h1, h2, h3, h4 { font-family: var(--jb-head); line-height: 1.1; margin: 0; letter-spacing: -.025em; font-weight: 500; }
+  h1 { font-size: clamp(2.4rem, 6vw, 4.5rem); color: var(--jb-black); letter-spacing: -.04em; }
+  h2 { font-size: 2.2rem; color: var(--jb-green); }
+  h3 { font-size: 1.3rem; font-weight: 600; margin-bottom: 8px; }
   p { margin: 0 0 12px; }
-  a { color: var(--jb-blue-600); }
+  a { color: var(--jb-green); }
   .wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
-  header.hero { background: var(--jb-cream); padding: 56px 0 48px; border-bottom: 1px solid var(--jb-line); }
-  header.hero .wrap { display: grid; gap: 32px; grid-template-columns: 1.2fr 1fr; align-items: center; }
-  header.hero img { width: 100%; max-width: 380px; justify-self: center; }
-  .kicker { font-family: var(--jb-head); font-weight: 700; color: var(--jb-red); letter-spacing: .04em; text-transform: uppercase; font-size: .9rem; }
+  header.hero { background: var(--jb-soft); padding: 56px 0 48px; border-bottom: 1px solid var(--jb-line); }
+  header.hero .wrap { display: grid; gap: 32px; grid-template-columns: 1.3fr 1fr; align-items: center; }
+  .logo-stage { background: #fff; border-radius: var(--jb-radius-xl); box-shadow: var(--jb-shadow-card); padding: 36px; display: flex; flex-direction: column; align-items: center; gap: 22px; }
+  .logo-stage img { max-width: 100%; }
+  .kicker { font-family: var(--jb-head); font-weight: 600; color: var(--jb-green); letter-spacing: .06em; text-transform: uppercase; font-size: .85rem; }
   nav.toc { position: sticky; top: 0; z-index: 5; background: rgba(255,255,255,.94); backdrop-filter: blur(6px); border-bottom: 1px solid var(--jb-line); }
-  nav.toc .wrap { display: flex; gap: 18px; overflow-x: auto; padding-top: 10px; padding-bottom: 10px; font-family: var(--jb-head); font-weight: 600; white-space: nowrap; }
-  nav.toc a { text-decoration: none; color: var(--jb-ink); }
-  nav.toc a:hover { color: var(--jb-blue-600); }
+  nav.toc .wrap { display: flex; gap: 18px; overflow-x: auto; padding-top: 10px; padding-bottom: 10px; font-family: var(--jb-head); font-weight: 500; white-space: nowrap; }
+  nav.toc a { text-decoration: none; color: var(--jb-ink); } nav.toc a:hover { color: var(--jb-green); }
   section { padding: 56px 0 8px; }
-  section > .wrap > p.lead { color: var(--jb-gray); max-width: 70ch; margin-top: 8px; }
+  section > .wrap > p.lead { color: var(--jb-gray); max-width: 70ch; margin-top: 10px; }
   .grid { display: grid; gap: 16px; margin-top: 24px; }
   .g2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
   .g3 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
   .g4 { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
-  .card { background: var(--jb-white); border: 1px solid var(--jb-line); border-radius: var(--jb-radius); padding: 20px; box-shadow: var(--jb-shadow-card); }
-  .logo-box { display: flex; align-items: center; justify-content: center; border-radius: var(--jb-radius); border: 1px solid var(--jb-line); min-height: 190px; padding: 18px; }
-  .logo-box img { max-height: 150px; max-width: 100%; }
-  .on-dark { background: var(--jb-navy); }
-  .on-blue { background: var(--jb-blue-600); }
-  .on-cream { background: var(--jb-cream); }
-  .sw { border-radius: var(--jb-radius); overflow: hidden; border: 1px solid var(--jb-line); background: #fff; }
-  .sw .chip { height: 84px; display: flex; align-items: flex-end; padding: 8px 12px; font-family: var(--jb-head); font-weight: 700; }
-  .sw .meta { padding: 10px 12px 12px; font-size: .88rem; line-height: 1.45; }
-  .sw .meta b { font-family: var(--jb-head); font-size: 1rem; display: block; }
+  .card { background: var(--jb-white); border-radius: var(--jb-radius); padding: 20px; box-shadow: var(--jb-shadow-card); }
+  .logo-box { display: flex; align-items: center; justify-content: center; border-radius: var(--jb-radius); box-shadow: var(--jb-shadow-card); min-height: 170px; padding: 18px; background: #fff; }
+  .logo-box img { max-height: 110px; max-width: 100%; }
+  .on-soft { background: var(--jb-soft); } .on-green { background: var(--jb-green); } .on-dark { background: #0e1514; }
+  .sw { border-radius: var(--jb-radius); overflow: hidden; box-shadow: var(--jb-shadow-card); background: #fff; }
+  .sw .chip { height: 84px; display: flex; align-items: flex-end; padding: 8px 12px; font-family: var(--jb-head); font-weight: 600; }
+  .sw .meta { padding: 10px 12px 12px; font-size: .85rem; line-height: 1.5; }
+  .sw .meta b { font-family: var(--jb-head); font-size: 1.02rem; display: block; font-weight: 600; }
   code { font-family: ui-monospace, Consolas, monospace; font-size: .85em; background: var(--jb-soft); padding: 1px 6px; border-radius: 6px; }
-  .tag { display: inline-block; font-size: .75rem; font-family: var(--jb-head); font-weight: 700; padding: 1px 10px; border-radius: var(--jb-radius-pill); background: var(--jb-blue-50); color: var(--jb-blue-900); }
-  .tag.ok { background: var(--jb-success-50); color: var(--jb-success); }
-  .tag.no { background: var(--jb-danger-50); color: var(--jb-red-700); }
-  table { border-collapse: collapse; width: 100%; font-size: .93rem; }
+  table { border-collapse: collapse; width: 100%; font-size: .92rem; }
   th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--jb-line); vertical-align: top; }
-  th { font-family: var(--jb-head); color: var(--jb-gray); font-weight: 700; }
+  th { font-family: var(--jb-head); color: var(--jb-gray); font-weight: 600; }
   ul.clean { margin: 0; padding-left: 20px; } ul.clean li { margin-bottom: 6px; }
-  .do, .dont { border-radius: var(--jb-radius); padding: 14px 16px; font-size: .93rem; }
-  .do { background: var(--jb-success-50); border: 1px solid #b9e3c8; } .dont { background: var(--jb-danger-50); border: 1px solid #f4c1ba; }
+  .do, .dont { border-radius: var(--jb-radius); padding: 14px 16px; font-size: .92rem; }
+  .do { background: var(--jb-green-50); } .dont { background: var(--jb-danger-50); }
 
-  /* Composants de démonstration */
-  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: var(--jb-head); font-weight: 700; font-size: 1.05rem; line-height: 1; padding: 13px 22px; border-radius: var(--jb-radius); border: 2px solid transparent; cursor: pointer; text-decoration: none; transition: transform .15s var(--jb-ease), background .15s; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: var(--jb-body); font-weight: 500; font-size: 1rem; line-height: 1; padding: 14px 22px; border-radius: var(--jb-radius); border: 1.5px solid transparent; cursor: pointer; text-decoration: none; transition: transform .15s var(--jb-ease), background .15s; }
   .btn:hover { transform: translateY(-1px); } .btn:focus-visible { outline: 0; box-shadow: var(--jb-focus); }
-  .btn-primary { background: var(--jb-blue-600); color: #fff; box-shadow: var(--jb-shadow-btn); } .btn-primary:hover { background: var(--jb-blue-900); }
-  .btn-cta { background: var(--jb-red); color: #fff; } .btn-cta:hover { background: var(--jb-red-700); }
-  .btn-ghost { background: #fff; color: var(--jb-blue-600); border-color: var(--jb-blue-600); }
-  .btn-soft { background: var(--jb-blue-50); color: var(--jb-blue-900); }
-  .btn-sm { padding: 9px 14px; font-size: .92rem; border-radius: var(--jb-radius-sm); }
-  .badge { display: inline-flex; align-items: center; gap: 6px; font-family: var(--jb-head); font-weight: 700; font-size: .88rem; padding: 4px 12px; border-radius: var(--jb-radius-pill); }
-  .b-new { background: var(--jb-yellow); color: var(--jb-ink); }
-  .b-cook { background: var(--jb-orange); color: var(--jb-ink); }
-  .b-ready { background: var(--jb-success); color: #fff; }
-  .b-served { background: var(--jb-blue-600); color: #fff; }
-  .b-cancel { background: var(--jb-line); color: var(--jb-gray); }
-  .field label { display: block; font-family: var(--jb-head); font-weight: 600; margin-bottom: 4px; }
-  .field input { width: 100%; font: inherit; padding: 11px 14px; border: 1.5px solid #c9d2d8; border-radius: var(--jb-radius-sm); background: #fff; color: var(--jb-ink); }
-  .field input:focus { outline: 0; border-color: var(--jb-blue); box-shadow: var(--jb-focus); }
-  .field .err { color: var(--jb-red-700); font-size: .85rem; margin-top: 4px; }
-  .alert { border-radius: var(--jb-radius); padding: 12px 16px; font-size: .93rem; border-left: 5px solid; }
-  .a-info { background: var(--jb-info-50); border-color: var(--jb-info); color: var(--jb-blue-900); }
-  .a-ok { background: var(--jb-success-50); border-color: var(--jb-success); }
-  .a-warn { background: var(--jb-warning-50); border-color: var(--jb-yellow); }
-  .a-err { background: var(--jb-danger-50); border-color: var(--jb-red); color: var(--jb-red-700); }
-  .dish { display: grid; grid-template-columns: 84px 1fr auto; gap: 14px; align-items: center; padding: 12px; border-radius: var(--jb-radius); background: #fff; border: 1px solid var(--jb-line); box-shadow: var(--jb-shadow-card); }
-  .dish .ph { width: 84px; height: 84px; border-radius: var(--jb-radius-sm); background: linear-gradient(135deg, var(--jb-yellow), var(--jb-orange)); display: flex; align-items: center; justify-content: center; font-size: 2rem; }
-  .dish h4 { font-size: 1.1rem; } .dish small { color: var(--jb-gray); }
-  .price { font-family: var(--jb-head); font-weight: 800; font-size: 1.15rem; color: var(--jb-blue-900); }
-  .dish.out { opacity: .55; } .dish.out .ph { filter: grayscale(1); }
-  .order { border-radius: var(--jb-radius); background: #fff; border: 1px solid var(--jb-line); border-left: 6px solid var(--jb-yellow); padding: 14px 16px; box-shadow: var(--jb-shadow-card); }
+  .btn-primary { background: var(--jb-green); color: #fff; box-shadow: var(--jb-shadow-btn); } .btn-primary:hover { background: var(--jb-green-900); }
+  .btn-black { background: var(--jb-black); color: #fff; }
+  .btn-ghost { background: #fff; color: var(--jb-green); border-color: var(--jb-stroke); }
+  .btn-soft { background: var(--jb-green-50); color: var(--jb-green); }
+  .btn-danger { background: var(--jb-danger); color: #fff; }
+  .btn-sm { padding: 9px 14px; font-size: .88rem; border-radius: var(--jb-radius-sm); }
+  .badge { display: inline-flex; align-items: center; gap: 6px; font-family: var(--jb-head); font-weight: 600; font-size: .88rem; padding: 4px 12px; border-radius: var(--jb-radius-pill); }
+  .b-new { background: var(--jb-amber); color: var(--jb-ink); } .b-cook { background: var(--jb-orange); color: var(--jb-ink); }
+  .b-ready { background: var(--jb-green); color: #fff; } .b-served { background: var(--jb-ink); color: #fff; } .b-cancel { background: var(--jb-gray); color: #fff; }
+  .field label { display: block; font-weight: 500; font-size: .92rem; margin-bottom: 4px; }
+  .field input { width: 100%; font: inherit; padding: 11px 14px; border: 1.5px solid var(--jb-stroke); border-radius: var(--jb-radius-sm); background: #fff; color: var(--jb-ink); }
+  .field input:focus { outline: 0; border-color: var(--jb-green); box-shadow: var(--jb-focus); }
+  .field .err { color: var(--jb-danger); font-size: .85rem; margin-top: 4px; }
+  .alert { border-radius: var(--jb-radius); padding: 12px 16px; font-size: .92rem; border-left: 5px solid; }
+  .a-ok { background: var(--jb-green-50); border-color: var(--jb-green); }
+  .a-info { background: var(--jb-soft); border-color: var(--jb-gray); }
+  .a-warn { background: var(--jb-warning-50); border-color: var(--jb-amber); }
+  .a-err { background: var(--jb-danger-50); border-color: var(--jb-danger); color: #8f2512; }
+  .order { border-radius: var(--jb-radius); background: #fff; border-left: 6px solid var(--jb-amber); padding: 14px 16px; box-shadow: var(--jb-shadow-card); }
   .order .row { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .price { font-family: var(--jb-head); font-weight: 700; font-size: 1.15rem; color: var(--jb-green); }
+  .shop { background: var(--jb-cream); border-radius: var(--jb-radius-xl); padding: 16px; }
+  .dish { display: grid; grid-template-columns: 84px 1fr auto; gap: 14px; align-items: center; padding: 12px; border-radius: var(--jb-radius-lg); background: #fff; box-shadow: var(--jb-shadow-float); margin-top: 10px; }
+  .dish .ph { width: 84px; height: 84px; border-radius: var(--jb-radius); background: linear-gradient(135deg, #fbe3b0, var(--jb-amber)); display: flex; align-items: center; justify-content: center; font-size: 2rem; }
+  .dish h4 { font-size: 1.1rem; font-weight: 600; } .dish small { color: var(--jb-gray); }
+  .dish.out { opacity: .6; } .dish.out .ph { filter: grayscale(1); }
+  .hero-card { border-radius: var(--jb-radius-xl); padding: 22px 20px; color: #fff; background: radial-gradient(260px 200px at 95% 10%, rgba(255,255,255,.2), transparent 70%), linear-gradient(135deg, var(--jb-green), var(--jb-green-900)); }
+  .hero-card h4 { font-size: 1.7rem; font-weight: 600; margin-bottom: 6px; } .hero-card p { opacity: .9; font-size: .9rem; max-width: 36ch; }
+  .pill-cta { display: inline-flex; align-items: center; gap: 8px; background: #fff; color: var(--jb-green); font-weight: 600; font-size: .9rem; padding: 10px 16px; border-radius: 999px; }
   .type-row { display: flex; align-items: baseline; gap: 18px; padding: 12px 0; border-bottom: 1px solid var(--jb-line); }
-  .type-row .meta { width: 170px; flex: none; font-size: .82rem; color: var(--jb-gray); font-family: var(--jb-body); }
-  .shape { height: 70px; background: var(--jb-blue-50); border: 1.5px solid var(--jb-blue); display: flex; align-items: center; justify-content: center; font-family: var(--jb-head); font-weight: 700; color: var(--jb-blue-900); }
-  footer { margin-top: 64px; padding: 28px 0 40px; background: var(--jb-navy); color: #cdd8f5; font-size: .9rem; }
-  footer b { color: #fff; font-family: var(--jb-head); }
+  .type-row .meta { width: 180px; flex: none; font-size: .8rem; color: var(--jb-gray); }
+  .shape { height: 70px; background: var(--jb-green-50); border: 1.5px solid var(--jb-green); display: flex; align-items: center; justify-content: center; font-family: var(--jb-head); font-weight: 600; color: var(--jb-green); text-align: center; padding: 4px; font-size: .9rem; }
+  footer { margin-top: 64px; padding: 28px 0 40px; background: var(--jb-green-900); color: #cfe3e0; font-size: .9rem; } footer b { color: #fff; }
   @media (max-width: 720px) { header.hero .wrap { grid-template-columns: 1fr; } .type-row { flex-direction: column; gap: 2px; } .dish { grid-template-columns: 64px 1fr; } .dish .price { grid-column: 2; } .dish .ph { width: 64px; height: 64px; } }
 </style>
 </head>
@@ -93,12 +88,14 @@
 <header class="hero">
   <div class="wrap">
     <div>
-      <span class="kicker">Charte graphique · version 1.0</span>
-      <h1 style="color:var(--jb-blue)">Jim<span style="color:var(--jb-red)">be</span></h1>
-      <p style="font-family:var(--jb-head);font-size:1.4rem;font-weight:700;margin-top:10px">Simple pour vous. Meilleur pour vos clients.</p>
-      <p style="color:var(--jb-gray);max-width:52ch">Ce document fixe l'identité visuelle de Jimbe pour toutes les surfaces : le site vitrine, le tableau de bord du restaurateur et la page que le client ouvre en scannant le QR code. Les valeurs viennent du logo (le hibou et le mot « Jimbe ») et de la page vitrine ; elles sont codées dans <code>public/css/jimbe-tokens.css</code>.</p>
+      <span class="kicker">Charte graphique · version 2.0</span>
+      <h1 style="margin-top:10px">Simple, net, chaleureux.</h1>
+      <p style="color:var(--jb-gray);max-width:54ch;margin-top:16px">Cette charte reprend l'identité de la page vitrine verte : un vert profond, des fonds gris très clair, un bouton noir, une touche d'ambre, des titres serrés en Inter Tight et un texte en Poppins. Elle s'applique au site vitrine, au tableau de bord du restaurateur et à la page que le client ouvre en scannant le QR code. Les valeurs sont codées dans <code>public/css/jimbe-tokens.css</code>.</p>
     </div>
-    <img src="../public/landing/brand/jimbe-logo-full.png" alt="Logo Jimbe : un hibou bleu au-dessus du mot Jimbe, « Jim » en bleu et « be » en rouge">
+    <div class="logo-stage">
+      <img src="../public/landing/framer/qJ79a7uh7BDpTYRCcBzM6dJ5QYk.svg" alt="Logo : carré vert avec un signe blanc, suivi du mot Mobilo" style="width:260px">
+      <img src="../public/img/mobilo-mark.svg" alt="Signe seul du logo" style="width:84px">
+    </div>
   </div>
 </header>
 
@@ -110,69 +107,70 @@
 
 <section id="principes"><div class="wrap">
   <h2>1. Principes</h2>
-  <p class="lead">Jimbe s'adresse à des restaurateurs qui n'ont pas de temps à perdre et à des clients qui ont faim. L'identité doit rassurer, aller vite et rester joyeuse.</p>
+  <p class="lead">Le produit s'adresse à des restaurateurs qui n'ont pas le temps d'apprendre un logiciel et à des clients qui veulent commander vite. L'identité doit être calme, rassurante et rapide à lire.</p>
   <div class="grid g3">
-    <div class="card"><h3>Simple</h3><p>Une action principale par écran. Peu de couleurs : un bleu d'action, un rouge pour l'appel à l'action, le reste en neutres.</p></div>
-    <div class="card"><h3>Chaleureux</h3><p>Formes arrondies, hibou souriant, fonds crème et touches jaune-orange. On est dans un restaurant, pas dans un tableur.</p></div>
-    <div class="card"><h3>Lisible, partout</h3><p>Utilisable debout, en cuisine, sur un téléphone d'entrée de gamme et en plein soleil : gros textes, forts contrastes, boutons larges.</p></div>
+    <div class="card"><h3>Sobre</h3><p>Un vert, du noir, du blanc cassé. L'ambre n'apparaît que pour attirer l'œil sur une chose à la fois.</p></div>
+    <div class="card"><h3>Aéré</h3><p>Beaucoup d'espace, peu de bordures, des cartes qui flottent légèrement. Rien ne crie, tout se lit.</p></div>
+    <div class="card"><h3>Utilisable partout</h3><p>En cuisine, debout, au soleil, sur un petit téléphone : textes grands, contrastes forts, boutons larges.</p></div>
   </div>
 </div></section>
 
 <section id="logo"><div class="wrap">
-  <h2>2. Logo et mascotte</h2>
-  <p class="lead">Le logo associe le hibou (la mascotte) au mot « Jimbe ». Le hibou veille sur le restaurant, « Jim » est bleu, « be » est rouge. Fichiers dans <code>public/landing/brand/</code>.</p>
+  <h2>2. Logo</h2>
+  <p class="lead">Le logo est un carré vert aux coins arrondis contenant un signe blanc, suivi du mot Mobilo en lettres noires. Fichiers : <code>public/landing/framer/qJ79a7uh7BDpTYRCcBzM6dJ5QYk.svg</code> (logo complet) et <code>public/img/mobilo-mark.svg</code> (signe seul).</p>
   <div class="grid g3">
-    <div><div class="logo-box on-cream"><img src="../public/landing/brand/jimbe-logo-full.png" alt="Logo complet"></div><p style="margin-top:8px"><b>Logo complet</b> avec signature. Site vitrine, e-mails, documents imprimés.</p></div>
-    <div><div class="logo-box"><img src="../public/landing/brand/jimbe-logo.png" alt="Logo sans signature"></div><p style="margin-top:8px"><b>Logo sans signature</b>. En-têtes, page de connexion, petits formats.</p></div>
-    <div><div class="logo-box"><img src="../public/landing/brand/jimbe-icon.png" alt="Icône du hibou" style="max-height:120px"></div><p style="margin-top:8px"><b>Icône (tête du hibou)</b>. Favicon, icône d'application, avatar, tampon sur les QR codes imprimés.</p></div>
+    <div><div class="logo-box on-soft"><img src="../public/landing/framer/qJ79a7uh7BDpTYRCcBzM6dJ5QYk.svg" alt="Logo complet"></div><p style="margin-top:8px"><b>Logo complet</b>. En-têtes du site, e-mails, documents.</p></div>
+    <div><div class="logo-box"><img src="../public/img/mobilo-mark.svg" alt="Signe seul" style="max-height:84px"></div><p style="margin-top:8px"><b>Signe seul</b>. Favicon, icône d'application, avatar, petits formats, tampon sur les QR codes.</p></div>
+    <div><div class="logo-box on-dark"><span style="background:#fff;border-radius:14px;padding:12px 16px;display:inline-flex"><img src="../public/landing/framer/qJ79a7uh7BDpTYRCcBzM6dJ5QYk.svg" alt="Logo sur pastille blanche" style="max-height:34px"></span></div><p style="margin-top:8px"><b>Sur fond sombre</b> : toujours une pastille blanche arrondie derrière le logo. Le vert et le noir se perdent sur fond foncé.</p></div>
   </div>
   <div class="grid g2">
-    <div class="card"><h3>Zone de protection</h3><p>Laisser autour du logo un vide au moins égal à la hauteur de l'œil du hibou. Taille minimale : 32 px de haut pour l'icône, 96 px de large pour le logo.</p></div>
-    <div class="card"><h3>Fonds autorisés</h3><p>Blanc, crème (<code>#FCF8D0</code>), gris très clair. Sur fond foncé ou coloré, utiliser une pastille blanche arrondie derrière le logo : « be » rouge et « Jim » bleu perdent leur contraste sur bleu nuit.</p></div>
+    <div class="card"><h3>Zone de protection et taille</h3><p>Laisser autour du logo un vide au moins égal à la moitié de la hauteur du carré vert. Taille minimale : 24 px de haut pour le signe, 96 px de large pour le logo complet.</p></div>
+    <div class="card"><h3>Fonds autorisés</h3><p>Blanc, gris très clair <code>#F7F7F7</code>, crème <code>#FBF6EE</code>. Sur le vert ou une photo, utiliser la pastille blanche.</p></div>
   </div>
   <div class="grid g2">
-    <div class="do"><b>À faire</b><ul class="clean"><li>Garder les proportions et les couleurs d'origine.</li><li>Utiliser le hibou seul comme signe de marque (favicon, QR, avatar).</li><li>Faire apparaître le hibou dans les états vides et les messages de bienvenue.</li></ul></div>
-    <div class="dont"><b>À ne pas faire</b><ul class="clean"><li>Recolorer le logo ou le passer en un seul bleu.</li><li>Étirer, pivoter, ajouter une ombre ou un contour.</li><li>Garder l'ancien logo carré « Mobilo » (vert) : il disparaît.</li></ul></div>
+    <div class="do"><b>À faire</b><ul class="clean"><li>Garder les proportions et les couleurs d'origine.</li><li>Utiliser le signe seul quand la place manque.</li><li>Afficher le logo du restaurant (et pas celui de la plateforme) en tête de la page client.</li></ul></div>
+    <div class="dont"><b>À ne pas faire</b><ul class="clean"><li>Recolorer le logo ou changer le vert.</li><li>Étirer, pivoter, ajouter une ombre ou un contour.</li><li>Mélanger avec l'ancien logo bleu au hibou : un seul logo dans le produit.</li></ul></div>
   </div>
 </div></section>
 
 <section id="couleurs"><div class="wrap">
   <h2>3. Couleurs</h2>
-  <p class="lead">Les couleurs de marque viennent du logo. Les couleurs d'action sont des variantes plus foncées pour rester lisibles (texte blanc dessus). La règle des proportions : environ 70 % de neutres, 20 % de bleu, 10 % de rouge, jaune et orange.</p>
+  <p class="lead">Le vert fait l'identité, le noir et les gris portent le texte, l'ambre met en avant. Répartition conseillée : environ 80 % de blancs et de gris, 15 % de vert, 5 % d'ambre, d'orange et de rouge.</p>
 
-  <h3 style="margin-top:28px">Couleurs de marque</h3>
+  <h3 style="margin-top:28px">Marque</h3>
   <div class="grid g4">
-    <div class="sw"><div class="chip" style="background:#1e9cd7;color:#fff">Bleu Jimbe</div><div class="meta"><b>#1E9CD7</b>Mot « Jim ». Identité, grands titres (24 px et +), illustrations. Pas pour du petit texte (3,1:1).</div></div>
-    <div class="sw"><div class="chip" style="background:#0079ad;color:#fff">Bleu d'action</div><div class="meta"><b>#0079AD</b>Boutons, liens, onglets actifs. Texte blanc : 4,8:1 ✓</div></div>
-    <div class="sw"><div class="chip" style="background:#06506e;color:#fff">Bleu profond</div><div class="meta"><b>#06506E</b>Survol, titres de section, texte sur fond bleu clair. 8,8:1 ✓</div></div>
-    <div class="sw"><div class="chip" style="background:#e6f4fb;color:#06506e">Bleu clair</div><div class="meta"><b>#E6F4FB</b>Fonds de blocs d'information, éléments sélectionnés.</div></div>
-    <div class="sw"><div class="chip" style="background:#de2f1c;color:#fff">Rouge Jimbe</div><div class="meta"><b>#DE2F1C</b>Mot « be ». Appel à l'action principal, urgence. Texte blanc : 4,6:1 ✓</div></div>
-    <div class="sw"><div class="chip" style="background:#fdc41b;color:#14202b">Jaune</div><div class="meta"><b>#FDC41B</b>Bec. Mise en avant, promotions, nouvelle commande. Texte foncé : 10,3:1 ✓</div></div>
-    <div class="sw"><div class="chip" style="background:#fd6a03;color:#14202b">Orange</div><div class="meta"><b>#FD6A03</b>Bouche. Chaleur, plat en cuisson. Texte foncé uniquement : 5,7:1 ✓ (blanc : 2,9:1 ✗)</div></div>
-    <div class="sw"><div class="chip" style="background:#102574;color:#fff">Bleu nuit</div><div class="meta"><b>#102574</b>Pupilles. Pied de page, fonds très forts. 13,7:1 ✓</div></div>
-    <div class="sw"><div class="chip" style="background:#0285f1;color:#fff">Bleu hibou</div><div class="meta"><b>#0285F1</b>Plumage. Illustrations seulement, jamais pour du texte (3,7:1).</div></div>
+    <div class="sw"><div class="chip" style="background:#055049;color:#fff">Vert Mobilo</div><div class="meta"><b>#055049</b>Boutons, liens, onglets actifs, prix. Blanc dessus : 9,3:1 ✓</div></div>
+    <div class="sw"><div class="chip" style="background:#0b3d38;color:#fff">Vert profond</div><div class="meta"><b>#0B3D38</b>Survol, bandeaux, pied de page. Blanc dessus : 12:1 ✓</div></div>
+    <div class="sw"><div class="chip" style="background:#e8f1f0;color:#055049">Vert clair</div><div class="meta"><b>#E8F1F0</b>Éléments sélectionnés, blocs d'information, boutons doux.</div></div>
+    <div class="sw"><div class="chip" style="background:#28a896;color:#101918">Vert mode sombre</div><div class="meta"><b>#28A896</b>Remplace le vert principal en mode sombre. Texte foncé dessus (6,1:1), jamais de blanc (2,9:1 ✗).</div></div>
+    <div class="sw"><div class="chip" style="background:#86e6d6;color:#101918">Menthe</div><div class="meta"><b>#86E6D6</b>Texte et icônes sur fond sombre. 12,6:1 sur <code>#0E1514</code> ✓</div></div>
+    <div class="sw"><div class="chip" style="background:#f5a524;color:#101918">Ambre</div><div class="meta"><b>#F5A524</b>Mise en avant, nouvelle commande, promotions. Texte noir : 8,8:1 ✓ (jamais de blanc).</div></div>
+    <div class="sw"><div class="chip" style="background:#ff8a24;color:#101918">Orange</div><div class="meta"><b>#FF8A24</b>Plat en cuisson. Texte noir : 7,6:1 ✓</div></div>
+    <div class="sw"><div class="chip" style="background:#fbf6ee;color:#92611a;box-shadow:inset 0 0 0 1px #e7ebea">Ambre foncé</div><div class="meta"><b>#92611A</b>Texte ambré sur fond clair (4,9:1 sur crème ✓).</div></div>
   </div>
 
   <h3 style="margin-top:32px">Neutres</h3>
   <div class="grid g4">
-    <div class="sw"><div class="chip" style="background:#14202b;color:#fff">Encre</div><div class="meta"><b>#14202B</b>Texte principal. 16,5:1</div></div>
-    <div class="sw"><div class="chip" style="background:#5c5c5c;color:#fff">Gris texte</div><div class="meta"><b>#5C5C5C</b>Texte secondaire. 6,7:1</div></div>
-    <div class="sw"><div class="chip" style="background:#e5e5e5;color:#14202b">Filet</div><div class="meta"><b>#E5E5E5</b>Bordures, séparateurs.</div></div>
-    <div class="sw"><div class="chip" style="background:#f7f7f7;color:#14202b">Fond doux</div><div class="meta"><b>#F7F7F7</b>Fond du tableau de bord.</div></div>
-    <div class="sw"><div class="chip" style="background:#fcf8d0;color:#14202b">Crème</div><div class="meta"><b>#FCF8D0</b>Fond de la vitrine et de la page client.</div></div>
-    <div class="sw"><div class="chip" style="background:#ffffff;color:#14202b;border-bottom:1px solid #e5e5e5">Blanc</div><div class="meta"><b>#FFFFFF</b>Cartes, formulaires.</div></div>
+    <div class="sw"><div class="chip" style="background:#000;color:#fff">Noir</div><div class="meta"><b>#000000</b>Bouton d'appel à l'action de la vitrine, grands titres.</div></div>
+    <div class="sw"><div class="chip" style="background:#101918;color:#fff">Encre</div><div class="meta"><b>#101918</b>Texte du produit. 17,9:1 ✓</div></div>
+    <div class="sw"><div class="chip" style="background:#5c5c5c;color:#fff">Gris</div><div class="meta"><b>#5C5C5C</b>Texte secondaire. 6,7:1 sur blanc ✓</div></div>
+    <div class="sw"><div class="chip" style="background:#c2c2c2;color:#101918">Trait</div><div class="meta"><b>#C2C2C2</b>Bordures de champs et de boutons secondaires.</div></div>
+    <div class="sw"><div class="chip" style="background:#e7ebea;color:#101918">Filet</div><div class="meta"><b>#E7EBEA</b>Séparateurs, tableaux.</div></div>
+    <div class="sw"><div class="chip" style="background:#f7f7f7;color:#101918">Fond doux</div><div class="meta"><b>#F7F7F7</b>Fond de page du tableau de bord et de la vitrine.</div></div>
+    <div class="sw"><div class="chip" style="background:#fbf6ee;color:#101918">Crème</div><div class="meta"><b>#FBF6EE</b>Fond de la page client (QR).</div></div>
+    <div class="sw"><div class="chip" style="background:#fff;color:#101918;box-shadow:inset 0 -1px 0 #e7ebea">Blanc</div><div class="meta"><b>#FFFFFF</b>Cartes, formulaires.</div></div>
   </div>
 
-  <h3 style="margin-top:32px">Couleurs de sens</h3>
+  <h3 style="margin-top:32px">Sens</h3>
   <div class="grid g4">
-    <div class="sw"><div class="chip" style="background:#15803d;color:#fff">Succès</div><div class="meta"><b>#15803D</b>Validé, prêt. Fond : <code>#E7F6EC</code></div></div>
-    <div class="sw"><div class="chip" style="background:#fdc41b;color:#14202b">Attention</div><div class="meta"><b>#FDC41B</b>À traiter. Fond : <code>#FFF6D6</code></div></div>
-    <div class="sw"><div class="chip" style="background:#de2f1c;color:#fff">Erreur</div><div class="meta"><b>#DE2F1C</b>Texte d'erreur : <code>#B8200F</code>. Fond : <code>#FDEBE8</code></div></div>
-    <div class="sw"><div class="chip" style="background:#0079ad;color:#fff">Information</div><div class="meta"><b>#0079AD</b>Fond : <code>#E6F4FB</code></div></div>
+    <div class="sw"><div class="chip" style="background:#e8f1f0;color:#055049">Succès</div><div class="meta"><b>Vert Mobilo</b>Le vert de marque sert aussi pour « fait » et « prêt ».</div></div>
+    <div class="sw"><div class="chip" style="background:#fff3d6;color:#92611a">Attention</div><div class="meta"><b>#FFF3D6</b>Fond, bordure ambre. Texte <code>#92611A</code>.</div></div>
+    <div class="sw"><div class="chip" style="background:#c8341d;color:#fff">Erreur</div><div class="meta"><b>#C8341D</b>Erreurs, suppression. Blanc dessus : 5,3:1 ✓ Fond : <code>#FBEAE6</code></div></div>
+    <div class="sw"><div class="chip" style="background:#f7f7f7;color:#101918">Information</div><div class="meta"><b>Gris neutre</b>Pas de bleu : l'information reste discrète, fond <code>#F7F7F7</code>.</div></div>
   </div>
 
   <h3 style="margin-top:32px">Statuts de commande</h3>
-  <p>Même vocabulaire et mêmes couleurs partout : tableau de bord et écran du client. Jamais la couleur seule : toujours le libellé écrit.</p>
+  <p>Mêmes libellés et mêmes couleurs partout (tableau de bord et écran du client). Jamais la couleur seule : toujours le mot écrit.</p>
   <div class="card" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
     <span class="badge b-new">● Nouvelle</span> →
     <span class="badge b-cook">● En cuisson</span> →
@@ -185,48 +183,50 @@
 
 <section id="typo"><div class="wrap">
   <h2>4. Typographie</h2>
-  <p class="lead">Deux polices Google Fonts, déjà utilisées par la vitrine. <b>Baloo Chettan 2</b> : ronde et expressive, comme les lettres du logo, pour les titres, boutons, prix et chiffres. <b>Arima Madurai</b> : texte courant et formulaires.</p>
+  <p class="lead">Deux polices Google Fonts, déjà chargées par la vitrine. <b>Inter Tight</b> pour les titres, chiffres et prix : poids moyen, lettres serrées, sans gras lourd. <b>Poppins</b> pour le texte, les boutons et les formulaires.</p>
   <div class="card">
-    <div class="type-row"><div class="meta">Titre 1 · Baloo 800<br>40–64 px</div><div style="font-family:var(--jb-head);font-weight:800;font-size:2.6rem;line-height:1.1">Gérez votre restaurant simplement</div></div>
-    <div class="type-row"><div class="meta">Titre 2 · Baloo 800<br>32 px</div><div style="font-family:var(--jb-head);font-weight:800;font-size:2rem;color:var(--jb-blue-900)">Vos commandes du jour</div></div>
-    <div class="type-row"><div class="meta">Titre 3 · Baloo 700<br>20 px</div><div style="font-family:var(--jb-head);font-weight:700;font-size:1.25rem">Poulet braisé</div></div>
-    <div class="type-row"><div class="meta">Texte · Arima Madurai 400<br>16 px / 1,6</div><div>Tapez le nombre de tables : les tables et leurs QR codes sont créés pour vous. Vous pourrez les renommer ensuite.</div></div>
-    <div class="type-row"><div class="meta">Texte secondaire · Arima 400<br>14 px, gris</div><div style="font-size:.875rem;color:var(--jb-gray)">Dernière mise à jour il y a 2 minutes</div></div>
-    <div class="type-row"><div class="meta">Prix et chiffres · Baloo 800<br>18–28 px</div><div class="price" style="font-size:1.6rem">3 500 FCFA</div></div>
-    <div class="type-row" style="border:0"><div class="meta">Bouton · Baloo 700<br>16–17 px</div><div><span class="btn btn-primary">Valider la commande</span></div></div>
+    <div class="type-row"><div class="meta">Titre 1 · Inter Tight 500<br>48–72 px, interlettrage −4 %</div><div style="font-family:var(--jb-head);font-weight:500;font-size:2.8rem;line-height:1.05;letter-spacing:-.04em;color:#000">Gérez votre restaurant simplement</div></div>
+    <div class="type-row"><div class="meta">Titre 2 · Inter Tight 500<br>36–52 px, vert</div><div style="font-family:var(--jb-head);font-weight:500;font-size:2.2rem;letter-spacing:-.03em;color:var(--jb-green)">Vos commandes du jour</div></div>
+    <div class="type-row"><div class="meta">Titre 3 · Inter Tight 600<br>20–24 px</div><div style="font-family:var(--jb-head);font-weight:600;font-size:1.35rem;letter-spacing:-.02em">Poulet braisé</div></div>
+    <div class="type-row"><div class="meta">Texte · Poppins 400<br>16 px / 1,6</div><div>Tapez le nombre de tables : les tables et leurs QR codes sont créés pour vous. Vous pourrez les renommer ensuite.</div></div>
+    <div class="type-row"><div class="meta">Texte secondaire · Poppins 400<br>14 px, gris</div><div style="font-size:.875rem;color:var(--jb-gray)">Dernière mise à jour il y a 2 minutes</div></div>
+    <div class="type-row"><div class="meta">Prix et chiffres · Inter Tight 700<br>18–28 px, vert</div><div class="price" style="font-size:1.7rem">3 500 FCFA</div></div>
+    <div class="type-row" style="border:0"><div class="meta">Bouton · Poppins 500<br>16–18 px</div><div><span class="btn btn-primary">Valider la commande</span></div></div>
   </div>
-  <p style="margin-top:12px;color:var(--jb-gray);font-size:.93rem">Règles : taille minimale 14 px (16 px pour les champs de saisie, pour éviter le zoom sur iPhone) ; majuscules seulement pour les petites étiquettes ; pas plus de deux graisses par écran. Si Arima Madurai se révèle fatigante sur de longues listes du tableau de bord, on la remplacera par la police du système dans les tableaux uniquement.</p>
+  <p style="margin-top:12px;color:var(--jb-gray);font-size:.92rem">Règles : taille minimale 14 px (16 px dans les champs, pour éviter le zoom sur iPhone) ; pas de gras supérieur à 600 dans les titres ; majuscules uniquement pour les petites étiquettes ; pas plus de deux graisses par écran.</p>
 </div></section>
 
 <section id="formes"><div class="wrap">
   <h2>5. Formes, ombres, espacements</h2>
-  <p class="lead">Tout est arrondi, comme le hibou. Les ombres sont douces et peu étendues ; l'espacement suit une grille de 4 px.</p>
+  <p class="lead">Des angles arrondis, des cartes presque sans bordure posées sur un fond gris très clair, et des ombres décalées vers le bas à droite, comme sur la vitrine.</p>
   <div class="grid g4">
-    <div class="shape" style="border-radius:8px">8 px · champs, boutons S</div>
-    <div class="shape" style="border-radius:14px">14 px · boutons, cartes</div>
-    <div class="shape" style="border-radius:22px">22 px · grands blocs</div>
-    <div class="shape" style="border-radius:999px">pilule · badges</div>
+    <div class="shape" style="border-radius:10px">10 px<br>champs, petits boutons</div>
+    <div class="shape" style="border-radius:14px">14 px<br>boutons, cartes</div>
+    <div class="shape" style="border-radius:18px">18 px<br>cartes de la page client</div>
+    <div class="shape" style="border-radius:26px">26 px<br>bannières</div>
   </div>
   <div class="grid g3">
-    <div class="card"><h3>Ombre de carte</h3><code>0 1px 2px / 0 6px 18px, 6 % d'encre</code></div>
-    <div class="card"><h3>Focus clavier</h3><code>anneau bleu 3 px, 35 %</code><p style="margin-top:8px;font-size:.9rem">Toujours visible, jamais supprimé.</p></div>
-    <div class="card"><h3>Mouvement</h3><p style="font-size:.9rem;margin:0">150–250 ms, courbe douce. Aucun effet qui retarde une action. Respecter « réduire les animations ».</p></div>
+    <div class="card"><h3>Ombre de carte</h3><code>6px 6px 18px, 6 % d'encre + liseré 1 px</code></div>
+    <div class="card"><h3>Bouton principal</h3><code>ombre verte douce sous le bouton + reflet intérieur</code></div>
+    <div class="card"><h3>Focus clavier</h3><code>anneau vert 3 px, 30 %</code><p style="margin:8px 0 0;font-size:.9rem">Toujours visible, jamais supprimé.</p></div>
   </div>
+  <p style="margin-top:16px;color:var(--jb-gray);font-size:.92rem">Espacement : multiples de 4 px (4, 8, 12, 16, 24, 32, 48). Mouvement : 150–250 ms, courbe douce, jamais d'animation qui retarde une action ; respecter « réduire les animations ».</p>
 </div></section>
 
 <section id="composants"><div class="wrap">
   <h2>6. Composants de base</h2>
-  <p class="lead">Aperçu des briques qui reviennent partout. Elles seront reconstruites à partir des variables de la charte.</p>
+  <p class="lead">Les briques qui reviennent partout, reconstruites à partir des variables de la charte.</p>
 
   <div class="grid g2">
     <div class="card">
       <h3>Boutons</h3>
-      <p style="font-size:.9rem;color:var(--jb-gray)">Un seul bouton principal par écran. Rouge = l'action qui rapporte (commander, s'inscrire). Bleu = l'action courante.</p>
+      <p style="font-size:.9rem;color:var(--jb-gray)">Un seul bouton principal par écran. Vert = action courante. Noir = appel à l'action de la vitrine (« Commencer »). Rouge = suppression seulement.</p>
       <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
         <span class="btn btn-primary">Enregistrer</span>
-        <span class="btn btn-cta">Commander</span>
+        <span class="btn btn-black">Commencer</span>
         <span class="btn btn-ghost">Annuler</span>
         <span class="btn btn-soft btn-sm">Télécharger</span>
+        <span class="btn btn-danger btn-sm">Supprimer</span>
       </div>
     </div>
     <div class="card">
@@ -247,29 +247,30 @@
       </div>
     </div>
     <div class="card">
-      <h3>Carte de commande (tableau de bord)</h3>
+      <h3>Commande (tableau de bord)</h3>
       <div class="order">
-        <div class="row"><b style="font-family:var(--jb-head);font-size:1.2rem">Table 4</b><span class="badge b-new">● Nouvelle</span></div>
-        <p style="margin:6px 0 10px;color:var(--jb-gray);font-size:.93rem">2 × Poulet braisé (attiéké) · 1 × Jus de bissap</p>
+        <div class="row"><b style="font-family:var(--jb-head);font-size:1.25rem;font-weight:600">Table 4</b><span class="badge b-new">● Nouvelle</span></div>
+        <p style="margin:6px 0 10px;color:var(--jb-gray);font-size:.9rem">2 × Poulet braisé (attiéké) · 1 × Jus de bissap</p>
         <div class="row"><span class="price">8 500 FCFA</span><span class="btn btn-primary btn-sm">Valider · en cuisson</span></div>
       </div>
     </div>
   </div>
 
   <div class="grid g2">
-    <div class="card">
-      <h3>Plat sur la page du client</h3>
-      <div style="display:grid;gap:10px">
+    <div>
+      <h3>Page client (QR)</h3>
+      <div class="shop">
+        <div class="hero-card"><h4>Faim ? Commandez depuis votre table</h4><p>Choisissez vos plats, un serveur vous les apporte.</p><span class="pill-cta" style="margin-top:12px">Voir le menu →</span></div>
         <div class="dish"><div class="ph">🍗</div><div><h4>Poulet braisé</h4><small>Avec attiéké, riz ou alloco</small></div><div class="price">3 500 F</div></div>
         <div class="dish out"><div class="ph">🥤</div><div><h4>Jus de gingembre</h4><small><span class="badge b-cancel">Épuisé</span></small></div><div class="price">500 F</div></div>
       </div>
     </div>
-    <div class="card">
+    <div>
       <h3>Statut vu par le client</h3>
-      <div style="text-align:center;padding:10px 0">
-        <img src="../public/landing/brand/jimbe-icon.png" alt="" style="width:72px;margin:0 auto 8px">
-        <div style="font-family:var(--jb-head);font-weight:800;font-size:1.5rem">Votre plat est en cuisson</div>
-        <p style="color:var(--jb-gray);margin:6px 0 12px">On vous prévient dès qu'il est prêt.</p>
+      <div class="shop" style="text-align:center;padding:28px 16px">
+        <img src="../public/img/mobilo-mark.svg" alt="" style="width:56px;margin:0 auto 10px">
+        <div style="font-family:var(--jb-head);font-weight:600;font-size:1.6rem;letter-spacing:-.02em">Votre plat est en cuisson</div>
+        <p style="color:var(--jb-gray);margin:6px 0 14px">On vous prévient dès qu'il est prêt.</p>
         <span class="badge b-cook">● En cuisson</span>
       </div>
     </div>
@@ -280,11 +281,11 @@
   <h2>7. Application par surface</h2>
   <div class="card" style="margin-top:20px;overflow-x:auto">
     <table>
-      <tr><th>Surface</th><th>Fond</th><th>Couleur dominante</th><th>Particularités</th></tr>
-      <tr><td><b>Site vitrine</b><br>pour convaincre</td><td>Blanc et crème</td><td>Bleu Jimbe pour les titres, rouge pour « Commencer »</td><td>Hibou en grand, illustrations, titres en Baloo 800, ambiance la plus expressive.</td></tr>
-      <tr><td><b>Tableau de bord</b><br>pour travailler</td><td>Gris très clair, cartes blanches</td><td>Bleu d'action, statuts colorés</td><td>Sobre et dense : peu d'illustrations, hibou seulement dans les états vides et l'assistant. Mode sombre avec bleu plus clair.</td></tr>
-      <tr><td><b>Page client (QR)</b><br>pour commander</td><td>Crème</td><td>Rouge pour « Commander », jaune et orange pour les plats</td><td>Mobile d'abord. Photos grandes, boutons de 48 px minimum, plats épuisés grisés et lisibles.</td></tr>
-      <tr><td><b>Supports imprimés</b><br>QR par table</td><td>Blanc</td><td>Bleu Jimbe, nom du restaurant</td><td>Nom du restaurant, QR de 60 mm, nom de la table en gros, consigne « Scannez pour voir le menu et commander ».</td></tr>
+      <tr><th>Surface</th><th>Fond</th><th>Couleurs</th><th>Particularités</th></tr>
+      <tr><td><b>Site vitrine</b><br>convaincre</td><td>Blanc et <code>#F7F7F7</code></td><td>Titres noirs, vert pour l'accent, bouton « Commencer » noir</td><td>Très aérée, grands titres Inter Tight 500, captures du produit, quelques illustrations ambrées.</td></tr>
+      <tr><td><b>Tableau de bord</b><br>travailler</td><td><code>#F7F7F7</code>, cartes blanches</td><td>Vert pour les actions, statuts colorés</td><td>Dense mais respirant ; peu d'illustrations. Barre latérale sombre ou blanche à décider avec le design. Mode sombre : fond <code>#0E1514</code>, vert <code>#28A896</code>.</td></tr>
+      <tr><td><b>Page client (QR)</b><br>commander</td><td>Crème <code>#FBF6EE</code></td><td>Vert pour « Commander », ambre pour les plats</td><td>Mobile d'abord. Grandes photos, boutons de 48 px minimum, plats épuisés grisés mais lisibles, bannière dégradée vert.</td></tr>
+      <tr><td><b>Supports imprimés</b><br>QR par table</td><td>Blanc</td><td>Noir et vert</td><td>Nom du restaurant, QR de 60 mm, nom de la table en gros, consigne « Scannez pour voir le menu et commander ».</td></tr>
     </table>
   </div>
 </div></section>
@@ -294,41 +295,42 @@
   <p class="lead">On parle comme un bon serveur : clair, direct, aimable. Vouvoiement, phrases courtes, un verbe d'action.</p>
   <div class="grid g2">
     <div class="do"><b>On écrit</b><ul class="clean"><li>« Combien de tables avez-vous ? »</li><li>« Votre plat est prêt »</li><li>« Ajouter un plat »</li><li>Catégories, plats, tables, commandes</li><li>Nouvelle · En cuisson · Prête · Servie</li></ul></div>
-    <div class="dont"><b>On évite</b><ul class="clean"><li>« Veuillez procéder à la saisie… »</li><li>Jargon : KOT, modificateur, section, POS</li><li>« Placée », « Confirmée » (statuts techniques)</li><li>Les messages d'erreur sans solution</li><li>Les points d'exclamation en série</li></ul></div>
+    <div class="dont"><b>On évite</b><ul class="clean"><li>« Veuillez procéder à la saisie… »</li><li>Jargon : KOT, modificateur, section, POS</li><li>« Placée », « Confirmée » (statuts techniques)</li><li>Les erreurs sans solution</li><li>Les points d'exclamation en série</li></ul></div>
   </div>
-  <div class="card" style="margin-top:16px"><h3>Messages types</h3><ul class="clean"><li><b>Succès :</b> « C'est fait. Vos tables sont prêtes. »</li><li><b>Erreur :</b> « Le prix doit être un nombre. Exemple : 3500. »</li><li><b>État vide :</b> « Pas encore de commande. Elles apparaîtront ici dès qu'un client scanne son QR code. » (avec le hibou)</li></ul></div>
+  <div class="card" style="margin-top:16px"><h3>Messages types</h3><ul class="clean"><li><b>Succès :</b> « C'est fait. Vos tables sont prêtes. »</li><li><b>Erreur :</b> « Le prix doit être un nombre. Exemple : 3500. »</li><li><b>État vide :</b> « Pas encore de commande. Elles apparaîtront ici dès qu'un client scanne son QR code. »</li></ul></div>
 </div></section>
 
 <section id="acces"><div class="wrap">
   <h2>9. Accessibilité</h2>
   <ul class="clean" style="margin-top:16px">
-    <li><b>Contraste :</b> texte courant 4,5:1 minimum, grands textes et éléments d'interface 3:1. Les paires de la charte sont déjà vérifiées ; le texte blanc est interdit sur jaune et orange.</li>
+    <li><b>Contraste :</b> texte courant 4,5:1 minimum, grands textes et éléments d'interface 3:1. Les paires de la charte sont déjà vérifiées ; le texte blanc est interdit sur l'ambre, l'orange et le vert du mode sombre.</li>
     <li><b>Jamais la couleur seule :</b> un statut a toujours son libellé, une erreur son message écrit.</li>
     <li><b>Cibles tactiles :</b> 44 px minimum au tableau de bord, 48 px sur la page client.</li>
-    <li><b>Clavier et focus :</b> anneau de focus bleu visible sur tout élément cliquable.</li>
+    <li><b>Clavier et focus :</b> anneau de focus vert visible sur tout élément cliquable.</li>
     <li><b>Mouvement :</b> aucune animation essentielle ; respecter la préférence « réduire les animations ».</li>
-    <li><b>Langue :</b> français par défaut ; prévoir des textes qui supportent +30 % de longueur (autres langues).</li>
+    <li><b>Langue :</b> français par défaut ; prévoir des textes qui supportent +30 % de longueur.</li>
   </ul>
 </div></section>
 
 <section id="etat"><div class="wrap">
   <h2>10. Existant à unifier</h2>
-  <p class="lead">Le projet mélange aujourd'hui trois identités. Voici ce que la charte remplace.</p>
+  <p class="lead">Le projet contient une feuille de style d'une autre identité (hibou bleu et rouge). La charte la remplace.</p>
   <div class="card" style="margin-top:20px;overflow-x:auto">
     <table>
       <tr><th>Où</th><th>Aujourd'hui</th><th>Avec la charte</th></tr>
-      <tr><td>Site vitrine (page servie)</td><td>Logo carré « Mobilo », vert <code>#055049</code>, Inter Tight / Poppins</td><td>Hibou et logo Jimbe, bleu et rouge, Baloo Chettan 2 / Arima Madurai</td></tr>
-      <tr><td>Fichier <code>jimbe-landing.css</code></td><td>Déjà aux couleurs du logo (bleu <code>#009DDF</code>, orange <code>#FF7900</code>)</td><td>Valeurs alignées sur le logo réel (<code>#1E9CD7</code>, <code>#FD6A03</code>)</td></tr>
-      <tr><td>Tableau de bord (<code>jimbe-theme.css</code>, <code>jimbe-brand.css</code>)</td><td>Vert « Mobilo » <code>#055049</code></td><td>Bleu d'action <code>#0079AD</code>, fond <code>#F7F7F7</code></td></tr>
-      <tr><td>Page client (<code>jimbe-shop.css</code>)</td><td>Rouge brique <code>#C8341D</code>, crème <code>#FBF6EE</code>, encre brune</td><td>Rouge Jimbe <code>#DE2F1C</code>, crème <code>#FCF8D0</code>, encre <code>#14202B</code></td></tr>
+      <tr><td><code>jimbe-landing.css</code>, logos <code>landing/brand/</code></td><td>Identité hibou : bleu <code>#009DDF</code>, orange, Baloo Chettan 2 / Arima Madurai</td><td>À retirer ou archiver : un seul logo et une seule palette dans le produit</td></tr>
+      <tr><td>Vitrine servie (<code>framer-copy.css</code>)</td><td>Vert <code>#055049</code>, Inter Tight / Poppins (variables <code>--fm-*</code>)</td><td>Référence de la charte ; variables renommées en <code>--jb-*</code></td></tr>
+      <tr><td>Tableau de bord (<code>jimbe-theme.css</code>, <code>jimbe-brand.css</code>)</td><td>Déjà vert, mais valeurs dispersées dans le fichier et surcharges <code>!important</code></td><td>Lire les variables de <code>jimbe-tokens.css</code></td></tr>
+      <tr><td>Page client (<code>jimbe-shop.css</code>)</td><td>Crème <code>#FBF6EE</code>, ombres brunes, encre <code>#1B1411</code>, gris chaud <code>#8A7F78</code> (3,6:1)</td><td>Encre <code>#101918</code>, gris <code>#5C5C5C</code>, ombres neutres</td></tr>
       <tr><td>Statuts de commande</td><td>12 statuts techniques, 12 couleurs</td><td>4 statuts visibles : Nouvelle, En cuisson, Prête, Servie</td></tr>
+      <tr><td>Nom du produit</td><td>« Jimbe » dans les titres et textes, « Mobilo » dans le logo</td><td>À trancher : un seul nom partout</td></tr>
     </table>
   </div>
 </div></section>
 
 </main>
 
-<footer><div class="wrap"><b>Jimbe</b> · Charte graphique 1.0 · Tokens : <code style="background:#1d3585;color:#fff">public/css/jimbe-tokens.css</code> · Cette charte s'applique à toute nouvelle page ou modification. En cas de doute : plus simple, plus lisible, plus chaleureux.</div></footer>
+<footer><div class="wrap"><b>Charte graphique 2.0</b> · Variables : <code style="background:#14524b;color:#fff">public/css/jimbe-tokens.css</code> · Cette charte s'applique à toute nouvelle page ou modification. En cas de doute : plus simple, plus lisible, plus aéré.</div></footer>
 
 </body>
 </html>

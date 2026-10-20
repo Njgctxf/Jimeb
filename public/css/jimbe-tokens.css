@@ -1,62 +1,61 @@
 /*
- * Jimbe : charte graphique, source unique des couleurs, typographies, formes et statuts.
+ * Charte graphique (identité verte « Mobilo ») : source unique des couleurs, typographies, formes et statuts.
  * Voir docs/charte-graphique.html. Ce fichier n'est pas encore branché sur les pages :
- * il sera chargé en premier, puis les feuilles jimbe-landing / jimbe-theme / jimbe-shop
- * seront réécrites pour n'utiliser que ces variables.
+ * il sera chargé en premier, puis jimbe-theme / jimbe-shop / framer-copy seront réécrites
+ * pour n'utiliser que ces variables.
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Arima+Madurai:wght@400;500;700&family=Baloo+Chettan+2:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
 
 :root {
-    /* --- Marque (issues du logo) --- */
-    --jb-blue: #1e9cd7;          /* bleu du mot « Jim » : identité, grands titres, illustrations */
-    --jb-blue-600: #0079ad;      /* bleu d'action : boutons, liens, états actifs (blanc dessus = 4,8:1) */
-    --jb-blue-900: #06506e;      /* bleu profond : survol, texte sur fond bleu clair */
-    --jb-blue-50: #e6f4fb;       /* fond bleu très clair */
-    --jb-owl: #0285f1;           /* bleu vif du hibou : accents graphiques uniquement */
-    --jb-red: #de2f1c;           /* rouge de « be » : appel à l'action principal, urgence */
-    --jb-red-700: #b8200f;       /* rouge survol / texte d'erreur */
-    --jb-yellow: #fdc41b;        /* jaune du bec : mise en avant, badges, promotions */
-    --jb-orange: #fd6a03;        /* orange de la bouche : chaleur, plat en cuisson */
-    --jb-navy: #102574;          /* bleu nuit des pupilles : titres très forts, pied de page */
+    /* --- Marque --- */
+    --jb-green: #055049;         /* vert principal : boutons, liens, états actifs (blanc dessus = 9,3:1) */
+    --jb-green-900: #0b3d38;     /* vert profond : survol, bandeaux, fond sombre (blanc dessus = 12:1) */
+    --jb-green-50: #e8f1f0;      /* fond vert très clair : sélection, blocs d'information */
+    --jb-green-400: #28a896;     /* vert clair : accent en mode sombre (jamais de texte blanc dessus) */
+    --jb-mint: #86e6d6;          /* menthe : texte et icônes sur fond sombre */
+    --jb-amber: #f5a524;         /* ambre : accent chaleureux, mise en avant (texte noir dessus = 8,8:1) */
+    --jb-amber-ink: #92611a;     /* ambre foncé : texte ambré sur fond clair (4,9:1 sur crème) */
+    --jb-orange: #ff8a24;        /* orange : plat en cuisson (texte noir dessus = 7,6:1) */
 
     /* --- Neutres --- */
-    --jb-ink: #14202b;           /* texte principal */
+    --jb-black: #000000;         /* bouton d'appel à l'action de la vitrine, grands titres */
+    --jb-ink: #101918;           /* texte principal du produit (blanc dessus = 17,9:1) */
     --jb-gray: #5c5c5c;          /* texte secondaire (6,7:1 sur blanc) */
-    --jb-line: #e5e5e5;          /* filets et bordures */
-    --jb-soft: #f7f7f7;          /* fond de page du tableau de bord */
-    --jb-cream: #fcf8d0;         /* fond chaleureux (vitrine, page client) */
+    --jb-stroke: #c2c2c2;        /* bordures de champs et de boutons secondaires */
+    --jb-line: #e7ebea;          /* filets, séparateurs, bordures de cartes */
+    --jb-soft: #f7f7f7;          /* fond de page du tableau de bord et de la vitrine */
+    --jb-cream: #fbf6ee;         /* fond de la page client (QR) */
     --jb-white: #ffffff;
 
-    /* --- Sémantique --- */
-    --jb-success: #15803d;
-    --jb-success-50: #e7f6ec;
-    --jb-warning: var(--jb-yellow);
-    --jb-warning-50: #fff6d6;
-    --jb-danger: var(--jb-red);
-    --jb-danger-50: #fdebe8;
-    --jb-info: var(--jb-blue-600);
-    --jb-info-50: var(--jb-blue-50);
+    /* --- Sens --- */
+    --jb-danger: #c8341d;        /* erreur, suppression (blanc dessus = 5,3:1) */
+    --jb-danger-50: #fbeae6;
+    --jb-warning-50: #fff3d6;
+    --jb-success: var(--jb-green);
+    --jb-success-50: var(--jb-green-50);
 
-    /* --- Statuts de commande (libellés simplifiés) --- */
-    --jb-status-new: var(--jb-yellow);        /* Nouvelle */
-    --jb-status-cooking: var(--jb-orange);    /* En cuisson */
-    --jb-status-ready: var(--jb-success);     /* Prête */
-    --jb-status-served: var(--jb-blue-600);   /* Servie */
-    --jb-status-cancelled: var(--jb-gray);    /* Annulée */
+    /* --- Statuts de commande --- */
+    --jb-status-new: var(--jb-amber);         /* Nouvelle   (texte noir) */
+    --jb-status-cooking: var(--jb-orange);    /* En cuisson (texte noir) */
+    --jb-status-ready: var(--jb-green);       /* Prête      (texte blanc) */
+    --jb-status-served: var(--jb-ink);        /* Servie     (texte blanc) */
+    --jb-status-cancelled: var(--jb-gray);    /* Annulée    (texte blanc) */
 
     /* --- Typographie --- */
-    --jb-head: 'Baloo Chettan 2', 'Arima Madurai', system-ui, sans-serif;
-    --jb-body: 'Arima Madurai', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --jb-head: 'Inter Tight', 'Poppins', ui-sans-serif, system-ui, sans-serif;
+    --jb-body: 'Poppins', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
 
     /* --- Formes --- */
-    --jb-radius-sm: 8px;
-    --jb-radius: 14px;
-    --jb-radius-lg: 22px;
+    --jb-radius-sm: 10px;        /* champs, petits boutons */
+    --jb-radius: 14px;           /* boutons, cartes du tableau de bord */
+    --jb-radius-lg: 18px;        /* cartes et recherche de la page client */
+    --jb-radius-xl: 26px;        /* bannières */
     --jb-radius-pill: 999px;
-    --jb-shadow-card: 0 1px 2px rgba(20, 32, 43, .06), 0 6px 18px rgba(20, 32, 43, .06);
-    --jb-shadow-btn: 0 8px 18px -8px rgba(0, 121, 173, .6);
-    --jb-focus: 0 0 0 3px rgba(30, 156, 215, .35);
+    --jb-shadow-card: 6px 6px 18px rgba(16, 25, 24, .06), 0 0 0 1px rgba(16, 25, 24, .045);
+    --jb-shadow-btn: inset 0 -5px 4px rgba(230, 230, 230, .2), 0 10px 20px -8px rgba(5, 80, 73, .55);
+    --jb-shadow-float: 0 6px 18px rgba(80, 50, 20, .12);   /* éléments flottants de la page client */
+    --jb-focus: 0 0 0 3px rgba(5, 80, 73, .3);
 
     /* --- Espacement (base 4 px) --- */
     --jb-space-1: 4px;
@@ -70,18 +69,19 @@
     --jb-ease: cubic-bezier(.22, .8, .3, 1);
 }
 
-/* Mode sombre du tableau de bord */
+/* Mode sombre */
 html.dark {
-    --jb-ink: #eaf2f8;
-    --jb-gray: #a9b8c4;
-    --jb-line: #2a3b4a;
-    --jb-soft: #0f1b26;
-    --jb-white: #162634;
-    --jb-cream: #1d2a36;
-    --jb-blue-600: #4db8e8;      /* bleu d'action plus clair pour garder le contraste */
-    --jb-blue-900: #9bd6f3;
-    --jb-blue-50: #12303f;
-    --jb-success-50: #11301f;
-    --jb-warning-50: #3a3010;
-    --jb-danger-50: #3a1713;
+    --jb-green: #28a896;         /* le vert devient plus clair pour rester lisible ; texte foncé dessus */
+    --jb-green-900: #0b3d38;
+    --jb-green-50: #123a35;
+    --jb-ink: #eaf2f1;
+    --jb-gray: #9bb0ad;
+    --jb-line: #26332f;
+    --jb-stroke: #3a4a47;
+    --jb-soft: #0e1514;          /* fond de page */
+    --jb-white: #16201f;         /* surfaces (cartes, barre latérale) */
+    --jb-cream: #101918;
+    --jb-danger: #f06a52;
+    --jb-danger-50: #3a1a15;
+    --jb-warning-50: #3a2f12;
 }
