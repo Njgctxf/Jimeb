@@ -1,0 +1,87 @@
+/*
+ * Jimbe : charte graphique, source unique des couleurs, typographies, formes et statuts.
+ * Voir docs/charte-graphique.html. Ce fichier n'est pas encore branché sur les pages :
+ * il sera chargé en premier, puis les feuilles jimbe-landing / jimbe-theme / jimbe-shop
+ * seront réécrites pour n'utiliser que ces variables.
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Arima+Madurai:wght@400;500;700&family=Baloo+Chettan+2:wght@400;500;600;700;800&display=swap');
+
+:root {
+    /* --- Marque (issues du logo) --- */
+    --jb-blue: #1e9cd7;          /* bleu du mot « Jim » : identité, grands titres, illustrations */
+    --jb-blue-600: #0079ad;      /* bleu d'action : boutons, liens, états actifs (blanc dessus = 4,8:1) */
+    --jb-blue-900: #06506e;      /* bleu profond : survol, texte sur fond bleu clair */
+    --jb-blue-50: #e6f4fb;       /* fond bleu très clair */
+    --jb-owl: #0285f1;           /* bleu vif du hibou : accents graphiques uniquement */
+    --jb-red: #de2f1c;           /* rouge de « be » : appel à l'action principal, urgence */
+    --jb-red-700: #b8200f;       /* rouge survol / texte d'erreur */
+    --jb-yellow: #fdc41b;        /* jaune du bec : mise en avant, badges, promotions */
+    --jb-orange: #fd6a03;        /* orange de la bouche : chaleur, plat en cuisson */
+    --jb-navy: #102574;          /* bleu nuit des pupilles : titres très forts, pied de page */
+
+    /* --- Neutres --- */
+    --jb-ink: #14202b;           /* texte principal */
+    --jb-gray: #5c5c5c;          /* texte secondaire (6,7:1 sur blanc) */
+    --jb-line: #e5e5e5;          /* filets et bordures */
+    --jb-soft: #f7f7f7;          /* fond de page du tableau de bord */
+    --jb-cream: #fcf8d0;         /* fond chaleureux (vitrine, page client) */
+    --jb-white: #ffffff;
+
+    /* --- Sémantique --- */
+    --jb-success: #15803d;
+    --jb-success-50: #e7f6ec;
+    --jb-warning: var(--jb-yellow);
+    --jb-warning-50: #fff6d6;
+    --jb-danger: var(--jb-red);
+    --jb-danger-50: #fdebe8;
+    --jb-info: var(--jb-blue-600);
+    --jb-info-50: var(--jb-blue-50);
+
+    /* --- Statuts de commande (libellés simplifiés) --- */
+    --jb-status-new: var(--jb-yellow);        /* Nouvelle */
+    --jb-status-cooking: var(--jb-orange);    /* En cuisson */
+    --jb-status-ready: var(--jb-success);     /* Prête */
+    --jb-status-served: var(--jb-blue-600);   /* Servie */
+    --jb-status-cancelled: var(--jb-gray);    /* Annulée */
+
+    /* --- Typographie --- */
+    --jb-head: 'Baloo Chettan 2', 'Arima Madurai', system-ui, sans-serif;
+    --jb-body: 'Arima Madurai', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+    /* --- Formes --- */
+    --jb-radius-sm: 8px;
+    --jb-radius: 14px;
+    --jb-radius-lg: 22px;
+    --jb-radius-pill: 999px;
+    --jb-shadow-card: 0 1px 2px rgba(20, 32, 43, .06), 0 6px 18px rgba(20, 32, 43, .06);
+    --jb-shadow-btn: 0 8px 18px -8px rgba(0, 121, 173, .6);
+    --jb-focus: 0 0 0 3px rgba(30, 156, 215, .35);
+
+    /* --- Espacement (base 4 px) --- */
+    --jb-space-1: 4px;
+    --jb-space-2: 8px;
+    --jb-space-3: 12px;
+    --jb-space-4: 16px;
+    --jb-space-6: 24px;
+    --jb-space-8: 32px;
+    --jb-space-12: 48px;
+
+    --jb-ease: cubic-bezier(.22, .8, .3, 1);
+}
+
+/* Mode sombre du tableau de bord */
+html.dark {
+    --jb-ink: #eaf2f8;
+    --jb-gray: #a9b8c4;
+    --jb-line: #2a3b4a;
+    --jb-soft: #0f1b26;
+    --jb-white: #162634;
+    --jb-cream: #1d2a36;
+    --jb-blue-600: #4db8e8;      /* bleu d'action plus clair pour garder le contraste */
+    --jb-blue-900: #9bd6f3;
+    --jb-blue-50: #12303f;
+    --jb-success-50: #11301f;
+    --jb-warning-50: #3a3010;
+    --jb-danger-50: #3a1713;
+}
