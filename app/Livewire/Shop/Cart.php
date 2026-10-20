@@ -2641,7 +2641,7 @@ class Cart extends Component
      * Jimbe : commande en une étape. Le client indique son nom, sa table (et un téléphone facultatif)
      * puis appuie sur « Commander ».
      */
-    public function submitGuestOrder()
+    public function submitGuestOrder($payNow = false)
     {
         $this->validate([
             'guestName' => 'required|string|max:80',
@@ -2682,7 +2682,7 @@ class Cart extends Component
         $this->tableID = $table->hash;
         $this->getTable = false;
 
-        return $this->placeOrder(false);
+        return $this->placeOrder((bool) $payNow);
     }
 
     public function selectTableOrder($tableID = null)

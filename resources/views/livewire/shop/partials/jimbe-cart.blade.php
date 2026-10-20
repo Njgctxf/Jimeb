@@ -138,6 +138,11 @@
                     <span wire:loading.remove wire:target="submitGuestOrder">@lang('modules.shop.order') · {{ currency_format($total, $restaurant->currency_id) }}</span>
                     <span wire:loading wire:target="submitGuestOrder">@lang('modules.shop.sending')…</span>
                 </button>
+                @if ($paymentGateway?->kadev_status)
+                    <button type="button" class="jb-cta__btn" style="margin-top:8px" wire:click="submitGuestOrder(true)" wire:loading.attr="disabled" wire:target="submitGuestOrder">
+                        Payer maintenant · Mobile Money / Carte
+                    </button>
+                @endif
             @endif
         </div>
     @else

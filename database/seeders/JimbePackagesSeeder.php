@@ -37,7 +37,7 @@ class JimbePackagesSeeder extends Seeder
                 'branch_limit' => 1,
                 'sort_order' => 10,
                 'is_recommended' => 0,
-                'additional_features' => [],
+                'additional_features' => ['Payment Gateway Integration'],
             ],
             [
                 'package_name' => 'Prestige',
@@ -47,7 +47,7 @@ class JimbePackagesSeeder extends Seeder
                 'branch_limit' => 1,
                 'sort_order' => 20,
                 'is_recommended' => 1,
-                'additional_features' => ['Export Report'],
+                'additional_features' => ['Payment Gateway Integration', 'Export Report'],
             ],
             [
                 'package_name' => 'Signature',
@@ -57,7 +57,7 @@ class JimbePackagesSeeder extends Seeder
                 'branch_limit' => -1,
                 'sort_order' => 30,
                 'is_recommended' => 0,
-                'additional_features' => ['Change Branch', 'Export Report'],
+                'additional_features' => ['Payment Gateway Integration', 'Change Branch', 'Export Report'],
             ],
         ];
 
@@ -108,7 +108,7 @@ class JimbePackagesSeeder extends Seeder
                 'trial_message' => "7 jours d'essai gratuit",
                 'staff_limit' => 5,
                 'branch_limit' => 1,
-                'additional_features' => json_encode(['Export Report']),
+                'additional_features' => json_encode(['Payment Gateway Integration', 'Export Report']),
                 'updated_at' => $now,
             ]);
         }
