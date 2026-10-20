@@ -38,7 +38,8 @@ return Application::configure(basePath: dirname(__DIR__))
             '*/png',
             'receipt/png',
             'kot/png',
-            'order/png'
+            'order/png',
+            'newsletter/subscribe',
         ]);
 
         // Add CORS middleware globally to handle all CORS requests

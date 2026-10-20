@@ -65,3 +65,8 @@ h1.framer-text, h2.framer-text, h3.framer-text, h4.framer-text { text-transform:
 
 /* Tarifs : prix mensuels uniquement pour l'instant (la bascule mensuel / annuel est masquée tant que l'offre annuelle n'est pas décidée) */
 .framer-1hhg522-container { display: none !important; }
+
+/* Blog retiré pour l'instant : section d'accueil et liens (menu, pied de page) */
+.framer-pday1z { display: none !important; }
+a[href$="blog"], a[href$="blog.html"] { display: none !important; }
+[class*="framer-"]:has(> a[href$="blog"]), [class*="framer-"]:has(> a[href$="blog.html"]) { display: none !important; }

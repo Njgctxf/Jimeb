@@ -149,13 +149,6 @@ class HomeController extends Controller
         return response($html)->header('Content-Type', 'text/html; charset=UTF-8');
     }
 
-    public function alyticsBlogPost(string $slug)
-    {
-        abort_unless(preg_match('/^[a-z0-9-]+$/', $slug), 404);
-
-        return $this->alytics('blog/' . $slug);
-    }
-
     /**
      * Nouvelle page d'accueil (copie du template Framer adaptée à Jimbe).
      * Les forfaits viennent de la base ; les autres textes sont rédigés dans la vue.

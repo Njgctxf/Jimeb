@@ -120,9 +120,8 @@ if (!function_exists('module_enabled') || !module_enabled('Subdomain')) {
 Route::get('/vitrine', [HomeController::class, 'vitrine'])->name('framer.home');
 
 // Pages du nouveau template (export Framer « Alytics »)
-Route::get('/blog', fn () => app(HomeController::class)->alytics('blog'))->name('alytics.blog');
-Route::get('/blog/{slug}', [HomeController::class, 'alyticsBlogPost'])->name('alytics.blog.post');
 Route::get('/newsletter', fn () => app(HomeController::class)->alytics('newsletter'))->name('alytics.newsletter');
+Route::post('/newsletter/subscribe', [\App\Http\Controllers\NewsletterController::class, 'subscribe'])->middleware('throttle:10,1')->name('newsletter.subscribe');
 
 Route::get('/restaurant-signup', [HomeController::class, 'signup'])->name('restaurant_signup');
 Route::get('/customer-logout', [HomeController::class, 'customerLogout'])->name('customer_logout');
