@@ -2,6 +2,7 @@
     <form wire:submit="submitForm">
         @csrf
         <div class="space-y-4">
+@unless (config('jimeb.simple_mode'))
             <div>
                 <x-label for="area_id" :value="__('modules.table.chooseArea')" />
                 <x-select id="area_id" class="mt-1 block w-full" wire:model.defer="area">
@@ -12,6 +13,7 @@
                 </x-select>
                 <x-input-error for="area" class="mt-2" />
             </div>
+@endunless
 
             <div>
                 <x-label for="tableCode" value="{{ __('modules.table.tableCode') }}" />

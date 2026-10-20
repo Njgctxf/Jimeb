@@ -67,6 +67,9 @@
                         if (this.areaID !== null) {
                             areas = areas.filter((a) => Number(a.id) === Number(this.areaID));
                         }
+                        if (@js((bool) config('jimeb.simple_mode'))) {
+                            areas = [{ id: 0, area_name: '', tables: areas.flatMap((a) => a.tables || []) }];
+                        }
                         return areas
                             .map((area) => ({
                                 ...area,
@@ -208,6 +211,7 @@
     </div>
 
     <div class="my-4 flex flex-col px-4">
+        @unless (config('jimeb.simple_mode'))
         <div class="mb-6">
             <ul class="mb-4 inline-flex max-w-full flex-wrap gap-x-1 gap-y-2 text-center text-sm font-medium text-gray-500 dark:text-gray-400">
                 <li class="me-2">
@@ -224,6 +228,7 @@
                 </template>
             </ul>
         </div>
+        @endunless
 
         {{-- Status legend: fixed bottom-right with margin; pointer-events none so it never blocks taps (modals use z-40+) --}}
         <div
@@ -249,7 +254,7 @@
         <div class="space-y-8">
             <template x-for="area in visibleAreas()" :key="area.id">
                 <div class="flex flex-col gap-3 space-y-1 sm:gap-4">
-                    <h3 class="f-15 inline-flex items-center gap-2 font-medium dark:text-neutral-200">
+                    <h3 class="f-15 inline-flex items-center gap-2 font-medium dark:text-neutral-200" @if (config('jimeb.simple_mode')) style="display:none" @endif>
                         <span x-text="area.area_name"></span>
                         <span class="rounded border border-gray-300 bg-slate-100 px-2 py-1 text-sm text-gray-800 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100">
                             <span x-text="area.tables.length"></span> {{ __('modules.table.table') }}

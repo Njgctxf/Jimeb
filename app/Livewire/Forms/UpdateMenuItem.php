@@ -25,7 +25,7 @@ use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class UpdateMenuItem extends Component
 {
-    use WithFileUploads, LivewireAlert;
+    use WithFileUploads, LivewireAlert, \App\Livewire\Concerns\HasSideGroups;
 
     protected $listeners = ['refreshCategories'];
 
@@ -165,6 +165,7 @@ class UpdateMenuItem extends Component
         $this->initializeCollections();
         $this->initializeLanguages();
         $this->loadMenuItemData();
+        $this->sideGroups = \App\Support\ItemSideGroups::load($this->menuItem);
         $this->initializePricing();
         $this->initializeTaxSettings();
     }
@@ -662,6 +663,7 @@ class UpdateMenuItem extends Component
             $this->handleImageUpload($this->menuItem);
             $this->handleVariationsOrPricing($this->menuItem);
             $this->handleTaxes($this->menuItem);
+            \App\Support\ItemSideGroups::sync($this->menuItem, $this->sideGroups);
 
             DB::commit();
 

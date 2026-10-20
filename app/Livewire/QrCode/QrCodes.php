@@ -7,9 +7,33 @@ use App\Models\Area;
 use Livewire\Component;
 use App\Models\Table;
 use App\Models\FileStorage;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class QrCodes extends Component
 {
+    use LivewireAlert;
+
+    public $tableCount = '';
+
+    /**
+     * « Combien de tables avez-vous ? » : crée les tables manquantes (Table 1 … Table N) avec leur QR.
+     * Les tables existantes ne sont jamais supprimées ni renumérotées.
+     */
+    public function createTables(): void
+    {
+        $this->validate(['tableCount' => 'required|integer|min:1|max:200'], [
+            'tableCount.required' => 'Indiquez le nombre de tables.',
+            'tableCount.integer' => 'Indiquez un nombre entier.',
+            'tableCount.min' => 'Indiquez au moins 1 table.',
+            'tableCount.max' => 'Maximum 200 tables à la fois.',
+        ]);
+
+        $created = \App\Support\TableGenerator::generate((int) $this->tableCount);
+
+        $this->tableCount = '';
+        $this->alert('success', $created . ' table(s) créée(s) avec leur QR code.', ['toast' => true, 'position' => 'top-end']);
+    }
+
     public function downloadQrCode($tableCode, $branchId)
     {
         $filename = 'qrcode-' . $branchId . '-' . str()->slug($tableCode, '-', (auth()->user() ? auth()->user()->locale : 'en')) . '.png';
@@ -99,6 +123,22 @@ class QrCodes extends Component
         return $items;
     }
 
+    /** @return list<array<string, mixed>> */
+    private function tableQrs($areasWithTables): array
+    {
+        return collect($areasWithTables)->flatMap(fn ($area) => $area->tables)
+            ->filter(fn ($t) => ! empty($t->qRCodeUrl))
+            ->sortBy(fn ($t) => (int) preg_replace('/\D+/', '', $t->table_code) ?: PHP_INT_MAX)
+            ->map(fn ($t) => [
+                'table_id' => $t->id,
+                'table_code' => $t->table_code,
+                'label' => $t->table_code,
+                'image_url' => $t->qRCodeUrl,
+                'branch_id' => $t->branch_id,
+                'version' => optional($t->updated_at)->timestamp ?? 0,
+            ])->values()->all();
+    }
+
     public function mount(): void
     {
         // Génère automatiquement le QR code du restaurant s'il n'existe pas encore
@@ -126,7 +166,8 @@ class QrCodes extends Component
                 . '&from_qr=1',
             'tables' => $areasWithTables,
             'areas' => $areasWithTables,
-            'printableQrItems' => $this->buildPrintableQrItems($areasWithTables),
+            'printableQrItems' => [],
+            'tableQrs' => $this->tableQrs($areasWithTables),
             'restaurantName' => restaurant()->name,
         ]);
     }

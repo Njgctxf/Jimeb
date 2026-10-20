@@ -242,6 +242,16 @@ class RestaurantSignup extends Component
                 }
             }
 
+            // Mode simplifié : pas d'écran « établissement », le nom du restaurant sert de nom d'établissement
+            // et le nom, le logo et les tables sont demandés ensuite dans l'assistant de démarrage.
+            if (config('jimeb.simple_mode')) {
+                $this->branchName = $this->restaurantName;
+                $this->address = $this->address ?: '';
+                $this->isSubmitting = false;
+
+                return $this->submitForm2();
+            }
+
             // Show branch form
             $this->showUserForm = false;
             $this->showBranchForm = true;
@@ -263,7 +273,7 @@ class RestaurantSignup extends Component
             $timezone = (new User)->getTimezoneFromIp();
 
             $this->validate([
-                'address' => 'required',
+                'address' => config('jimeb.simple_mode') ? 'nullable' : 'required',
                 'branchName' => 'required',
             ]);
 
@@ -289,7 +299,7 @@ class RestaurantSignup extends Component
             $restaurant->is_active = true;
             $restaurant->country_id = $this->country;
             $restaurant->about_us = Restaurant::ABOUT_US_DEFAULT_TEXT;
-            $restaurant->customer_site_language = 'en';
+            $restaurant->customer_site_language = config('jimeb.simple_mode') ? (global_setting()->locale ?: 'fr') : 'en';
             $restaurant->save();
 
             $branch = Branch::create([
@@ -301,6 +311,7 @@ class RestaurantSignup extends Component
                 'name' => $this->fullName,
                 'email' => $this->email,
                 'password' => bcrypt($this->password),
+                'locale' => global_setting()->locale ?: 'en',
                 'restaurant_id' => $restaurant->id,
                 'branch_id' => $branch->id,
                 'phone_number' => $this->restaurantPhoneNumber,

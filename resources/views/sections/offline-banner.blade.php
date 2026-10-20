@@ -4,7 +4,7 @@
     role="status"
     aria-live="polite"
 >
-    No internet connection
+    Pas de connexion Internet
 </div>
 
 <style>

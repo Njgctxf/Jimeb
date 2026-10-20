@@ -6,7 +6,7 @@ return array(
     'menus' => 'Menus',
     'menuItem' => 'Plats',
     'profile' => 'Profil',
-    'itemCategories' => 'Sections',
+    'itemCategories' => 'Catégories',
     'table' => 'Table',
     'areas' => 'Zones',
     'tables' => 'Tables',

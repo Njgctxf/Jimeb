@@ -112,9 +112,9 @@
                   <div class="flex items-start justify-between gap-4 border-b border-gray-200 px-6 py-5 dark:border-gray-700">
                     <div>
                       <h3 class="text-lg font-medium text-gray-900 dark:text-white">@lang('modules.dashboard.recentOrders')</h3>
-                      <p class="text-xs text-gray-500 dark:text-gray-400">Showing latest 10 of <span x-text="recentOrders.length"></span> orders.</p>
+                      <p class="text-xs text-gray-500 dark:text-gray-400">Affichage des 10 dernières commandes sur <span x-text="recentOrders.length"></span>.</p>
                       <p class="text-xs text-gray-500 dark:text-gray-400">
-                        To view all orders, <a href="{{ route('orders.index') }}" wire:navigate class="text-skin-base hover:underline" @click="closeRecentOrdersModal()">click here</a>. You will be redirected to the Orders page.
+                        Pour voir toutes les commandes, <a href="{{ route('orders.index') }}" wire:navigate class="text-skin-base hover:underline" @click="closeRecentOrdersModal()">cliquez ici</a>.
                       </p>
                     </div>
                     <a href="{{ route('orders.index') }}" wire:navigate class="inline-flex items-center rounded-md border border-skin-base px-4 py-1.5 text-sm font-medium text-skin-base hover:bg-skin-base hover:text-white" @click="closeRecentOrdersModal()">
@@ -280,7 +280,7 @@
 
         <div id="fullscreen-tooltip-toggle" role="tooltip"
           class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip">
-          View in Fullscreen
+          Plein écran
           <div class="tooltip-arrow" data-popper-arrow></div>
         </div>
 
@@ -312,7 +312,7 @@
             <button type="button"
               class="inline-flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
               id="user-menu-button-2" aria-expanded="false" data-dropdown-toggle="dropdown-2">
-              <span class="sr-only">Open user menu</span>
+              <span class="sr-only">Ouvrir le menu utilisateur</span>
               <img class="w-8 h-8 rounded-full" src="{{ auth()->user()->profile_photo_path ? asset_url_local_s3(auth()->user()->profile_photo_path):auth()->user()->profile_photo_url }}" alt="user photo">
             </button>
           </div>
@@ -363,7 +363,7 @@
             <button type="button"
               class="inline-flex items-center justify-center w-10 h-10 text-gray-500 bg-gray-100 rounded-full hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600"
               id="user-menu-button-3" aria-expanded="false" data-dropdown-toggle="dropdown-3" data-dropdown-placement="left-end">
-              <span class="sr-only">Open user menu</span>
+              <span class="sr-only">Ouvrir le menu utilisateur</span>
               <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24" viewBox="0 0 512 512" xml:space="preserve"><path d="M112 441.328h288v32H112zM0 38.672v352h200v34.656h112v-34.656h200v-352zm216 323.25v-16h80v16zm248-35.25H48v-240h416z" style="fill:currentColor"/></svg>
 
             </button>

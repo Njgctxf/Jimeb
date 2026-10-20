@@ -18,6 +18,15 @@ class DashboardController extends Controller
             return redirect(RouteServiceProvider::SUPERADMIN_HOME);
         }
 
+        // Mode simplifié : un nouvel administrateur passe d'abord par l'assistant de démarrage.
+        if (config('jimeb.simple_mode') && user()->hasRole('Admin_' . user()->restaurant_id)) {
+            $steps = \App\Models\OnboardingStep::where('branch_id', branch()->id)->first();
+
+            if ($steps && (! $steps->add_table_completed || ! $steps->add_menu_items_completed)) {
+                return redirect(RouteServiceProvider::ONBOARDING_STEPS);
+            }
+        }
+
         return view('dashboard.index');
     }
 

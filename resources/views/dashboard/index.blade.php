@@ -20,9 +20,15 @@
         <h1>{{ $jbHello }}{{ $jbName ? ', ' . $jbName : '' }} 👋</h1>
         <p>{{ $jbFr ? "Voici le service d'aujourd'hui : commandes, tables et réservations en un coup d'œil." : "Here is today's service: orders, tables and reservations at a glance." }}</p>
         <div class="jb-hero-card__actions">
-            <a href="{{ route('pos.index') }}" class="jb-hero-btn jb-hero-btn--light">{{ $jbFr ? 'Nouvelle commande' : 'New order' }}</a>
-            <a href="{{ route('tables.index') }}" class="jb-hero-btn">{{ $jbFr ? 'Tables' : 'Tables' }}</a>
-            <a href="{{ route('reservations.index') }}" class="jb-hero-btn">{{ $jbFr ? 'Réservations' : 'Reservations' }}</a>
+            @if (config('jimeb.simple_mode'))
+                <a href="{{ route('orders.index') }}" class="jb-hero-btn jb-hero-btn--light">{{ $jbFr ? 'Commandes' : 'Orders' }}</a>
+                <a href="{{ route('qrcodes.index') }}" class="jb-hero-btn">{{ $jbFr ? 'QR codes' : 'QR codes' }}</a>
+                <a href="{{ route('menu-items.index') }}" class="jb-hero-btn">{{ $jbFr ? 'Plats' : 'Dishes' }}</a>
+            @else
+                <a href="{{ route('pos.index') }}" class="jb-hero-btn jb-hero-btn--light">{{ $jbFr ? 'Nouvelle commande' : 'New order' }}</a>
+                <a href="{{ route('tables.index') }}" class="jb-hero-btn">{{ $jbFr ? 'Tables' : 'Tables' }}</a>
+                <a href="{{ route('reservations.index') }}" class="jb-hero-btn">{{ $jbFr ? 'Réservations' : 'Reservations' }}</a>
+            @endif
         </div>
     </div>
     <div class="jb-hero-card__art" aria-hidden="true">
@@ -31,6 +37,38 @@
         <img class="jb-hero-card__clip" src="{{ asset('landing/framer/PBpuxqRpmPqftU0hol2DVhW7bus.png') }}" alt="">
     </div>
 </section>
+
+
+@if (config('jimeb.simple_mode'))
+    @php
+        $jbDishCount = \App\Models\MenuItem::count();
+        $jbTodo = [
+            ['id' => 'qr', 'label' => $jbFr ? 'Télécharger et imprimer vos QR codes' : 'Download and print your QR codes', 'url' => route('qrcodes.index'), 'done' => false],
+            ['id' => 'dishes', 'label' => $jbFr ? "Ajouter d'autres plats" : 'Add more dishes', 'url' => route('menu-items.create'), 'done' => $jbDishCount >= 5],
+            ['id' => 'site', 'label' => $jbFr ? 'Voir ce que vos clients voient' : 'See what your customers see', 'url' => route('shop_restaurant', [restaurant()->hash]), 'done' => false, 'blank' => true],
+        ];
+    @endphp
+    <section class="px-4 mt-4" x-data="{ hidden: false, ticked: {}, init() { try { this.hidden = localStorage.getItem('jb_todo_hidden') === '1'; this.ticked = JSON.parse(localStorage.getItem('jb_todo_ticked') || '{}'); } catch (e) {} }, tick(id) { this.ticked[id] = true; try { localStorage.setItem('jb_todo_ticked', JSON.stringify(this.ticked)); } catch (e) {} }, hide() { this.hidden = true; try { localStorage.setItem('jb_todo_hidden', '1'); } catch (e) {} } }" x-show="!hidden" x-cloak>
+        <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-600 dark:bg-gray-800">
+            <div class="flex items-start justify-between gap-3">
+                <div>
+                    <h2 class="text-base font-semibold text-gray-900 dark:text-white">{{ $jbFr ? 'À faire pour bien démarrer' : 'Getting started' }}</h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ $jbFr ? 'Vos tables et votre premier plat sont prêts. Il reste :' : 'Your tables and first dish are ready. Next:' }}</p>
+                </div>
+                <button type="button" class="text-sm text-gray-400 hover:text-gray-600" @click="hide()">{{ $jbFr ? 'Masquer' : 'Hide' }}</button>
+            </div>
+            <ul class="mt-3 space-y-2">
+                @foreach ($jbTodo as $t)
+                    <li class="flex items-center gap-3">
+                        <span class="flex h-5 w-5 items-center justify-center rounded-full border text-xs"
+                              :class="({{ $t['done'] ? 'true' : 'false' }} || ticked['{{ $t['id'] }}']) ? 'border-green-500 bg-green-500 text-white' : 'border-gray-300 text-transparent'">✓</span>
+                        <a href="{{ $t['url'] }}" @if (! empty($t['blank'])) target="_blank" @endif @click="tick('{{ $t['id'] }}')" class="text-sm text-skin-base hover:underline">{{ $t['label'] }}</a>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+    </section>
+@endif
 
 @if (
     (!empty(global_setting()->vapid_public_key) && !empty(global_setting()->vapid_private_key))

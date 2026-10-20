@@ -24,7 +24,7 @@ use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class CreateMenuItem extends Component
 {
-    use WithFileUploads, LivewireAlert;
+    use WithFileUploads, LivewireAlert, \App\Livewire\Concerns\HasSideGroups;
 
     protected $listeners = ['refreshCategories'];
 
@@ -430,6 +430,7 @@ class CreateMenuItem extends Component
             $this->handleImageUpload($menuItem);
             $this->handleVariationsOrPricing($menuItem);
             $this->handleTaxes($menuItem);
+            \App\Support\ItemSideGroups::sync($menuItem, $this->sideGroups);
 
             DB::commit();
 
@@ -450,6 +451,10 @@ class CreateMenuItem extends Component
 
         if ($this->itemCategory === '') {
             $this->itemCategory = (string) \App\Support\DefaultSection::id();
+        }
+
+        if ($this->menu === '' && config('jimeb.simple_mode')) {
+            $this->menu = (string) \App\Support\DefaultMenu::id();
         }
 
         $this->cleanupEmptyVariations();

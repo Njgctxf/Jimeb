@@ -109,6 +109,7 @@
                     </div>
                     <div class="space-y-4">
                         <div class="grid grid-cols-1 gap-4">
+@unless (config('jimeb.simple_mode'))
                             <div>
                                 <x-label for="menu" :value="__('modules.menu.chooseMenu')" />
                                 <x-select id="menu" class="mt-1 block w-full" wire:model.defer="menu">
@@ -119,6 +120,7 @@
                                 </x-select>
                                 <x-input-error for="menu" class="mt-2" />
                             </div>
+@endunless
 
                             
                         </div>
@@ -377,6 +379,8 @@
                     </div>
                 </div>
                 @endif
+
+                @include('livewire.forms.partials.side-groups')
 
                 <!-- Action Buttons -->
                 <div class="flex w-full space-x-3 mt-2">

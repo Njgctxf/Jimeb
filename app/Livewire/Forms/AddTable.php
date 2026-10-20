@@ -35,6 +35,10 @@ class AddTable extends Component
 
     public function submitForm()
     {
+        if (config('jimeb.simple_mode') && ! $this->area) {
+            $this->area = (\App\Models\Area::first() ?: \App\Models\Area::create(['area_name' => 'Salle']))->id;
+        }
+
         $this->validate([
             'tableCode' => 'required|unique:tables,table_code,null,id,branch_id,' . branch()->id,
             'area' => 'required',

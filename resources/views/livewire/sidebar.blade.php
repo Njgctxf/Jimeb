@@ -1,3 +1,4 @@
+@php $simple = config('jimeb.simple_mode'); @endphp
 <div>
     <aside  id="sidebar" 
     class="fixed top-0 ltr:left-0 rtl:right-0 z-20 flex flex-col flex-shrink-0 hidden w-56 min-w-[224px] bg-white h-full pt-16 md:pt-12 lg:pt-16 font-normal duration-75 lg:flex transition-width menu-collapsed:hidden dark:bg-gray-800 dark:border-gray-700 dark:border-r"
@@ -37,7 +38,11 @@
                         @if ($this->hasModule('Menu') || $this->hasModule('Menu Item') || $this->hasModule('Item Category'))
                             @if (user_can('Show Menu') || user_can('Show Menu Item') || user_can('Show Item Category'))
                                 <x-sidebar-dropdown-menu :name='__("menu.menu")' icon='menu' :active='request()->routeIs(["menus.*", "menu-items.*", "item-categories.*", "item-modifiers.*", "modifier-groups.*"])'>
-                                    @if($this->hasModule('Menu'))
+                                    @if($simple)
+                                        @if(user_can('Show Item Category'))
+                                            @livewire('sidebar-dropdown-menu', ['name' => __('menu.itemCategories'), 'link' => route('item-categories.index'), 'active' => request()->routeIs(['item-categories.index', 'menus.index'])])
+                                        @endif
+                                    @elseif($this->hasModule('Menu'))
                                         @if(user_can('Show Menu'))
                                             @livewire('sidebar-dropdown-menu', ['name' => __('menu.menus'), 'link' => route('menus.index'), 'active' => request()->routeIs(['menus.index', 'item-categories.index'])])
                                         @endif
@@ -55,7 +60,7 @@
                         @if ($this->hasModule('Area') || $this->hasModule('Table'))
                             @if (user_can('Show Area') || user_can('Show Table'))
                                 <x-sidebar-dropdown-menu :name='__("menu.tables")' icon='table' :active='request()->routeIs(["areas.*", "tables.*", "qrcodes.index"])'>
-                                    @if ($this->hasModule('Area'))
+                                    @if ($this->hasModule('Area') && ! $simple)
                                         @if(user_can('Show Area'))
                                             @livewire('sidebar-dropdown-menu', ['name' => __('menu.areas'), 'link' => route('areas.index'), 'active' => request()->routeIs('areas.index')])
                                         @endif
@@ -71,19 +76,19 @@
                             @endif
                         @endif
 
-                        @if ($this->hasModule('Waiter Request') && user_can('Manage Waiter Request'))
+                        @if (! $simple && $this->hasModule('Waiter Request') && user_can('Manage Waiter Request'))
                             @livewire('sidebar-menu-item', ['name' => __('menu.waiterRequest'), 'icon' => 'waiterRequest', 'link' => route('waiter-requests.index'), 'active' => request()->routeIs('waiter-requests.*')])
                         @endif
 
-                        @if ($this->hasModule('Reservation') && user_can('Show Reservation'))
+                        @if (! $simple && $this->hasModule('Reservation') && user_can('Show Reservation'))
                             @livewire('sidebar-menu-item', ['name' => __('menu.reservations'), 'icon' => 'reservations', 'link' => route('reservations.index'), 'active' => request()->routeIs('reservations.index')])
                         @endif
 
-                        @if ($this->hasModule('Order') && user_can('Create Order'))
+                        @if (! $simple && $this->hasModule('Order') && user_can('Create Order'))
                             @livewire('sidebar-menu-item', ['name' => __('menu.pos'), 'icon' => 'pos', 'link' => route('pos.index'), 'active' => request()->routeIs('pos.*'), 'navigate' => false])
                         @endif
 
-                        @if ($this->hasModule('Kitchen') && in_array('kitchen', custom_module_plugins()))
+                        @if ($simple || ($this->hasModule('Kitchen') && in_array('kitchen', custom_module_plugins())))
                             @if ($this->hasModule('Order') && user_can('Show Order'))
                                 @livewire('sidebar-menu-item', ['name' => __('menu.orders'), 'icon' => 'orders', 'link' => route('orders.index'), 'active' => request()->routeIs('orders.*')])
                             @endif
@@ -119,7 +124,7 @@
                             @endif
                         @endif
 
-                        @if($this->hasModule('Delivery Executive'))
+                        @if(! $simple && $this->hasModule('Delivery Executive'))
                             @if (user_can('Show Delivery Executive'))
                                 <x-sidebar-dropdown-menu :name='__("menu.deliveryExecutive")' icon='delivery' :active='request()->routeIs(["delivery-executives.*"])'>
                                     @livewire('sidebar-dropdown-menu', ['name' => __('menu.deliveryExecutive'), 'link' => route('delivery-executives.index'), 'active' => request()->routeIs('delivery-executives.index')])
@@ -128,7 +133,7 @@
                             @endif
                         @endif
 
-                        @if ($this->hasModule('Expense') && user_can('Show Expense'))
+                        @if (! $simple && $this->hasModule('Expense') && user_can('Show Expense'))
                             <x-sidebar-dropdown-menu :name='__("menu.expenses")' icon='expenses' :active='request()->routeIs(["payments.expenses", "payments.recurring-expenses", "payments.expenseCategory"])'>
                                 @livewire('sidebar-dropdown-menu', ['name' => __('menu.expenses'), 'link' => route('payments.expenses'), 'active' => request()->routeIs('payments.expenses')])
                                 @livewire('sidebar-dropdown-menu', ['name' => __('menu.recurringExpenses'), 'link' => route('payments.recurring-expenses'), 'active' => request()->routeIs('payments.recurring-expenses')])
@@ -136,7 +141,7 @@
                             </x-sidebar-dropdown-menu>
                         @endif
 
-                        @if ($this->hasModule('Payment'))
+                        @if (! $simple && $this->hasModule('Payment'))
                             @if (user_can('Show Payments'))
                                 <x-sidebar-dropdown-menu :name='__("menu.payments")' icon='payments' :active='request()->routeIs(["payments.index", "payments.due"])'>
                                     @livewire('sidebar-dropdown-menu', ['name' => __('menu.payments'), 'link' => route('payments.index'), 'active' => request()->routeIs('payments.index')])
@@ -144,7 +149,7 @@
                                 </x-sidebar-dropdown-menu>
                             @endif
                         @endif
-                        @if ($this->hasModule('Report'))
+                        @if (! $simple && $this->hasModule('Report'))
                             @if (user_can('Show Reports'))
                                 <x-sidebar-dropdown-menu :name='__("menu.reports")' icon='reports' :active='request()->routeIs(["reports.*", "multi-pos.reports.*", "loyalty.reports.*"])'>
                                     @livewire('sidebar-dropdown-menu', ['name' => __('menu.salesReport'), 'link' => route('reports.sales'), 'active' => request()->routeIs('reports.sales')])
@@ -174,7 +179,7 @@
                             @endif
                         @endif
 
-                        @foreach (custom_module_plugins() as $item)
+                        @foreach ($simple ? [] : custom_module_plugins() as $item)
                             @includeIf(strtolower($item) . '::sections.sidebar')
                         @endforeach
 

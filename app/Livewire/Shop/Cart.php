@@ -1603,7 +1603,7 @@ class Cart extends Component
             return;
         }
 
-        if (!$this->canCreateOrder) {
+        if (!$this->canCreateOrder || $this->browseOnly()) {
             $this->alert('error', __('messages.CartAddPermissionDenied'), [
                 'toast' => false,
                 'position' => 'center',
@@ -2077,7 +2077,7 @@ class Cart extends Component
             'showVeg' => (bool) ($this->restaurant->show_veg ?? false),
             'showHalal' => (bool) ($this->restaurant->show_halal ?? false),
             'hideImages' => (bool) ($this->restaurant->hide_menu_item_image_on_customer_site ?? false),
-            'canCreateOrder' => (bool) $this->canCreateOrder && ! $this->tableQrOrderingBlocked && ! $this->roomQrOrderingBlocked,
+            'canCreateOrder' => (bool) $this->canCreateOrder && ! $this->browseOnly() && ! $this->tableQrOrderingBlocked && ! $this->roomQrOrderingBlocked,
             'allowCustomerOrders' => (bool) ($this->restaurant->allow_customer_orders ?? false),
             'initialCartItemQty' => $this->cartItemQty ?? [],
             'use_js_order_type_modal' => false,
@@ -2813,8 +2813,20 @@ class Cart extends Component
         $this->updateDeliveryDateTime();
     }
 
+    /**
+     * Mode simplifié : sans QR de table (QR général), le menu est en consultation seule.
+     */
+    public function browseOnly(): bool
+    {
+        return config('jimeb.simple_mode') && empty($this->tableID);
+    }
+
     public function placeOrder($pay = false, $updateOrder = null, $method = null)
     {
+        if ($this->browseOnly()) {
+            return;
+        }
+
         if ($this->tableQrOrderingBlocked) {
             $this->alert('error', __('messages.tableQrDineInDisabled'), [
                 'toast' => false,

@@ -624,7 +624,7 @@ $disableOrderTypePopup = (bool) ($restaurant->disable_order_type_popup ?? false)
                                             @endif
                                         </div>
 
-                                        @if ($canCreateOrder && !($tableQrOrderingBlocked ?? false))
+                                        @if ($canCreateOrder && !$this->browseOnly() && !($tableQrOrderingBlocked ?? false))
                                             @if (!$item->in_stock)
                                                 <div class="text-red-500">Out of stock</div>
                                             @elseif ($restaurant->allow_customer_orders)
