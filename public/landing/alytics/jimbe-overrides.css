@@ -62,3 +62,6 @@ a[href$="#integrations"] { display: none !important; }
 
 /* Titres : on garde la casse écrite (le template met une majuscule à chaque mot, ce qui ne convient pas au français) */
 h1.framer-text, h2.framer-text, h3.framer-text, h4.framer-text { text-transform: none !important; }
+
+/* Tarifs : prix mensuels uniquement pour l'instant (la bascule mensuel / annuel est masquée tant que l'offre annuelle n'est pas décidée) */
+.framer-1hhg522-container { display: none !important; }
