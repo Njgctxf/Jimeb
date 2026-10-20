@@ -119,6 +119,11 @@ if (!function_exists('module_enabled') || !module_enabled('Subdomain')) {
 // Copie du template Framer (vitrine), en cours d'adaptation pour Jimbe
 Route::get('/vitrine', [HomeController::class, 'vitrine'])->name('framer.home');
 
+// Pages du nouveau template (export Framer « Alytics »)
+Route::get('/blog', fn () => app(HomeController::class)->alytics('blog'))->name('alytics.blog');
+Route::get('/blog/{slug}', [HomeController::class, 'alyticsBlogPost'])->name('alytics.blog.post');
+Route::get('/newsletter', fn () => app(HomeController::class)->alytics('newsletter'))->name('alytics.newsletter');
+
 Route::get('/restaurant-signup', [HomeController::class, 'signup'])->name('restaurant_signup');
 Route::get('/customer-logout', [HomeController::class, 'customerLogout'])->name('customer_logout');
 Route::get('page/{slug}', [CustomMenuController::class, 'index'])->name('customMenu');

@@ -74,7 +74,7 @@ class HomeController extends Controller
             return response(file_get_contents($global->landing_site_url));
         }
 
-        return $this->vitrine();
+        return $this->alytics();
     }
 
     /**
@@ -120,6 +120,34 @@ class HomeController extends Controller
         }
 
         return view('landing.dynamic-index', compact('packages', 'AllModulesWithFeature', 'trialPackage', 'monthlyPackages', 'annualPackages', 'lifetimePackages', 'customMenu', 'frontDetails', 'frontFeatures', 'frontReviews', 'frontFaqs', 'frontContact'));
+    }
+
+    /**
+     * Page vitrine : export statique du template Framer « Alytics » (public/landing/alytics),
+     * en cours d'adaptation étape par étape. L'ancienne vitrine reste sur /vitrine.
+     */
+    public function alytics(string $page = 'index')
+    {
+        $file = public_path('landing/alytics/' . $page . '.html');
+
+        abort_unless(is_file($file), 404);
+
+        $html = file_get_contents($file);
+
+        // Les chemins de l'export sont relatifs : on les ancre sur son dossier.
+        $html = preg_replace('/<head>/', '<head><base href="' . asset('landing/alytics') . '/">', $html, 1);
+
+        // Traceur d'analytique Framer du template : retiré.
+        $html = preg_replace('/<script[^>]*\ssrc="script"[^>]*><\/script>/', '', $html);
+
+        return response($html)->header('Content-Type', 'text/html; charset=UTF-8');
+    }
+
+    public function alyticsBlogPost(string $slug)
+    {
+        abort_unless(preg_match('/^[a-z0-9-]+$/', $slug), 404);
+
+        return $this->alytics('blog/' . $slug);
     }
 
     /**
