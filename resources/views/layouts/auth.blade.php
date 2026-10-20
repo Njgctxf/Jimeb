@@ -95,7 +95,7 @@
                 </div>
                 <div class="jb-auth__copy">
                     <h2>Simple pour vous.<br>Meilleur pour vos clients.</h2>
-                    <p>Commandes, menu QR, réservations et caisse : tout votre restaurant au même endroit.</p>
+                    <p>Menu QR, commandes à table et suivi en direct : tout votre restaurant au même endroit.</p>
                 </div>
                 <div class="jb-auth__stage">
                     <div class="jb-art-card jb-art-card--a"><img src="{{ asset('landing/framer/TnplamgRY2ukmt782azuiyKM8Vw.png') }}" alt=""><img class="jb-art-clip" src="{{ asset('landing/framer/PBpuxqRpmPqftU0hol2DVhW7bus.png') }}" alt=""></div>

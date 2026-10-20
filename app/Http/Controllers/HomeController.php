@@ -180,7 +180,8 @@ class HomeController extends Controller
 
     public function signup()
     {
-        if (global_setting()->disable_landing_site) {
+        // Même mise en page que la connexion (colonne verte Mobilo + carte de formulaire).
+        if (config('jimeb.simple_mode') || global_setting()->disable_landing_site) {
             return view('auth.restaurant_register');
         }
 

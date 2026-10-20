@@ -226,7 +226,7 @@
                 </a>
 
                 <x-button wire:target="submitForm" wire:loading.attr="disabled" wire:loading.class="opacity-50 cursor-not-allowed">
-                    <span wire:loading.remove wire:target="submitForm">@lang('modules.restaurant.nextBranchDetails')</span>
+                    <span wire:loading.remove wire:target="submitForm">{{ config('jimeb.simple_mode') ? 'Créer mon compte' : __('modules.restaurant.nextBranchDetails') }}</span>
                     <span wire:loading wire:target="submitForm">@lang('app.loading')...</span>
                 </x-button>
             </div>
