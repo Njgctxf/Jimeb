@@ -61,4 +61,4 @@ a[href$="#integrations"] { display: none !important; }
 [class*="framer-"]:has(> a[href$="#integrations"]) { display: none !important; }
 
 /* Titres : on garde la casse écrite (le template met une majuscule à chaque mot, ce qui ne convient pas au français) */
-.framer-styles-preset-hc0hj7 { text-transform: none !important; }
+h1.framer-text, h2.framer-text, h3.framer-text, h4.framer-text { text-transform: none !important; }
