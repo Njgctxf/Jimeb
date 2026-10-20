@@ -23,3 +23,29 @@
 .framer-1yq4hu3 > *,
 .framer-1ev9j42 > *,
 .framer-7qp9kz > * { display: none !important; }
+
+/* Accueil : la ligne « No credit card required » est supprimée */
+.framer-nffykq { display: none !important; }
+
+/* Accueil : le bandeau de faux logos clients est remplacé, en attendant de vrais clients, par les types d'établissements visés */
+.framer-194jp0e { height: auto !important; min-height: 0 !important; }
+.framer-194jp0e > * { display: none !important; }
+.framer-194jp0e::before {
+    content: "Restaurants  \2022  Maquis  \2022  Snacks  \2022  Caf\00e9s  \2022  Bars  \2022  Food trucks  \2022  Traiteurs";
+    display: block;
+    text-align: center;
+    font-family: "Inter Tight", "Inter", sans-serif;
+    font-weight: 600;
+    font-size: 1.15rem;
+    line-height: 1.7;
+    letter-spacing: -0.01em;
+    color: #5c5c5c;
+    padding: 4px 8px;
+}
+
+/* Menu : « Integrations » n'est pas repris (les sections absentes du nouveau site ne sont pas liées) */
+a[href$="#integrations"] { display: none !important; }
+[class*="framer-"]:has(> a[href$="#integrations"]) { display: none !important; }
+
+/* Titres : on garde la casse écrite (le template met une majuscule à chaque mot, ce qui ne convient pas au français) */
+.framer-styles-preset-hc0hj7 { text-transform: none !important; }

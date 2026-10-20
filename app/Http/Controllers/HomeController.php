@@ -140,7 +140,7 @@ class HomeController extends Controller
         // Ajustements Jimbe (retrait des éléments du créateur du template).
         $v = filemtime(public_path('landing/alytics/jimbe-overrides.css'));
         $head = '<link rel="stylesheet" href="jimbe-overrides.css?v=' . $v . '">'
-            . '<script src="jimbe-overrides.js?v=' . $v . '" data-signup="' . e(route('restaurant_signup', [], false)) . '"></script>';
+            . '<script src="jimbe-overrides.js?v=' . $v . '" data-signup="' . e(route('restaurant_signup', [], false)) . '" data-login="' . e(route('login', [], false)) . '"></script>';
         $html = str_replace('</head>', $head . '</head>', $html);
 
         // Traceur d'analytique Framer du template : retiré.
