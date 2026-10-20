@@ -9,3 +9,17 @@
 /* Crédits du créateur dans le pied de page : « Template by … » et « Built in Framer » */
 .framer-anvkv6,
 .framer-7blpl0 a[data-styles-preset="SNmekgwHz"] { display: none !important; }
+
+/* Logo : le signe et le mot d'origine sont remplacés par le logo complet (signe + nom).
+   Trois emplacements : en-tête (menu), bloc d'appel à l'action, pied de page. */
+.framer-1yq4hu3,
+.framer-1ev9j42,
+.framer-7qp9kz {
+    background: url("jimbe-logo.svg") left center / contain no-repeat !important;
+    width: 130px !important;
+    height: 32px !important;
+    flex: none !important;
+}
+.framer-1yq4hu3 > *,
+.framer-1ev9j42 > *,
+.framer-7qp9kz > * { display: none !important; }
