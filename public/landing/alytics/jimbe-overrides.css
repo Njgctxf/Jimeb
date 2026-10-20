@@ -73,3 +73,10 @@ a[href$="blog"], a[href$="blog.html"] { display: none !important; }
 
 /* Sections masquées en attendant de vrais contenus : Intégrations (logos d'outils) et Témoignages (faux clients) */
 .framer-10of8j7, .framer-150cz2t { display: none !important; }
+
+/* Pied de page : colonne « Socials » masquée (pas encore de comptes) et lien vers la page 404 retiré */
+.framer-2f81h3 { display: none !important; }
+a[href$="404"], a[href$="404.html"] { display: none !important; }
+[class*="framer-"]:has(> a[href$="404"]), [class*="framer-"]:has(> a[href$="404.html"]) { display: none !important; }
+/* Pied de page : l'espace de l'ancien lien « Integrations » est retiré */
+.framer-erztd9 { display: none !important; }
