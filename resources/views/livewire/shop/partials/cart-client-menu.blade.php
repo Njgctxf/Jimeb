@@ -1,5 +1,6 @@
 @php
     $lwId = $this->getId();
+    $jbCanCall = (bool) ($restaurant->is_waiter_request_enabled ?? true);
 @endphp
 
 <div wire:ignore class="tt-shop-client-menu-root">
@@ -87,75 +88,20 @@
 
         <link rel="stylesheet" href="{{ asset('css/jimbe-shop.css') }}?v={{ @filemtime(public_path('css/jimbe-shop.css')) }}">
 
-        <div class="jb-shop" id="jb-top" x-show="cfg.showMenu !== false" x-cloak>
-            {{-- Barre du haut : logo, table, panier --}}
-            <div class="jb-top">
-                <div class="jb-top__brand">
-                    <div class="jb-top__logo"><x-restaurant-logo :restaurant="$restaurant" class="h-8" /></div>
-                    @if (!empty($table?->table_code))
-                        <div class="jb-table"><i></i>@lang('modules.shop.tableLabel', ['n' => $table->table_code])</div>
-                    @endif
-                </div>
-                <div class="jb-top__actions">
-                    <button type="button" class="jb-ibtn" id="jb-cart-top" aria-label="@lang('modules.order.viewCart')" @click="callLw('showCartItems')">
-                        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007Z"/></svg>
-                        <span class="jb-badge" x-show="cartCount() > 0" x-text="cartCount()"></span>
-                    </button>
-                </div>
-            </div>
+        @include('livewire.shop.partials.jimbe-welcome')
 
-            {{-- Bannière d'accueil --}}
-            <div class="jb-hero">
-                <span class="jb-hero__mono" aria-hidden="true">{{ mb_strtoupper(mb_substr($restaurant->name, 0, 1)) }}</span>
-                <span class="jb-hero__tag">@lang('modules.shop.heroTag')</span>
-                <h2>@lang('modules.shop.welcomeAt', ['name' => $restaurant->name])</h2>
-                <p>@lang('modules.shop.heroSub')</p>
-                <button type="button" class="jb-hero__cta" @click="document.getElementById('jb-menu')?.scrollIntoView({behavior: 'smooth'})">
-                    @lang('modules.shop.heroCta') <span>→</span>
-                </button>
-            </div>
-
-            {{-- Recherche --}}
-            <label class="jb-search">
-                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/></svg>
-                <input type="text" x-model.debounce.300ms="search" placeholder="@lang('modules.shop.search')">
-            </label>
-
-            {{-- Promos --}}
-            <div id="jb-promos" x-show="promoItems().length > 0 && !(search || '').trim()" x-cloak>
-                <div class="jb-sec"><h3>@lang('modules.shop.promos') 🔥</h3></div>
-                <div class="jb-dishes">
-                    <template x-for="item in promoItems()" :key="'jb-p-' + item.id">
-                        @include('livewire.shop.partials.jimbe-card')
-                    </template>
-                </div>
-            </div>
-
-            {{-- La carte : barre de catégories collée en haut + sections dans l'ordre --}}
-            <div id="jb-menu" x-show="cfg.showMenu" x-cloak x-data="jbSpy()" x-init="start()">
-                <div class="jb-cats" x-show="groupedForDisplay().length > 1">
-                    <div class="jb-cats__in" x-ref="scroller">
-                        <template x-for="(g, gi) in groupedForDisplay()" :key="'jb-c-' + gi + g.key">
-                            <button type="button" class="jb-cat" :class="active === gi ? 'is-active' : ''" :data-i="gi" @click="jump(gi)" x-text="g.key"></button>
-                        </template>
-                    </div>
-                </div>
-
-                <template x-for="(g, gi) in groupedForDisplay()" :key="'jb-s-' + gi + g.key">
-                    <section class="jb-section" :id="'jb-sec-' + gi">
-                        <div class="jb-sec"><h3 x-text="g.key"></h3></div>
-                        <div class="jb-dishes">
-                            <template x-for="item in g.items" :key="'jb-i-' + item.id">
-                                @include('livewire.shop.partials.jimbe-card')
-                            </template>
-                        </div>
-                    </section>
-                </template>
-
-                <template x-if="flatItems().length === 0">
-                    <div class="jb-empty" x-text="labels.noItemAdded"></div>
-                </template>
-            </div>
+        <div class="jb-shop" id="jb-top" x-show="cfg.showMenu !== false" x-cloak
+            x-data="{
+                view: 'home',
+                go(v) {
+                    if (this.view === v) { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+                    this.view = v; window.scrollTo(0, 0);
+                    try { history.pushState({ jb: v }, ''); } catch (e) {}
+                },
+            }"
+            x-init="window.addEventListener('popstate', () => { view = 'home'; })">
+            <div x-show="view === 'home'">@include('livewire.shop.partials.jimbe-home')</div>
+            <div x-show="view === 'menu'" x-cloak>@include('livewire.shop.partials.jimbe-menu-page')</div>
 
             <p class="jb-powered">@lang('modules.shop.poweredBy') <b>Mobilo</b></p>
 
@@ -228,7 +174,11 @@
 
             {{-- Navigation du bas --}}
             <nav class="jb-nav" aria-label="Navigation">
-                <button type="button" @click="document.getElementById('jb-menu')?.scrollIntoView({behavior: 'smooth'})">
+                <button type="button" :class="view === 'home' ? 'is-on' : ''" @click="go('home')">
+                    <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955a1.126 1.126 0 0 1 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/></svg>
+                    @lang('modules.shop.navHome')
+                </button>
+                <button type="button" :class="view === 'menu' ? 'is-on' : ''" @click="setBadgeFilter(null); go('menu')">
                     <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg>
                     @lang('modules.shop.navMenu')
                 </button>
@@ -239,138 +189,23 @@
                     </i>
                     <span>@lang('modules.shop.navCart')</span>
                 </button>
-                <button type="button" x-show="promoItems().length > 0" x-cloak @click="document.getElementById('jb-promos')?.scrollIntoView({behavior: 'smooth'})">
+                <button type="button" x-show="promoItems().length > 0" x-cloak @click="setBadgeFilter('promo'); go('menu')">
                     <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6Z"/></svg>
                     @lang('modules.shop.navPromos')
                 </button>
-                <button type="button" @click="document.querySelector('[wire\\:click=callWaiter]')?.click()">
+                @if ($jbCanCall)
+                <button type="button" @click="$dispatch('jb-call-open')">
                     <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"/></svg>
                     @lang('modules.shop.navWaiter')
                 </button>
+                @endif
             </nav>
         </div>
 
-        <div x-show="itemDetailOpen" x-cloak x-transition.opacity
-            class="fixed inset-0 z-[80] flex items-center justify-center p-4 bg-black/60 dark:bg-black/70"
-            role="dialog" aria-modal="true" @keydown.escape.window="closeItemDetail()">
-            <div class="flex flex-col w-full max-w-sm max-h-[85vh] overflow-hidden bg-white rounded-lg shadow-xl dark:bg-gray-900"
-                @click.stop>
-                <div class="flex items-center justify-between flex-shrink-0 px-4 py-3 border-b border-gray-200 dark:border-gray-700">
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white" x-text="labels.itemDescription"></h3>
-                    <button type="button" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                        @click="closeItemDetail()">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                        </svg>
-                    </button>
-                </div>
+        @if ($jbCanCall)
+            @include('livewire.shop.partials.jimbe-call-sheet')
+        @endif
 
-                <div class="flex flex-col flex-1 min-h-0 overflow-hidden">
-                    <template x-if="selectedPreviewItem">
-                        <div class="flex flex-col flex-1 min-h-0 overflow-hidden">
-                            <template x-if="!cfg.hideImages && selectedPreviewItem.item_photo_url">
-                                <div class="flex w-full h-48 shrink-0 items-center justify-center overflow-hidden bg-gray-100 dark:bg-gray-800">
-                                    <img :src="selectedPreviewItem.item_photo_url" :alt="selectedPreviewItem.item_name"
-                                        class="max-h-48 max-w-full w-auto h-auto object-contain"
-                                        loading="lazy"
-                                        decoding="async" />
-                                </div>
-                            </template>
-                            <template x-if="!cfg.hideImages && (selectedPreviewItem.extra_photo_urls || []).length">
-                                <div class="flex gap-2 overflow-x-auto px-3 pt-2 shrink-0">
-                                    <template x-for="u in selectedPreviewItem.extra_photo_urls" :key="u">
-                                        <img :src="u" alt="" class="h-16 w-16 shrink-0 rounded-md object-cover cursor-pointer" loading="lazy"
-                                            @click="selectedPreviewItem = { ...selectedPreviewItem, item_photo_url: u }" />
-                                    </template>
-                                </div>
-                            </template>
-                            <div class="flex flex-col flex-1 min-h-0 gap-2 px-4 pb-4 overflow-y-auto"
-                                :class="(!cfg.hideImages && selectedPreviewItem.item_photo_url) ? 'pt-3' : 'pt-4'">
-                                <div class="flex flex-col gap-1">
-                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white" x-text="selectedPreviewItem.item_name"></h3>
-                                    <template x-if="selectedPreviewItem.description">
-                                        <div>
-                                            <template x-if="String(selectedPreviewItem.description || '').length > 100">
-                                                <div>
-                                                    <p class="text-sm text-gray-500 dark:text-gray-400">
-                                                        <span x-show="!itemDetailExpanded" x-text="truncate(selectedPreviewItem.description, 100)"></span>
-                                                        <span x-show="itemDetailExpanded" x-text="selectedPreviewItem.description"></span>
-                                                    </p>
-                                                    <button type="button" class="mt-1 text-sm font-medium text-skin-base"
-                                                        @click="itemDetailExpanded = !itemDetailExpanded"
-                                                        x-text="itemDetailExpanded ? labels.showLess : labels.showMore"></button>
-                                                </div>
-                                            </template>
-                                            <template x-if="String(selectedPreviewItem.description || '').length <= 100">
-                                                <p class="text-sm text-gray-500 dark:text-gray-400" x-text="selectedPreviewItem.description"></p>
-                                            </template>
-                                        </div>
-                                    </template>
-                                    <template x-if="selectedPreviewItem.preparation_time">
-                                        <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 shrink-0">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                            </svg>
-                                            <span x-text="labels.preparationTime + ' ' + (selectedPreviewItem.preparation_time >= 60 ? Math.floor(selectedPreviewItem.preparation_time / 60) + ' h' + (selectedPreviewItem.preparation_time % 60 ? ' ' + String(selectedPreviewItem.preparation_time % 60).padStart(2, '0') + ' min' : '') : selectedPreviewItem.preparation_time + ' ' + labels.minutes)"></span>
-                                        </div>
-                                    </template>
-                                    <template x-if="cfg && cfg.euAllergensEnabled !== false && selectedPreviewItem.eu_allergens_display && selectedPreviewItem.eu_allergens_display.length">
-                                        <div class="mt-2 rounded-lg border border-amber-200/90 bg-amber-50 px-3 py-2.5 dark:border-amber-700/60 dark:bg-amber-950/35"
-                                            role="region"
-                                            :aria-label="labels.allergensHeading">
-                                            <div class="mb-2 text-xs font-semibold uppercase tracking-wide text-amber-900 dark:text-amber-200"
-                                                x-text="labels.allergensHeading"></div>
-                                            <ul class="m-0 flex list-none flex-col gap-2.5 p-0">
-                                                <template x-for="row in selectedPreviewItem.eu_allergens_display" :key="'eu-' + selectedPreviewItem.id + '-' + row.key">
-                                                    <li class="flex items-center gap-3">
-                                                        <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center sm:h-10 sm:w-10" aria-hidden="true">
-                                                            <img :src="row.icon" alt="" class="max-h-8 max-w-8 object-contain sm:max-h-9 sm:max-w-9" width="36" height="36" loading="lazy" />
-                                                        </span>
-                                                        <span class="flex-1 text-sm font-medium leading-normal text-gray-900 dark:text-gray-100" x-text="row.label"></span>
-                                                    </li>
-                                                </template>
-                                            </ul>
-                                        </div>
-                                    </template>
-                                    <template x-if="selectedPreviewItem.dietary_labels_display && selectedPreviewItem.dietary_labels_display.length">
-                                        <div class="mt-2 rounded-lg border border-emerald-200/90 bg-emerald-50 px-3 py-2.5 dark:border-emerald-700/60 dark:bg-emerald-950/35"
-                                            role="region"
-                                            :aria-label="labels.dietaryLabelsHeading">
-                                            <div class="mb-2 text-xs font-semibold uppercase tracking-wide text-emerald-900 dark:text-emerald-200"
-                                                x-text="labels.dietaryLabelsHeading"></div>
-                                            <ul class="m-0 flex list-none flex-col gap-2.5 p-0">
-                                                <template x-for="row in selectedPreviewItem.dietary_labels_display" :key="'diet-' + selectedPreviewItem.id + '-' + row.key">
-                                                    <li class="flex items-center gap-3">
-                                                        <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center sm:h-10 sm:w-10" aria-hidden="true">
-                                                            <img :src="row.icon" alt="" class="max-h-8 max-w-8 object-contain sm:max-h-9 sm:max-w-9" width="36" height="36" loading="lazy" />
-                                                        </span>
-                                                        <span class="flex-1 text-sm font-medium leading-normal text-gray-900 dark:text-gray-100" x-text="row.label"></span>
-                                                    </li>
-                                                </template>
-                                            </ul>
-                                        </div>
-                                    </template>
-                                    <p class="text-base font-semibold text-gray-900 dark:text-white">
-                                        <span x-text="itemPriceLabel(selectedPreviewItem)"></span>
-                                        <span x-show="selectedPreviewItem.original_price_label" class="ml-1 text-sm font-normal text-gray-400 line-through" x-text="selectedPreviewItem.original_price_label"></span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </template>
-                </div>
-
-                <div class="flex justify-end flex-shrink-0 px-4 py-3 space-x-2 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/60">
-                    <button type="button"
-                        class="inline-flex items-center px-3 py-2 text-sm font-medium text-white border border-transparent rounded-md shadow-sm bg-skin-base hover:opacity-90"
-                        x-show="selectedPreviewItem && cfg.canCreateOrder && cfg.allowCustomerOrders && selectedPreviewItem.in_stock"
-                        @click="browseCartMutate('add', selectedPreviewItem.id, selectedPreviewItem.variations_count || 0, selectedPreviewItem.modifier_groups_count || 0); closeItemDetail()"
-                        x-text="labels.add"></button>
-                    <button type="button" class="px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600"
-                        @click="closeItemDetail()"
-                        x-text="labels.cancel || 'Cancel'"></button>
-                </div>
-            </div>
-        </div>
+        @include('livewire.shop.partials.jimbe-dish-page')
     </div>
 </div>

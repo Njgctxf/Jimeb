@@ -56,6 +56,7 @@ class CustomerSiteCatalogBuilder
             ->get();
 
         $itemsQuery = MenuItem::query()
+            ->withoutGlobalScope(\App\Scopes\AvailableMenuItemScope::class)
             ->select('menu_items.*', 'item_categories.category_name', 'item_categories.sort_order as category_sort_order')
             ->join('item_categories', 'menu_items.item_category_id', '=', 'item_categories.id')
             ->where('menu_items.branch_id', $shopBranch->id)
@@ -173,6 +174,7 @@ class CustomerSiteCatalogBuilder
                     (bool) $item->in_stock,
                 ),
                 'is_available' => (bool) $item->is_available,
+                'badges' => \App\Support\DishBadges::display(is_array($item->badges) ? $item->badges : []),
                 'sort_order' => (int) $item->sort_order,
                 'variations_count' => (int) ($item->variations_count ?? 0),
                 'modifier_groups_count' => (int) ($item->modifier_groups_count ?? 0),

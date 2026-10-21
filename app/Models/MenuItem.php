@@ -63,6 +63,7 @@ class MenuItem extends BaseModel
         'show_on_customer_site' => 'boolean',
         'eu_allergen_keys' => 'array',
         'dietary_labels' => 'array',
+        'badges' => 'array',
         'extra_images' => 'array',
     ];
 

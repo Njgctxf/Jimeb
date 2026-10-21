@@ -120,6 +120,14 @@
                 </li>
 
                 <li class="me-2">
+                    <x-settings.sidebar-menu-item :name='__("modules.settings.welcomePage")' :link='route("settings.index")."?tab=welcome"' :active='$activeSetting == "welcome"' />
+                </li>
+
+                <li class="me-2">
+                    <x-settings.sidebar-menu-item :name='__("modules.settings.banners")' :link='route("settings.index")."?tab=banners"' :active='$activeSetting == "banners"' />
+                </li>
+
+                <li class="me-2">
                     <x-settings.sidebar-menu-item :name='__("modules.settings.customerDisplaySettings")' :link='route("settings.index")."?tab=customerDisplay"' :active='$activeSetting == "customerDisplay"' />
                 </li>
 
@@ -280,6 +288,14 @@
 
                         @case('customerSite')
                         @livewire('settings.customerSiteSettings', ['settings' => $settings])
+                        @break
+
+                        @case('welcome')
+                        @livewire('settings.welcomePageSettings', ['settings' => $settings])
+                        @break
+
+                        @case('banners')
+                        @livewire('settings.bannerSettings', ['settings' => $settings])
                         @break
 
                         @case('customerDisplay')

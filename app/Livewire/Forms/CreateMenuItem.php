@@ -117,6 +117,8 @@ class CreateMenuItem extends Component
 
     /** @var array<int, string> */
     public array $selectedDietaryLabels = [];
+
+    public array $selectedBadges = [];
     public bool $showMenuCategoryModal = false;
 
     // Collections (computed properties to avoid N+1 queries)
@@ -508,6 +510,8 @@ class CreateMenuItem extends Component
 
         $rules['selectedDietaryLabels'] = 'nullable|array';
         $rules['selectedDietaryLabels.*'] = 'string|in:' . implode(',', DietaryLabels::keys());
+        $rules['selectedBadges'] = 'nullable|array';
+        $rules['selectedBadges.*'] = 'string|in:' . implode(',', \App\Support\DishBadges::keys());
 
         $this->validate([
             'promoPrice' => ['nullable', 'numeric', 'min:0', 'lt:itemPrice'],
@@ -586,6 +590,7 @@ class CreateMenuItem extends Component
             'kot_place_id' => $this->kitchenType,
             'tax_inclusive' => $this->isTaxModeItem ? $this->taxInclusive : false,
             'dietary_labels' => DietaryLabels::normalize($this->selectedDietaryLabels),
+            'badges' => \App\Support\DishBadges::normalize($this->selectedBadges),
         ];
 
         $eu = $this->euAllergenKeysForPersist();
@@ -756,6 +761,7 @@ class CreateMenuItem extends Component
         $this->selectedTaxes = [];
         $this->selectedEuAllergens = [];
         $this->selectedDietaryLabels = [];
+        $this->selectedBadges = [];
         $this->baseDeliveryPrice = '';
         $this->deliveryPrices = [];
         $this->orderTypePrices = [];

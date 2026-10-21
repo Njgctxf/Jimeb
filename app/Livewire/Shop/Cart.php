@@ -2685,6 +2685,60 @@ class Cart extends Component
         return $this->placeOrder((bool) $payNow);
     }
 
+    /**
+     * Jimbe : appel d'un serveur depuis la page client (motif + table).
+     * Retourne ['ok' => bool, 'code' => string, 'at' => 'H:i'].
+     */
+    public function callWaiterFromShop(?string $reason = null, ?string $tableHash = null): array
+    {
+        if (!$this->restaurant->is_waiter_request_enabled) {
+            return ['ok' => false, 'code' => 'disabled', 'message' => __('modules.waiterRequest.callFailed')];
+        }
+
+        $table = null;
+        if (!empty($this->table?->id)) {
+            $table = $this->table;
+        } elseif (!empty($tableHash)) {
+            $table = Table::where('hash', $tableHash)->where('branch_id', $this->shopBranch->id)->first();
+        }
+
+        if (!$table) {
+            return ['ok' => false, 'code' => 'no_table', 'message' => __('modules.shop.tableRequired')];
+        }
+
+        $pending = \App\Models\WaiterRequest::where('table_id', $table->id)
+            ->where('branch_id', $this->shopBranch->id)
+            ->whereIn('status', ['pending', 'Pending'])
+            ->latest()->first();
+
+        if ($pending) {
+            return ['ok' => false, 'code' => 'pending', 'at' => $pending->created_at?->timezone(timezone())->format('H:i')];
+        }
+
+        $cooldownKey = 'jb_waiter_call_' . $table->id;
+        if (session($cooldownKey) && now()->timestamp - (int) session($cooldownKey) < 90) {
+            return ['ok' => false, 'code' => 'pending', 'at' => now()->setTimestamp((int) session($cooldownKey))->timezone(timezone())->format('H:i')];
+        }
+
+        $allowed = ['help', 'bill', 'water', 'other'];
+        $reason = in_array($reason, $allowed, true) ? $reason : 'help';
+
+        \App\Models\WaiterRequest::create([
+            'table_id' => $table->id,
+            'branch_id' => $this->shopBranch->id,
+            'status' => 'pending',
+            'reason' => $reason,
+        ]);
+
+        session([$cooldownKey => now()->timestamp]);
+
+        $count = \App\Models\WaiterRequest::where('status', 'pending')
+            ->where('branch_id', $this->shopBranch->id)->distinct('table_id')->count('table_id');
+        event(new \App\Events\ActiveWaiterRequestCreatedEvent($count));
+
+        return ['ok' => true, 'code' => 'sent', 'at' => now()->timezone(timezone())->format('H:i')];
+    }
+
     public function selectTableOrder($tableID = null)
     {
         if ($this->getTable) {

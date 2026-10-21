@@ -144,6 +144,8 @@ class UpdateMenuItem extends Component
     /** @var array<int, string> */
     public array $selectedDietaryLabels = [];
 
+    public array $selectedBadges = [];
+
     // Modal Properties
     public bool $showMenuCategoryModal = false;
 
@@ -228,6 +230,8 @@ class UpdateMenuItem extends Component
         $this->selectedEuAllergens = ($allowedEu !== [] && is_array($storedEu))
             ? array_values(array_intersect($storedEu, $allowedEu))
             : [];
+
+        $this->selectedBadges = \App\Support\DishBadges::normalize(is_array($this->menuItem->badges) ? $this->menuItem->badges : []);
 
         $storedDietary = $this->menuItem->dietary_labels;
         $this->selectedDietaryLabels = is_array($storedDietary)
@@ -750,6 +754,8 @@ class UpdateMenuItem extends Component
 
         $rules['selectedDietaryLabels'] = 'nullable|array';
         $rules['selectedDietaryLabels.*'] = 'string|in:' . implode(',', DietaryLabels::keys());
+        $rules['selectedBadges'] = 'nullable|array';
+        $rules['selectedBadges.*'] = 'string|in:' . implode(',', \App\Support\DishBadges::keys());
 
         $this->validate($rules, $this->getValidationMessages());
     }
@@ -831,6 +837,7 @@ class UpdateMenuItem extends Component
             'tax_inclusive' => $this->isTaxModeItem ? $this->taxInclusive : (restaurant()->tax_inclusive ?? false),
             'eu_allergen_keys' => $this->euAllergenKeysForUpdate(),
             'dietary_labels' => DietaryLabels::normalize($this->selectedDietaryLabels),
+            'badges' => \App\Support\DishBadges::normalize($this->selectedBadges),
         ];
 
         // Add inStock and batch recipe data only if Inventory module is enabled

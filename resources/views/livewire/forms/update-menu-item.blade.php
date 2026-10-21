@@ -127,6 +127,7 @@
 
                         {{-- Le type de plat n'est plus demandé : valeur par défaut « autre » --}}
 
+                        @include('livewire.forms.partials.menu-item-badges', ['badgeDomPrefix' => 'upd-badge'])
                         @include('livewire.forms.partials.menu-item-dietary-label-chips', ['dietaryDomPrefix' => 'update-mi'])
 
                         @include('livewire.forms.partials.menu-item-eu-allergen-chips', ['euAllergenDomPrefix' => 'update-mi'])

@@ -29,6 +29,7 @@ document.addEventListener('alpine:init', () => {
         menus: [],
         menuId: null,
         filterCategoryId: null,
+        badgeFilter: null,
         search: '',
         showVeg: false,
         showHalal: false,
@@ -316,6 +317,59 @@ document.addEventListener('alpine:init', () => {
             return this.groupedForDisplay().flatMap((g) => g.items);
         },
 
+        /** Jimbe : filtre par badge (promo, populaire, pimenté…) */
+        setBadgeFilter(k) {
+            this.badgeFilter = (!k || this.badgeFilter === k) ? null : k;
+            this.filterCategoryId = null;
+        },
+
+        /** Jimbe : photo représentative d'une catégorie */
+        catThumb(categoryId) {
+            const it = this.items.find((i) => Number(i.item_category_id) === Number(categoryId) && i.item_photo_url && !String(i.item_photo_url).includes('food.svg'));
+            return it ? it.item_photo_url : null;
+        },
+
+        /** Jimbe : prix numérique d'un plat (type de commande courant) */
+        itemPriceNum(item) {
+            const prices = item.prices_by_order_type || {};
+            const v = prices[String(this.orderTypeId || 0)] ?? Object.values(prices)[0];
+            return Number(v || 0);
+        },
+
+        /** Jimbe : plats les plus abordables */
+        cheapItems() {
+            const ok = (i) => i.in_stock && i.is_available !== false && i.variations_count == 0 && this.itemPriceNum(i) > 0;
+            const list = this.items.filter(ok).sort((a, b) => this.itemPriceNum(a) - this.itemPriceNum(b));
+            return list.length >= 3 ? list.slice(0, 10) : [];
+        },
+
+        /** Jimbe : nouveautés (badge Nouveau, sinon les derniers ajoutés) */
+        newItems() {
+            const ok = (i) => i.in_stock && i.is_available !== false;
+            let list = this.items.filter((i) => ok(i) && (i.badges || []).some((b) => b.key === 'new'));
+            if (!list.length && this.items.length >= 6) {
+                list = this.items.filter(ok).sort((a, b) => Number(b.id) - Number(a.id)).slice(0, 8);
+            }
+            return list.slice(0, 10);
+        },
+
+        /** Jimbe : plats prêts en 15 minutes ou moins */
+        quickItems() {
+            const list = this.items
+                .filter((i) => i.in_stock && i.is_available !== false && Number(i.preparation_time) > 0 && Number(i.preparation_time) <= 15)
+                .sort((a, b) => Number(a.preparation_time) - Number(b.preparation_time));
+            return list.slice(0, 10);
+        },
+
+        /** Jimbe : plats populaires (badge Populaire, sinon promos, sinon les premiers) */
+        popularItems() {
+            const ok = (i) => i.in_stock && i.is_available !== false;
+            let list = this.items.filter((i) => ok(i) && (i.badges || []).some((b) => b.key === 'popular'));
+            if (!list.length) { list = this.items.filter((i) => ok(i) && i.original_price_label); }
+            if (!list.length) { list = this.items.filter(ok).slice(0, 6); }
+            return list.slice(0, 10);
+        },
+
         filteredItems() {
             const menuId = this.menuId;
             const categoryId = this.filterCategoryId;
@@ -327,6 +381,13 @@ document.addEventListener('alpine:init', () => {
                 }
                 if (categoryId !== null && Number(item.item_category_id) !== Number(categoryId)) {
                     return false;
+                }
+                if (this.badgeFilter) {
+                    if (this.badgeFilter === 'promo') {
+                        if (!item.original_price_label) { return false; }
+                    } else if (!(item.badges || []).some((b) => b.key === this.badgeFilter)) {
+                        return false;
+                    }
                 }
                 if (this.showVeg && item.type !== 'veg') {
                     return false;

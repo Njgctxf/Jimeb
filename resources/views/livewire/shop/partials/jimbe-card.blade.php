@@ -21,7 +21,7 @@
     </div>
     <div class="jb-dish__side">
         <div class="jb-dish__img" x-show="!cfg.hideImages && item.item_photo_url && !String(item.item_photo_url).includes('food.svg')" @click="openItemDetail(item.id)">
-            <img :src="item.item_photo_url" :alt="item.item_name" loading="lazy" decoding="async" @error="$el.closest('.jb-dish').classList.add('no-img')">
+            <img :src="item.item_photo_url" :alt="item.item_name" loading="lazy" decoding="async" x-on:error="$el.closest('.jb-dish').classList.add('no-img')">
         </div>
         <div class="jb-dish__ctl" x-show="cfg.canCreateOrder && cfg.allowCustomerOrders" @click.stop>
             <span class="jb-out" x-show="!item.in_stock" x-text="labels.outOfStock"></span>
