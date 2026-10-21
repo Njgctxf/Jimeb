@@ -75,9 +75,11 @@ class KadevPayService
     /**
      * Marque la commande payée (idempotent). $paidAmount = montant confirmé par Kadev Pay.
      *
-     * @return bool true si la commande est payée à l'issue de l'appel
+     * $notify = false pour un règlement depuis la page de suivi : la commande est déjà en cuisine.
+     *
+     * @return bool true si le paiement est validé à l'issue de l'appel
      */
-    public function markPaid(KadevPayment $payment, string $reference, float $paidAmount): bool
+    public function markPaid(KadevPayment $payment, string $reference, float $paidAmount, bool $notify = true): bool
     {
         if ($payment->payment_status === 'completed') {
             return true;
@@ -114,14 +116,17 @@ class KadevPayService
 
             if ($order) {
                 $order->amount_paid = $order->amount_paid + $payment->amount;
-                $order->status = 'paid';
+                // Addition partagée : la commande n'est « payée » qu'une fois toutes les parts réglées.
+                if (round((float) $order->amount_paid, 2) + 0.01 >= round((float) $order->total, 2)) {
+                    $order->status = 'paid';
+                }
                 $order->save();
             }
         });
 
         $order = Order::find($payment->order_id);
 
-        if ($order) {
+        if ($order && $notify) {
             ShopCartKotPrintUrls::flashDeferredKotPrintForShopOrder($order);
             SendNewOrderReceived::dispatch($order);
 

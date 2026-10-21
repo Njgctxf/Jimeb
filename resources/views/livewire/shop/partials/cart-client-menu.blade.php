@@ -99,7 +99,7 @@
                     try { history.pushState({ jb: v }, ''); } catch (e) {}
                 },
             }"
-            x-init="window.addEventListener('popstate', () => { view = 'home'; })">
+            x-init="window.addEventListener('popstate', () => { view = 'home'; }); if (new URLSearchParams(location.search).get('jb') === 'menu') view = 'menu';">
             <div x-show="view === 'home'">@include('livewire.shop.partials.jimbe-home')</div>
             <div x-show="view === 'menu'" x-cloak>@include('livewire.shop.partials.jimbe-menu-page')</div>
 
@@ -152,6 +152,13 @@
                             const on = () => { if (this.raf) return; this.raf = requestAnimationFrame(() => { this.raf = null; this.update(); }); };
                             window.addEventListener('scroll', on, { passive: true });
                             window.addEventListener('resize', on);
+                            // Lien direct depuis le suivi de commande : ?jb=menu&cat=boisson|dessert
+                            const cat = new URLSearchParams(location.search).get('cat');
+                            const re = { boisson: /boisson|drink|beverage|jus|juice|bar|cocktail/i, dessert: /dessert|sucr|sweet|glace/i }[cat];
+                            if (re) setTimeout(() => {
+                                const i = [...document.querySelectorAll('.jb-section h3')].findIndex((h) => re.test(h.textContent));
+                                if (i >= 0) this.jump(i);
+                            }, 700);
                         },
                         update() {
                             const secs = [...document.querySelectorAll('.jb-section')];

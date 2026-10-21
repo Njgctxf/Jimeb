@@ -34,7 +34,10 @@
     x-data="{
         show: false,
         key: 'jbWelcome:' + @js($jbTableCode ?? 'all'),
-        init() { try { this.show = !sessionStorage.getItem(this.key); } catch (e) { this.show = true; } },
+        init() {
+            if (new URLSearchParams(location.search).has('jb')) return;
+            try { this.show = !sessionStorage.getItem(this.key); } catch (e) { this.show = true; }
+        },
         go() { try { sessionStorage.setItem(this.key, '1'); } catch (e) {} this.show = false; window.scrollTo(0, 0); },
     }"
     x-show="show" x-transition.opacity.duration.300ms>

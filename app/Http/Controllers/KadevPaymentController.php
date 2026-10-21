@@ -45,7 +45,7 @@ class KadevPaymentController extends Controller
             return response('Paiement introuvable.', 404);
         }
 
-        $kadev->markPaid($payment, $reference, (float) ($data['amount'] ?? 0));
+        $kadev->markPaid($payment, $reference, (float) ($data['amount'] ?? 0), ($data['metadata']['source'] ?? null) !== 'bill');
 
         return response('Webhook traité avec succès.', 200);
     }
