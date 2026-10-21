@@ -174,7 +174,7 @@
                 @lang('modules.order.info_cancelled')
                             </span>
                                 @else
-        <div class="mb-0 rounded-lg border border-gray-200 bg-white pb-1.5 pt-1 px-1.5 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <div class="jb-pos-status mb-0 rounded-lg border border-gray-200 bg-white pb-1.5 pt-1 px-1.5 shadow-sm dark:border-gray-700 dark:bg-gray-800">
             @php
                 $statuses = \App\Enums\OrderStatus::progressStepsFor($orderDetail->order_type);
                 $currentIndex = \App\Enums\OrderStatus::progressIndex($orderDetail->order_status->value, $orderDetail->order_type);

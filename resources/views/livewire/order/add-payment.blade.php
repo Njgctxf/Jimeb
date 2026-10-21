@@ -79,7 +79,7 @@
                             </button>
 
                             <button wire:click="setPaymentMethod('bank_transfer')"
-                                class="relative min-h-[92px] p-3 text-center border rounded-lg flex flex-col items-center justify-center {{ $paymentMethod === 'bank_transfer' ? 'bg-skin-base/5 border-skin-base' : 'hover:bg-gray-50' }}">
+                                class="jb-pay-extra relative min-h-[92px] p-3 text-center border rounded-lg flex flex-col items-center justify-center {{ $paymentMethod === 'bank_transfer' ? 'bg-skin-base/5 border-skin-base' : 'hover:bg-gray-50' }}">
                                 @if($defaultPaymentMethod === 'bank_transfer')
                                     <span class="absolute top-1 right-1 rounded bg-skin-base/10 px-1 py-0.5 text-[9px] font-semibold leading-none text-skin-base">{{ __('modules.order.defaultMethod') }}</span>
                                 @endif
@@ -90,7 +90,7 @@
                             </button>
 
                             <button wire:click="setPaymentMethod('due')"
-                                class="relative min-h-[92px] p-3 text-center border rounded-lg flex flex-col items-center justify-center {{ $paymentMethod === 'due' ? 'bg-skin-base/5 border-skin-base' : 'hover:bg-gray-50' }}">
+                                class="jb-pay-extra relative min-h-[92px] p-3 text-center border rounded-lg flex flex-col items-center justify-center {{ $paymentMethod === 'due' ? 'bg-skin-base/5 border-skin-base' : 'hover:bg-gray-50' }}">
                                 @if($defaultPaymentMethod === 'due')
                                     <span class="absolute top-1 right-1 rounded bg-skin-base/10 px-1 py-0.5 text-[9px] font-semibold leading-none text-skin-base">{{ __('modules.order.defaultMethod') }}</span>
                                 @endif
@@ -136,7 +136,7 @@
                             @endif
                         </div>
 
-                        <label class="mt-3 flex items-center gap-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50/70 dark:bg-gray-800/60 px-3 py-2.5 cursor-pointer">
+                        <label class="jb-pay-extra mt-3 flex items-center gap-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50/70 dark:bg-gray-800/60 px-3 py-2.5 cursor-pointer">
                             <input type="checkbox" wire:model.live="setAsDefault"
                                 class="h-4 w-4 rounded border-gray-300 text-skin-base focus:ring-skin-base">
                             <div class="text-sm leading-tight text-gray-800 dark:text-gray-100">

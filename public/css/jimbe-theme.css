@@ -283,3 +283,11 @@ html.dark .jb-hero-card { background: radial-gradient(520px 300px at 108% -12%, 
 }
 @keyframes jb-caret { 50% { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .jb-typed::after { animation: none; } }
+
+/* Caisse simplifiée : les statuts se gèrent dans « Commandes en direct », pas de couverts ni de base taxable */
+#pos-container .jb-pos-status,
+#pos-container .jb-pos-pax,
+#pos-container #taxable-amount-row { display: none !important; }
+
+/* Fenêtre de paiement : on garde Espèces / Carte / Mobile Money (+ pourboire), sans virement, « dû » ni « par défaut » */
+.jb-pay-extra { display: none !important; }

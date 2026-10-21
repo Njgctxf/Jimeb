@@ -282,7 +282,7 @@
                 @include('pos.partials.room-service-sidebar-ajax')
             </div>
             <div data-pos-sidebar-order-type="dine_in" data-pos-sidebar-use-contents="1" style="display: {{ ($orderTypeId && $orderType == 'dine_in') ? 'contents' : 'none' }}">
-                <div class="inline-flex items-center gap-1 text-xs text-gray-600 dark:text-gray-300" title="{{ __('modules.order.noOfPax') }}">
+                <div class="jb-pos-pax inline-flex items-center gap-1 text-xs text-gray-600 dark:text-gray-300" title="{{ __('modules.order.noOfPax') }}">
                     <span class="shrink-0">@lang('modules.order.noOfPax')</span>
                     <x-input type="number" step='1' min='1' class="h-7 w-12 px-1 py-0 text-xs"
                         id="noOfPaxInput" value="{{ $noOfPax }}" onchange="updateNoOfPax(this.value)" />

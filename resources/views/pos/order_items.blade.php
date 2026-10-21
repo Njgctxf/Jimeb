@@ -261,7 +261,7 @@
     <div id="pos-cart-scroll" class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden space-y-3 pb-4 pos-hover-scrollbar lg:pr-1">
         @if ($orderType == 'dine_in')
         <div class="flex flex-wrap items-center gap-x-2 gap-y-1.5 mt-1 mb-1 min-h-8 w-full justify-between">
-                <div class="inline-flex items-center justify-center gap-1.5 text-xs h-8 shrink-0 px-1">
+                <div class="jb-pos-pax inline-flex items-center justify-center gap-1.5 text-xs h-8 shrink-0 px-1">
                     <span class="text-gray-700 dark:text-gray-300 leading-none shrink-0">@lang('modules.order.noOfPax')</span>
                     <x-input type="number" step='1' min='1' class="h-8 w-10 min-w-0 max-w-[2.5rem] px-1 py-0 text-center tabular-nums leading-none" id="no-of-pax" value="{{ $noOfPax }}" onchange="updateNoOfPax(this.value)" />
                 </div>
@@ -455,7 +455,7 @@
                 @lang('modules.order.info_cancelled')
             </span>
         @else
-            <div class="px-2 py-1.5 bg-white border border-gray-200 rounded-md shadow-sm dark:bg-gray-800 dark:border-gray-700 {{ $isShowOrderDetail ? 'sm:px-3 sm:py-2' : '' }}">
+            <div class="jb-pos-status px-2 py-1.5 bg-white border border-gray-200 rounded-md shadow-sm dark:bg-gray-800 dark:border-gray-700 {{ $isShowOrderDetail ? 'sm:px-3 sm:py-2' : '' }}">
                 @php
                     $statuses = \App\Enums\OrderStatus::progressStepsFor($orderType);
                     $currentIndex = \App\Enums\OrderStatus::progressIndex($orderStatus->value, $orderType);
@@ -604,7 +604,7 @@
 
             @if ($hasItems)
                 <div class="flex justify-between px-3 py-2 text-[11px] font-medium text-gray-600 bg-gray-100 dark:bg-gray-700 dark:text-gray-300 rounded-md">
-                    <div>@lang('menu.kot') #{{ $kot->kot_number }}</div>
+                    <div>@lang('modules.order.kitchenTicket') #{{ $kot->kot_number }}</div>
                     <div>{{ $kot->created_at->timezone(timezone())->translatedFormat('d F, h:i A') }}</div>
                 </div>
 

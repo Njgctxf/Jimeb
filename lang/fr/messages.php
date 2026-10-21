@@ -63,7 +63,7 @@ return array(
     'posRunningOrderBannerKotsKitchen' => 'Bon en cuisine',
     'posRunningOrderBannerKotsQueued' => 'Bon en attente',
     'posRunningOrderBannerKotsTotal' => 'Total des bons de cuisine',
-    'posRunningOrderBannerExistingOrder' => 'Ajout à une commande existante',
+    'posRunningOrderBannerExistingOrder' => 'Commande en cours',
     'posEmptyCartNoItems' => 'Aucun article ajouté',
     'posEmptyCartNewOrderHint' => 'Ceci est une nouvelle commande. Ajouter des articles créera une nouvelle commande.',
     'posOfflineCustomer' => 'Client',
