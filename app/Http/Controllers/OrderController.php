@@ -22,6 +22,15 @@ class OrderController extends Controller
         return view('order.index');
     }
 
+    /** Jimbe : page de détail d'une commande pour le service (actions rapides + historique). */
+    public function live($id)
+    {
+        abort_if(!in_array('Order', restaurant_modules()), 403);
+        abort_if(!user_can('Show Order'), 403);
+
+        return view('order.live', ['id' => (int) $id]);
+    }
+
     public function show($id)
     {
         return view('order.show', compact('id'));

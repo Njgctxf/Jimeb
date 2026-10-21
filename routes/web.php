@@ -205,6 +205,7 @@ Route::middleware(['auth', config('jetstream.auth_session'), 'verified', VerifyR
     Route::get('orders/recent', [OrderController::class, 'recent'])->name('orders.recent');
     Route::get('orders/print-split/{orderId}', [OrderController::class, 'printSplitOrder'])->name('orders.print-split');
     Route::get('orders/print-split-receipts/{orderId}', [\App\Http\Controllers\SplitPaymentReceiptController::class, 'printSplitReceipts'])->name('orders.print-split-receipts');
+    Route::get('orders/{id}/suivi', [OrderController::class, 'live'])->whereNumber('id')->name('orders.live');
     Route::resource('orders', OrderController::class);
 
     // POS routes with machine tracking middleware (registered in module service provider)

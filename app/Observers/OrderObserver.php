@@ -11,6 +11,7 @@ use App\Events\TodayOrdersUpdated;
 use App\Enums\OrderStatus;
 use App\Models\Kot;
 use App\Models\Order;
+use App\Models\OrderHistory;
 use App\Services\DeletedOrderLogService;
 use App\Services\OrderCashCollectionService;
 use App\Services\Tables\TablesIndexCache;
@@ -78,6 +79,10 @@ class OrderObserver
 
     public function created(Order $order)
     {
+        if ($order->status !== 'draft') {
+            OrderHistory::record($order->id, $order->order_status?->value);
+        }
+
         $this->orderCashCollectionService->syncForOrder($order);
 
         // Increment branch's count_orders (only for non-draft, non-canceled orders)
@@ -113,6 +118,14 @@ class OrderObserver
 
         if ($order->wasChanged('status') && $order->status == 'canceled') {
             OrderCancelled::dispatch($order);
+        }
+
+        if ($order->wasChanged('order_status') || ($order->wasChanged('status') && $order->getOriginal('status') === 'draft')) {
+            OrderHistory::record($order->id, $order->order_status?->value);
+        }
+
+        if ($order->wasChanged('status') && $order->status === 'paid') {
+            OrderHistory::record($order->id, 'paid');
         }
 
         if ($order->wasChanged('order_status')) {

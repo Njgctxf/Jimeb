@@ -1,7 +1,7 @@
 <div class="grid">
     @if (user_can('Show Order'))
         <div class="p-4 pb-0">
-            @livewire('dashboard.today-order-list')
+            @livewire('dashboard.live-summary')
         </div>
     @endif
 

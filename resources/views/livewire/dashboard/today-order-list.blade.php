@@ -44,10 +44,16 @@
             <p class="text-base font-semibold text-gray-800 dark:text-white">@lang('modules.order.boardTitle')</p>
             <span class="text-xs text-gray-400">· {{ $finished }} @lang('modules.order.boardFinished')</span>
         </div>
+        <div class="flex items-center gap-2">
+        <div class="inline-flex rounded-lg border border-gray-200 p-0.5 text-xs dark:border-gray-600">
+            <button type="button" wire:click="$set('mine', false)" class="rounded-md px-2.5 py-1 {{ $mine ? 'text-gray-500' : 'bg-skin-base text-white' }}">@lang('modules.order.boardAll')</button>
+            <button type="button" wire:click="$set('mine', true)" class="rounded-md px-2.5 py-1 {{ $mine ? 'bg-skin-base text-white' : 'text-gray-500' }}">👤 @lang('modules.order.boardMine')</button>
+        </div>
         <button type="button" class="rounded-lg border border-gray-200 px-2.5 py-1 text-xs text-gray-600 dark:border-gray-600 dark:text-gray-300"
             @click="sound = !sound; try { localStorage.setItem('jbBoardSound', sound ? '1' : '0'); } catch (e) {} if (sound) beep()">
             <span x-text="sound ? '🔊 ' + @js(__('modules.order.boardSoundOn')) : '🔇 ' + @js(__('modules.order.boardSoundOff'))"></span>
         </button>
+        </div>
     </div>
 
     {{-- Appels de table --}}
@@ -88,22 +94,26 @@
                         <article wire:key="jb-board-{{ $order->id }}" @if ($key === 'new') data-alert-id="order-{{ $order->id }}" @endif
                             class="rounded-xl border border-gray-100 bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-800 {{ $key === 'new' ? 'ring-2 ring-amber-300/60' : '' }}">
                             <div class="flex items-start justify-between gap-2">
-                                <div class="min-w-0">
+                                <a href="{{ route('orders.live', $order->id) }}" class="min-w-0 hover:opacity-80">
                                     <p class="text-lg font-extrabold leading-none text-gray-900 dark:text-white">
                                         {{ $order->table?->table_code ?? __('modules.order.boardNoTable') }}
                                     </p>
                                     <p class="mt-1 truncate text-xs text-gray-500">
                                         {{ $order->customer?->name ?: __('modules.customer.walkin') }} · {{ $order->show_formatted_order_number }}
                                     </p>
-                                </div>
+                                </a>
                                 <span class="shrink-0 text-xs {{ $late }}">⏱ {{ $mins }} min</span>
                             </div>
 
+                            <div class="mt-2">@include('livewire.order.partials.status-select', ['order' => $order])</div>
+
+                            <a href="{{ route('orders.live', $order->id) }}" class="block hover:opacity-80">
                             <ul class="mt-2 space-y-0.5 text-[13px] text-gray-700 dark:text-gray-200">
                                 @foreach ($order->items as $line)
                                     <li><b>{{ rtrim(rtrim(number_format((float) $line->quantity, 3, '.', ''), '0'), '.') }}×</b> {{ $line->menuItem?->item_name }}@if ($line->menuItemVariation) <span class="text-gray-400">({{ $line->menuItemVariation->variation }})</span>@endif @if ($line->note) <span class="text-amber-600">· {{ $line->note }}</span>@endif</li>
                                 @endforeach
                             </ul>
+                            </a>
                             @php $pay = \App\Models\Order::PAY_METHODS[$order->pay_method] ?? null; @endphp
                             @if ($pay)
                                 <div class="mt-2 flex flex-wrap items-center gap-1 text-[11px] font-medium">
@@ -157,9 +167,8 @@
                                             class="rounded-lg bg-orange-500 px-3 text-white hover:opacity-90">💰</button>
                                     @endif
                                 @endif
-                                <button type="button" title="@lang('modules.order.details')"
-                                    onclick="Livewire.dispatch('showOrderDetail', { id: {{ $order->id }} })"
-                                    class="rounded-lg border border-gray-200 px-2.5 text-gray-500 hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700">⋯</button>
+                                <a href="{{ route('orders.live', $order->id) }}" title="@lang('modules.order.details')"
+                                    class="flex items-center rounded-lg border border-gray-200 px-2.5 text-gray-500 hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700">›</a>
                             </div>
                         </article>
                     @empty
@@ -170,32 +179,5 @@
         @endforeach
     </div>
 
-    {{-- Encaisser : un clic sur le moyen de paiement --}}
-    @if ($collectOrder)
-        @php $pref = $collectOrder->pay_method; @endphp
-        <div class="fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-3 sm:items-center" wire:key="jb-collect-{{ $collectOrder->id }}" wire:click.self="closeCollect">
-            <div class="w-full max-w-sm rounded-2xl bg-white p-5 shadow-xl dark:bg-gray-800">
-                <div class="flex items-start justify-between">
-                    <div>
-                        <p class="text-sm text-gray-500">@lang('modules.order.quickPayTitle') · {{ $collectOrder->table?->table_code }} · {{ $collectOrder->show_formatted_order_number }}</p>
-                        <p class="mt-1 text-3xl font-extrabold text-gray-900 dark:text-white">{{ currency_format($collectOrder->remainingAmount(), restaurant()->currency_id) }}</p>
-                        @if ($collectOrder->pay_split > 1)
-                            <p class="text-xs text-gray-500">👥 ÷{{ $collectOrder->pay_split }} = {{ currency_format(ceil($collectOrder->remainingAmount() / $collectOrder->pay_split), restaurant()->currency_id) }} / pers.</p>
-                        @endif
-                    </div>
-                    <button type="button" wire:click="closeCollect" class="text-2xl leading-none text-gray-400">×</button>
-                </div>
-                <p class="mb-2 mt-4 text-sm text-gray-600 dark:text-gray-300">@lang('modules.order.quickPayHint')</p>
-                <div class="grid grid-cols-3 gap-2">
-                    @foreach (\App\Models\Order::PAY_METHODS as $m => [$emoji, $label])
-                        <button type="button" wire:click="quickPay('{{ $m }}')" wire:loading.attr="disabled"
-                            class="flex flex-col items-center gap-1 rounded-xl border-2 px-2 py-3 text-sm font-semibold {{ $pref === $m ? 'border-skin-base bg-skin-base/10 text-skin-base' : 'border-gray-200 text-gray-700 hover:border-gray-300 dark:border-gray-600 dark:text-gray-200' }}">
-                            <span class="text-2xl">{{ $emoji }}</span>@lang($label)
-                        </button>
-                    @endforeach
-                </div>
-                <button type="button" wire:click="advancedPayment" class="mt-4 w-full text-center text-xs text-gray-400 underline">@lang('modules.order.quickPayAdvanced')</button>
-            </div>
-        </div>
-    @endif
+    @include('livewire.order.partials.quick-collect')
 </div>
