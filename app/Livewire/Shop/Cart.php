@@ -2641,8 +2641,19 @@ class Cart extends Component
      * Jimbe : commande en une étape. Le client indique son nom, sa table (et un téléphone facultatif)
      * puis appuie sur « Commander ».
      */
+    /** Jimbe : choix du client avant de commander. */
+    public string $payMethod = 'cash';
+    public string $payWhen = 'after';
+    public int $paySplit = 1;
+
     public function submitGuestOrder($payNow = false)
     {
+        $this->payMethod = array_key_exists($this->payMethod, Order::PAY_METHODS) ? $this->payMethod : 'cash';
+        $this->payWhen = $this->payWhen === 'now' ? 'now' : 'after';
+        $this->paySplit = max(1, min(20, (int) $this->paySplit));
+        // Le téléphone prérempli peut venir de la base sous forme de nombre.
+        $this->guestPhone = blank($this->guestPhone) ? null : (string) $this->guestPhone;
+
         $this->validate([
             'guestName' => 'required|string|max:80',
             'guestPhone' => 'nullable|string|max:25',
@@ -3122,6 +3133,15 @@ class Cart extends Component
 
             $draftUpdate = array_merge($draftUpdate, $this->buildHotelRoomOrderContext());
 
+            // Jimbe : le client recommande sur la même addition → son choix de paiement
+            // est mis à jour et les nouveaux plats repartent en cuisine.
+            $draftUpdate['pay_method'] = $this->payMethod;
+            $draftUpdate['pay_when'] = $this->payWhen;
+            $draftUpdate['pay_split'] = $this->paySplit;
+            if (in_array($order->order_status?->value, ['food_ready', 'served'], true)) {
+                $draftUpdate['order_status'] = $this->restaurant->auto_confirm_orders_before_payment ? 'confirmed' : 'placed';
+            }
+
             if ($draftUpdate !== []) {
                 $order->update($draftUpdate);
             }
@@ -3182,6 +3202,9 @@ class Cart extends Component
                 'placed_via' => 'shop',
                 'tax_base' => $this->taxBase,
                 'tax_mode' => $this->taxMode,
+                'pay_method' => $this->payMethod,
+                'pay_when' => $this->payWhen,
+                'pay_split' => $this->paySplit,
             ];
 
             // Add loyalty points redemption if module is enabled and points are redeemed

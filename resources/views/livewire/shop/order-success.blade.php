@@ -38,6 +38,8 @@
     $jbBase = (float) $order->sub_total;
     $jbTipOptions = collect([0, 5, 10, 15])->map(fn ($pct) => ['pct' => $pct, 'amount' => (int) (ceil($jbBase * $pct / 100 / 5) * 5)])->unique('amount');
     $jbShare = $this->shareAmount();
+    $jbPayChoice = \App\Models\Order::PAY_METHODS[$order->pay_method] ?? null;
+    $jbBillSent = $order->bill_sent_at && ! $jbFullyPaid && ! $jbCancelled;
 @endphp
 
 <div class="jb-shop jb-done" wire:poll.10s="refreshOrderSuccess">
@@ -62,6 +64,29 @@
             @endif
         </div>
     </div>
+
+    @if ($jbBillSent)
+        {{-- Le serveur a envoyé l'addition : alerte + son + vibration à chaque envoi --}}
+        <div class="jb-billalert" wire:key="jb-billalert-{{ $order->bill_sent_count }}"
+            x-data x-init="
+                const k = 'jbBill:{{ $order->id }}', n = {{ (int) $order->bill_sent_count }};
+                let seen = 0; try { seen = Number(sessionStorage.getItem(k) || 0); sessionStorage.setItem(k, n); } catch (e) {}
+                if (n > seen) {
+                    try { navigator.vibrate && navigator.vibrate([200, 100, 200]); } catch (e) {}
+                    try {
+                        const c = new (window.AudioContext || window.webkitAudioContext)();
+                        [660, 880, 1100].forEach((f, i) => { const o = c.createOscillator(), g = c.createGain(); o.frequency.value = f; o.connect(g); g.connect(c.destination); g.gain.setValueAtTime(.2, c.currentTime + i * .2); g.gain.exponentialRampToValueAtTime(.001, c.currentTime + i * .2 + .18); o.start(c.currentTime + i * .2); o.stop(c.currentTime + i * .2 + .18); });
+                    } catch (e) {}
+                    $el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }">
+            <b>🧾</b>
+            <div>
+                <h3>@lang('modules.shop.billSentTitle')</h3>
+                <p>{{ $order->bill_sent_count > 1 ? __('modules.shop.billReminderSub') : __('modules.shop.billSentSub') }}</p>
+                <strong>{{ currency_format($jbRemaining, $jbCur) }}</strong>
+            </div>
+        </div>
+    @endif
 
     @unless ($jbCancelled)
         {{-- Étape 5 : suivi en direct --}}
@@ -124,6 +149,15 @@
         {{-- Étape 6 : l'addition --}}
         <div class="jb-panel jb-bill" x-data="{ split: {{ $splitCount > 1 ? 'true' : 'false' }} }">
             <h3 class="jb-panel__title">🧾 @lang('modules.shop.billTitle')</h3>
+            @if ($jbPayChoice)
+                <div class="jb-choice">
+                    <span>{{ $jbPayChoice[0] }} @lang($jbPayChoice[1])</span>
+                    <span>{{ $order->pay_when === 'now' ? '⚡ ' . __('modules.shop.payNowLabel') : '🍽️ ' . __('modules.shop.payAfter') }}</span>
+                    @if ($order->pay_split > 1)
+                        <span>👥 ÷ {{ $order->pay_split }}</span>
+                    @endif
+                </div>
+            @endif
 
             <div class="jb-sum">
                 <div><span>@lang('modules.order.subTotal')</span><b>{{ currency_format($order->sub_total, $jbCur) }}</b></div>

@@ -32,6 +32,7 @@ class OrderSuccess extends Component
         ])->where('id', $this->id)->firstOrFail();
 
         $this->showLoyaltyOnSuccess = function_exists('module_enabled') && module_enabled('Loyalty');
+        $this->splitCount = max(1, (int) ($this->order->pay_split ?? 1));
 
         if (is_null(customer()) && $this->restaurant->customer_login_required) {
             return $this->redirect(route('home'));

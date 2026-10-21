@@ -126,25 +126,73 @@
                 <div><span>@lang('modules.order.totalTax')</span><b>{{ currency_format($jbTotalTax, $restaurant->currency_id) }}</b></div>
             @endif
             <div class="jb-sum__total"><span>@lang('modules.order.total')</span><b>{{ currency_format($total, $restaurant->currency_id) }}</b></div>
-            <p class="jb-sum__hint">@lang('modules.shop.payAtEnd')</p>
         </div>
 
-        {{-- Barre « Commander » --}}
-        <div class="jb-cta">
-            @if (!$isRestaurantOpenForOrders)
-                <div class="jb-closed">{{ $restaurantClosedMessage }}</div>
-            @else
-                <button type="button" class="jb-cta__btn" wire:click="submitGuestOrder" wire:loading.attr="disabled" wire:target="submitGuestOrder">
-                    <span wire:loading.remove wire:target="submitGuestOrder">@lang('modules.shop.order') · {{ currency_format($total, $restaurant->currency_id) }}</span>
-                    <span wire:loading wire:target="submitGuestOrder">@lang('modules.shop.sending')…</span>
-                </button>
-                @if ($paymentGateway?->kadev_status)
-                    <button type="button" class="jb-cta__btn" style="margin-top:8px" wire:click="submitGuestOrder(true)" wire:loading.attr="disabled" wire:target="submitGuestOrder">
-                        Payer maintenant · Mobile Money / Carte
+        {{-- Paiement : le client choisit comment et quand il paie --}}
+        @php $jbOnline = (bool) ($paymentGateway?->kadev_status && $paymentGateway?->kadev_public_key); @endphp
+        <div class="jb-panel jb-paychoice" data-total="{{ (float) $total }}"
+            x-data="{
+                when: $wire.entangle('payWhen'),
+                method: $wire.entangle('payMethod'),
+                split: $wire.entangle('paySplit'),
+                online: @js($jbOnline),
+                get payOnline() { return this.when === 'now' && this.online && this.method !== 'cash' && Number(this.split) <= 1; },
+                share() {
+                    const n = Math.ceil(Number(this.$root.dataset.total || 0) / Math.max(1, Number(this.split)));
+                    return @js(currency_format(0, $restaurant->currency_id)).replace('0', n.toLocaleString('fr-FR'));
+                },
+            }">
+            <h3 class="jb-panel__title">💳 @lang('modules.shop.payTitle')</h3>
+
+            <p class="jb-bill__label" style="margin-top:0">@lang('modules.shop.payHow')</p>
+            <div class="jb-paym">
+                @foreach (\App\Models\Order::PAY_METHODS as $jbKey => [$jbEmoji, $jbLabel])
+                    <button type="button" :class="method === '{{ $jbKey }}' && 'is-on'" @click="method = '{{ $jbKey }}'">
+                        <b>{{ $jbEmoji }}</b>@lang($jbLabel)
+                    </button>
+                @endforeach
+            </div>
+
+            <p class="jb-bill__label">@lang('modules.shop.payWhenLabel')</p>
+            <div class="jb-seg" style="margin-top:0">
+                <button type="button" :class="when === 'after' && 'is-on'" @click="when = 'after'">🍽️ @lang('modules.shop.payAfter')</button>
+                <button type="button" :class="when === 'now' && 'is-on'" @click="when = 'now'">⚡ @lang('modules.shop.payNowLabel')</button>
+            </div>
+
+            <label class="jb-paysplit">
+                <input type="checkbox" :checked="split > 1" @change="split = $event.target.checked ? 2 : 1">
+                <span>👥 @lang('modules.shop.paySplitLabel')</span>
+            </label>
+            <div class="jb-split" x-show="split > 1" x-cloak x-transition style="margin-top:8px">
+                <div class="jb-split__ctr">
+                    <button type="button" @click="split = Math.max(2, Number(split) - 1)" :disabled="split <= 2">−</button>
+                    <span><b x-text="split"></b> @lang('modules.shop.billPeople')</span>
+                    <button type="button" @click="split = Math.min(20, Number(split) + 1)">+</button>
+                </div>
+                <p class="jb-split__each"><b x-text="share()"></b> @lang('modules.shop.billPerPerson')</p>
+            </div>
+
+            <p class="jb-sum__hint" x-show="when === 'after'">@lang('modules.shop.payHintAfter')</p>
+            <p class="jb-sum__hint" x-show="when === 'now' && payOnline" x-cloak>@lang('modules.shop.payHintOnline')</p>
+            <p class="jb-sum__hint" x-show="when === 'now' && !payOnline" x-cloak>@lang('modules.shop.payHintWaiter')</p>
+
+            {{-- Barre « Commander » (dans le même bloc pour suivre le choix du client) --}}
+            <div class="jb-cta">
+                @if (!$isRestaurantOpenForOrders)
+                    <div class="jb-closed">{{ $restaurantClosedMessage }}</div>
+                @else
+                    <button type="button" class="jb-cta__btn" x-show="!payOnline" wire:click="submitGuestOrder" wire:loading.attr="disabled" wire:target="submitGuestOrder">
+                        <span wire:loading.remove wire:target="submitGuestOrder">@lang('modules.shop.order') · {{ currency_format($total, $restaurant->currency_id) }}</span>
+                        <span wire:loading wire:target="submitGuestOrder">@lang('modules.shop.sending')…</span>
+                    </button>
+                    <button type="button" class="jb-cta__btn" x-show="payOnline" x-cloak wire:click="submitGuestOrder(true)" wire:loading.attr="disabled" wire:target="submitGuestOrder">
+                        <span wire:loading.remove wire:target="submitGuestOrder">@lang('modules.shop.payAndOrder') · {{ currency_format($total, $restaurant->currency_id) }}</span>
+                        <span wire:loading wire:target="submitGuestOrder">@lang('modules.shop.sending')…</span>
                     </button>
                 @endif
-            @endif
+            </div>
         </div>
+
     @else
         <div class="jb-emptycart">
             <div>🛒</div>

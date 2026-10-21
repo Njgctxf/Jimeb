@@ -37,6 +37,14 @@ class Order extends BaseModel
         'order_status' => OrderStatus::class,
         'cancel_time' => 'datetime',
         'pickup_date' => 'datetime',
+        'bill_sent_at' => 'datetime',
+    ];
+
+    /** Jimbe : modes de paiement proposés au client (clé => [emoji, libellé, méthode de paiement en caisse]). */
+    public const PAY_METHODS = [
+        'cash' => ['💵', 'modules.order.payCash', 'cash'],
+        'card' => ['💳', 'modules.order.payCard', 'card'],
+        'momo' => ['📱', 'modules.order.payMomo', 'upi'],
     ];
 
     protected static function boot()

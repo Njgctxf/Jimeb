@@ -737,3 +737,23 @@ body:has(.jb-shop) .flex.mt-4.min-w-0.overflow-hidden { overflow-x: clip !import
 .jb-promo-empty > div { font-size: 54px; animation: jb-bob 1.8s ease-in-out infinite; }
 .jb-promo-empty h3 { margin: 10px 0 6px; font-size: 19px; font-weight: 800; }
 .jb-promo-empty p { margin: 0 0 18px; color: var(--jb-mute); font-size: 14px; }
+
+/* ===== Panier : choix du paiement ===== */
+.jb-paym { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.jb-paym button { display: flex; flex-direction: column; align-items: center; gap: 4px; border: 1.5px solid #ece4da; background: #fff; border-radius: 16px; padding: 12px 4px; font-weight: 700; font-size: 12.5px; color: inherit; transition: all .15s; }
+.jb-paym button b { font-size: 24px; }
+.jb-paym button.is-on { border-color: var(--jb-accent); background: color-mix(in srgb, var(--jb-accent) 10%, #fff); color: var(--jb-accent); transform: translateY(-2px); box-shadow: 0 8px 18px color-mix(in srgb, var(--jb-accent) 18%, transparent); }
+.jb-paysplit { display: flex; align-items: center; gap: 10px; margin-top: 14px; font-weight: 700; font-size: 14px; cursor: pointer; }
+.jb-paysplit input { width: 20px; height: 20px; accent-color: var(--jb-accent); }
+.jb-paychoice .jb-sum__hint { margin-top: 12px; }
+.jb-paychoice .jb-cta { margin-top: 12px; }
+
+/* ===== Suivi : addition envoyée par le serveur ===== */
+.jb-billalert { margin-bottom: 14px; padding: 16px; border-radius: 20px; color: #fff; background: linear-gradient(135deg, #7c3aed, #db2777); box-shadow: 0 14px 30px rgba(124, 58, 237, .35); display: flex; gap: 14px; align-items: center; animation: jb-pop .6s cubic-bezier(.2, 1.4, .4, 1) both, jb-ring 2.4s ease-in-out .6s 3; }
+.jb-billalert > b { font-size: 34px; }
+.jb-billalert h3 { margin: 0; font-size: 17px; font-weight: 800; }
+.jb-billalert p { margin: 2px 0 0; font-size: 13px; opacity: .92; }
+.jb-billalert strong { display: block; margin-top: 4px; font-size: 22px; }
+@keyframes jb-ring { 0%, 100% { transform: rotate(0); } 10%, 30% { transform: rotate(-2deg); } 20%, 40% { transform: rotate(2deg); } 50% { transform: rotate(0); } }
+.jb-choice { display: inline-flex; gap: 6px; flex-wrap: wrap; margin: 0 0 4px; }
+.jb-choice span { background: #f8f4ee; border-radius: 999px; padding: 6px 10px; font-size: 12px; font-weight: 700; }

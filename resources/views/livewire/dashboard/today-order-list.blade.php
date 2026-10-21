@@ -104,6 +104,23 @@
                                     <li><b>{{ rtrim(rtrim(number_format((float) $line->quantity, 3, '.', ''), '0'), '.') }}×</b> {{ $line->menuItem?->item_name }}@if ($line->menuItemVariation) <span class="text-gray-400">({{ $line->menuItemVariation->variation }})</span>@endif @if ($line->note) <span class="text-amber-600">· {{ $line->note }}</span>@endif</li>
                                 @endforeach
                             </ul>
+                            @php $pay = \App\Models\Order::PAY_METHODS[$order->pay_method] ?? null; @endphp
+                            @if ($pay)
+                                <div class="mt-2 flex flex-wrap items-center gap-1 text-[11px] font-medium">
+                                    <span class="rounded-full bg-gray-100 px-2 py-0.5 text-gray-700 dark:bg-gray-700 dark:text-gray-200">{{ $pay[0] }} @lang($pay[1])</span>
+                                    @if ($order->pay_when === 'now' && $order->status !== 'paid')
+                                        <span class="animate-pulse rounded-full bg-orange-100 px-2 py-0.5 font-bold text-orange-700">⚡ @lang('modules.order.boardCollectNow')</span>
+                                    @else
+                                        <span class="rounded-full bg-gray-100 px-2 py-0.5 text-gray-500 dark:bg-gray-700 dark:text-gray-300">{{ $order->pay_when === 'now' ? __('modules.order.payNowShort') : __('modules.order.payAfterShort') }}</span>
+                                    @endif
+                                    @if ($order->pay_split > 1)
+                                        <span class="rounded-full bg-gray-100 px-2 py-0.5 text-gray-700 dark:bg-gray-700 dark:text-gray-200">👥 ÷{{ $order->pay_split }}</span>
+                                    @endif
+                                    @if ($order->status === 'paid')
+                                        <span class="rounded-full bg-emerald-100 px-2 py-0.5 font-bold text-emerald-700">✓ @lang('modules.order.paid')</span>
+                                    @endif
+                                </div>
+                            @endif
                             @if ($order->order_note)
                                 <p class="mt-1.5 rounded-lg bg-amber-50 px-2 py-1 text-xs text-amber-800 dark:bg-amber-900/30 dark:text-amber-200">📝 {{ $order->order_note }}</p>
                             @endif
@@ -117,10 +134,17 @@
                                 <span class="shrink-0 font-semibold text-gray-800 dark:text-gray-100">{{ currency_format($order->total ?? 0, restaurant()->currency_id) }}</span>
                             </div>
 
+                            @if ($key === 'bill' && $order->bill_sent_at)
+                                <p class="mt-2 text-[11px] text-violet-600 dark:text-violet-300">📨 {{ __('modules.order.boardBillSentAt', ['time' => $order->bill_sent_at->timezone(timezone())->format('H:i')]) }}@if ($order->bill_sent_count > 1) · ×{{ $order->bill_sent_count }}@endif</p>
+                            @endif
                             <div class="mt-2.5 flex gap-2">
                                 @if ($key === 'bill')
+                                    <button type="button" wire:click="sendBill({{ $order->id }})" wire:loading.attr="disabled" wire:target="sendBill({{ $order->id }})"
+                                        class="flex-1 rounded-lg border border-violet-300 px-2 py-2 text-xs font-semibold text-violet-700 hover:bg-violet-50 dark:text-violet-300 dark:hover:bg-violet-900/30">
+                                        📨 {{ $order->bill_sent_at ? __('modules.order.boardRemindBill') : __('modules.order.boardSendBill') }}
+                                    </button>
                                     <button type="button" wire:click="collectPayment({{ $order->id }})"
-                                        class="flex-1 rounded-lg {{ $color }} px-3 py-2 text-sm font-semibold text-white hover:opacity-90">
+                                        class="flex-1 rounded-lg {{ $color }} px-2 py-2 text-xs font-semibold text-white hover:opacity-90">
                                         💰 {{ $action }}
                                     </button>
                                 @else
@@ -128,6 +152,10 @@
                                         class="flex-1 rounded-lg {{ $color }} px-3 py-2 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-50">
                                         {{ $action }} →
                                     </button>
+                                    @if ($order->pay_when === 'now' && $order->status !== 'paid')
+                                        <button type="button" wire:click="collectPayment({{ $order->id }})" title="@lang('modules.order.boardCollect')"
+                                            class="rounded-lg bg-orange-500 px-3 text-white hover:opacity-90">💰</button>
+                                    @endif
                                 @endif
                                 <button type="button" title="@lang('modules.order.details')"
                                     onclick="Livewire.dispatch('showOrderDetail', { id: {{ $order->id }} })"
@@ -141,4 +169,33 @@
             </section>
         @endforeach
     </div>
+
+    {{-- Encaisser : un clic sur le moyen de paiement --}}
+    @if ($collectOrder)
+        @php $pref = $collectOrder->pay_method; @endphp
+        <div class="fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-3 sm:items-center" wire:key="jb-collect-{{ $collectOrder->id }}" wire:click.self="closeCollect">
+            <div class="w-full max-w-sm rounded-2xl bg-white p-5 shadow-xl dark:bg-gray-800">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <p class="text-sm text-gray-500">@lang('modules.order.quickPayTitle') · {{ $collectOrder->table?->table_code }} · {{ $collectOrder->show_formatted_order_number }}</p>
+                        <p class="mt-1 text-3xl font-extrabold text-gray-900 dark:text-white">{{ currency_format($collectOrder->remainingAmount(), restaurant()->currency_id) }}</p>
+                        @if ($collectOrder->pay_split > 1)
+                            <p class="text-xs text-gray-500">👥 ÷{{ $collectOrder->pay_split }} = {{ currency_format(ceil($collectOrder->remainingAmount() / $collectOrder->pay_split), restaurant()->currency_id) }} / pers.</p>
+                        @endif
+                    </div>
+                    <button type="button" wire:click="closeCollect" class="text-2xl leading-none text-gray-400">×</button>
+                </div>
+                <p class="mb-2 mt-4 text-sm text-gray-600 dark:text-gray-300">@lang('modules.order.quickPayHint')</p>
+                <div class="grid grid-cols-3 gap-2">
+                    @foreach (\App\Models\Order::PAY_METHODS as $m => [$emoji, $label])
+                        <button type="button" wire:click="quickPay('{{ $m }}')" wire:loading.attr="disabled"
+                            class="flex flex-col items-center gap-1 rounded-xl border-2 px-2 py-3 text-sm font-semibold {{ $pref === $m ? 'border-skin-base bg-skin-base/10 text-skin-base' : 'border-gray-200 text-gray-700 hover:border-gray-300 dark:border-gray-600 dark:text-gray-200' }}">
+                            <span class="text-2xl">{{ $emoji }}</span>@lang($label)
+                        </button>
+                    @endforeach
+                </div>
+                <button type="button" wire:click="advancedPayment" class="mt-4 w-full text-center text-xs text-gray-400 underline">@lang('modules.order.quickPayAdvanced')</button>
+            </div>
+        </div>
+    @endif
 </div>

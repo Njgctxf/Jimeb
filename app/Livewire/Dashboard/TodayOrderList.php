@@ -6,6 +6,7 @@ use App\Enums\OrderStatus;
 use App\Models\Kot;
 use App\Models\KotItem;
 use App\Models\Order;
+use App\Models\Payment;
 use App\Models\WaiterRequest;
 use Livewire\Component;
 
@@ -83,9 +84,74 @@ class TodayOrderList extends Component
         $order->save();
     }
 
+    /** Commande dont on encaisse le paiement (fenêtre simple). */
+    public ?int $collectOrderId = null;
+
     public function collectPayment(int $orderId): void
     {
-        $this->dispatch('showPaymentModal', id: $orderId);
+        $this->collectOrderId = $orderId;
+    }
+
+    public function closeCollect(): void
+    {
+        $this->collectOrderId = null;
+    }
+
+    /** Cas complexes (paiement partiel, pourboire…) : fenêtre de caisse complète. */
+    public function advancedPayment(): void
+    {
+        $id = $this->collectOrderId;
+        $this->collectOrderId = null;
+        $this->dispatch('showPaymentModal', id: $id);
+    }
+
+    /** Encaissement en un clic du reste à payer, avec le moyen choisi. */
+    public function quickPay(string $method): void
+    {
+        $order = Order::find($this->collectOrderId);
+        $paymentMethod = Order::PAY_METHODS[$method][2] ?? null;
+
+        if (!$order || !$paymentMethod || $order->status === 'paid') {
+            $this->collectOrderId = null;
+
+            return;
+        }
+
+        $remaining = $order->remainingAmount();
+
+        if ($remaining > 0) {
+            Payment::create([
+                'order_id' => $order->id,
+                'branch_id' => $order->branch_id,
+                'payment_method' => $paymentMethod,
+                'amount' => $remaining,
+                'balance' => 0,
+                'is_due' => false,
+            ]);
+        }
+
+        // Le reste dû est soldé : on retire la ligne « dû » et on recalcule.
+        Payment::where('order_id', $order->id)->where('payment_method', 'due')->delete();
+        $order->amount_paid = Payment::where('order_id', $order->id)->where('payment_method', '!=', 'due')->sum('amount');
+        $order->status = 'paid';
+        $order->save();
+
+        \App\Events\SendNewOrderReceived::dispatch($order);
+
+        $this->collectOrderId = null;
+        $this->dispatch('jb-paid');
+    }
+
+    /** Envoie (ou relance) l'addition sur le téléphone du client. */
+    public function sendBill(int $orderId): void
+    {
+        $order = Order::find($orderId);
+
+        if ($order && $order->status !== 'paid') {
+            $order->bill_sent_at = now();
+            $order->bill_sent_count = min(255, (int) $order->bill_sent_count + 1);
+            $order->save();
+        }
     }
 
     /** Appel de table traité : on ferme toutes les demandes en attente de cette table. */
@@ -152,6 +218,7 @@ class TodayOrderList extends Component
             ->get();
 
         return view('livewire.dashboard.today-order-list', [
+            'collectOrder' => $this->collectOrderId ? $orders->firstWhere('id', $this->collectOrderId) : null,
             'columns' => $columns,
             'finished' => $finished,
             'calls' => $calls,
