@@ -1,4 +1,10 @@
 <div class="grid">
+    @if (user_can('Show Order'))
+        <div class="p-4 pb-0">
+            @livewire('dashboard.today-order-list')
+        </div>
+    @endif
+
     <div class="p-4">
         <div class="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
             @if (user_can('Show Order'))
@@ -31,7 +37,7 @@
         </div>
     </div>
 
-    <div class="grid w-full grid-cols-1 lg:grid-cols-[3fr_2fr] gap-4 p-4">
+    <div class="grid w-full grid-cols-1 gap-4 p-4">
         @if (user_can('Show Reports'))
             <div class="grid w-full min-w-0 col-span-1 bg-white dark:bg-gray-800 rounded-xl border border-gray-100 p-5 dark:border-gray-700">
                 @include('livewire.dashboard.weekly-sales-chart', [
@@ -42,11 +48,6 @@
             </div>
         @endif
 
-        @if (user_can('Show Order'))
-            <div class="min-w-0 w-full">
-                @livewire('dashboard.today-order-list')
-            </div>
-        @endif
     </div>
 
     @if (user_can('Show Reports'))
