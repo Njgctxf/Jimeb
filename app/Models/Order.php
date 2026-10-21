@@ -52,7 +52,58 @@ class Order extends BaseModel
         parent::boot();
         static::creating(function ($model) {
             $model->uuid ??= (string) \Illuminate\Support\Str::uuid();
+            self::reserveOrderNumber($model);
         });
+
+        static::created(fn ($model) => self::releaseOrderNumberLock($model));
+    }
+
+    /** Verrous de numérotation en cours, par objet commande. */
+    private static array $numberLocks = [];
+
+    /**
+     * Jimbe : deux commandes arrivées au même instant ne doivent pas recevoir le même numéro.
+     * Le numéro est vérifié sous verrou (par établissement) jusqu'à l'enregistrement de la commande.
+     */
+    private static function reserveOrderNumber(Order $order): void
+    {
+        if (!$order->branch_id || !$order->order_number || $order->status === 'draft') {
+            return;
+        }
+
+        $lock = \Illuminate\Support\Facades\Cache::lock('order-number-' . $order->branch_id, 10);
+
+        try {
+            $lock->block(5);
+        } catch (\Illuminate\Contracts\Cache\LockTimeoutException) {
+            return;
+        }
+
+        self::$numberLocks[spl_object_id($order)] = $lock;
+
+        $taken = static::withoutGlobalScopes()
+            ->where('branch_id', $order->branch_id)
+            ->where('order_number', $order->order_number)
+            ->where('status', '!=', 'draft')
+            ->where('created_at', '>=', now()->subHours(12))
+            ->exists();
+
+        if ($taken && ($branch = Branch::find($order->branch_id))) {
+            $number = self::generateOrderNumber($branch);
+            $order->order_number = $number['order_number'];
+            $order->formatted_order_number = $number['formatted_order_number'];
+        }
+    }
+
+    private static function releaseOrderNumberLock(Order $order): void
+    {
+        $lock = self::$numberLocks[spl_object_id($order)] ?? null;
+
+        if ($lock) {
+            unset(self::$numberLocks[spl_object_id($order)]);
+            // Libéré après la validation en base, pour que la commande suivante voie ce numéro.
+            DB::afterCommit(fn () => $lock->release());
+        }
     }
 
     public function getRouteKeyName(): string

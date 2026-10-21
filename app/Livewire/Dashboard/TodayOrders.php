@@ -69,7 +69,8 @@ class TodayOrders extends Component
                 ]);
             }
 
-            if ($recentOrder) {
+            // Jimbe : pas de fenêtre « Accepter / Refuser » — on prend une commande avec « Je prends cette commande ».
+            if ($recentOrder && ! config('jimeb.simple_mode')) {
 
                 // Default to `pending` until the waiter explicitly accepts/declines.
                 // We use `waiter_response_at` to determine whether the waiter has made a decision.

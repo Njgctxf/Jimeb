@@ -383,6 +383,8 @@ return [
         'roomServiceBillToHelpAria' => 'What is pay type?',
         'setTable' => 'Assign Table',
         'takeOrder' => 'I take this order',
+        'boardAllToKitchen' => 'Send all to kitchen (:count)',
+        'boardAllToKitchenConfirm' => 'Send the :count new orders to the kitchen?',
         'boardAll' => 'All',
         'boardMine' => 'My orders',
         'confirmCancelOrder' => 'Cancel this order? It will be removed from the kitchen.',

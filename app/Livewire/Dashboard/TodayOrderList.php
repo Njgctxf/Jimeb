@@ -44,15 +44,24 @@ class TodayOrderList extends Component
         }
     }
 
-    public function render()
+    /** Rush : toutes les nouvelles commandes visibles partent en cuisine d'un coup. */
+    public function sendAllToKitchen(): void
     {
-        // Limites de la journée d'activité
+        foreach ($this->todayOrders() as $order) {
+            if (self::columnOf($order) === 'new') {
+                $this->setStatus($order->id, 'preparing');
+            }
+        }
+    }
+
+    /** Commandes du jour (les plus anciennes d'abord : ce sont celles qui attendent le plus). */
+    private function todayOrders()
+    {
         $boundaries = getBusinessDayBoundaries(branch(), now());
         $startUTC = $boundaries['start']->setTimezone('UTC')->toDateTimeString();
         $endUTC = $boundaries['end']->setTimezone('UTC')->toDateTimeString();
 
-        // Les plus anciennes d'abord : ce sont celles qui attendent le plus
-        $orders = Order::withCount('items')
+        return Order::withCount('items')
             ->with('table.area', 'waiter', 'customer', 'items.menuItem', 'items.menuItemVariation')
             ->whereNotIn('status', ['canceled', 'draft'])
             ->where('orders.date_time', '>=', $startUTC)
@@ -60,6 +69,11 @@ class TodayOrderList extends Component
             ->when($this->mine, fn ($q) => $q->where(fn ($q) => $q->whereNull('waiter_id')->orWhere('waiter_id', user()->id)))
             ->orderBy('date_time')
             ->get();
+    }
+
+    public function render()
+    {
+        $orders = $this->todayOrders();
 
         $columns = collect(self::COLUMNS)->mapWithKeys(fn ($c) => [$c => collect()])->all();
         $finished = 0;

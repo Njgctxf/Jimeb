@@ -206,7 +206,7 @@
 
     <div class="flex items-center gap-2 mt-2">
         <div class="flex-[6] min-w-0">
-            @if (isset($order->waiter_response) && $order->waiter_id)
+            @if (isset($order->waiter_response) && $order->waiter_id && ! config('jimeb.simple_mode'))
                 <div onclick="event.stopPropagation();" class="w-full">
                     <form method="POST" action="{{ route('orders.waiter.status', $order->uuid) }}">
                         @csrf

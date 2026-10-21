@@ -73,6 +73,8 @@ return [
         'roomServiceBillToHelpAria' => 'Qu’est-ce que le mode de règlement ?',
         'setTable' => 'Assigner une table',
         'takeOrder' => 'Je prends cette commande',
+        'boardAllToKitchen' => 'Tout envoyer en cuisine (:count)',
+        'boardAllToKitchenConfirm' => 'Envoyer les :count nouvelles commandes en cuisine ?',
         'boardAll' => 'Toutes',
         'boardMine' => 'Mes commandes',
         'confirmCancelOrder' => 'Annuler cette commande ? Elle sera retirée de la cuisine.',

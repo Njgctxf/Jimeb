@@ -30,10 +30,21 @@
             const ids = [...this.$root.querySelectorAll('[data-alert-id]')].map(e => e.dataset.alertId);
             if (this.known !== null && ids.some(id => !this.known.includes(id))) { this.beep(); }
             this.known = ids;
-        }
+            // Nombre de commandes que personne n'a prises (+ appels) dans le titre de l'onglet
+            const n = this.$root.querySelectorAll('[data-unclaimed], [data-alert-id^=call]').length;
+            this.baseTitle ??= document.title.replace(/^\(\d+\)\s*/, '');
+            document.title = (n ? '(' + n + ') ' : '') + this.baseTitle;
+        },
+        baseTitle: null,
+        init() {
+            try { this.sound = localStorage.getItem('jbBoardSound') !== '0'; } catch (e) {}
+            this.check();
+            // Après chaque rafraîchissement Livewire : nouvelles commandes ? (son + titre)
+            Livewire.hook('morphed', () => this.$nextTick(() => this.check()));
+            // Rappel toutes les 30 s tant qu'une commande n'est pas prise ou qu'un appel attend
+            setInterval(() => { if (this.$root.querySelector('[data-unclaimed], [data-alert-id^=call]')) this.beep(); }, 30000);
+        },
     }"
-    x-init="try { sound = localStorage.getItem('jbBoardSound') !== '0'; } catch (e) {} check()"
-    x-on:livewire:update.window="$nextTick(() => check())"
     x-on:jb-order-taken.window="alert(@js(__('modules.order.alreadyTaken')) + ' ' + ($event.detail.name || ''))"
     class="rounded-xl border border-gray-100 bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
 
@@ -84,6 +95,13 @@
                     <p class="text-sm font-semibold text-gray-700 dark:text-gray-200">{{ $icon }} {{ $title }}</p>
                     <span class="min-w-[22px] rounded-full {{ $color }} px-1.5 text-center text-xs font-bold text-white">{{ $columns[$key]->count() }}</span>
                 </header>
+                @if ($key === 'new' && $columns['new']->count() > 1)
+                    <button type="button" wire:click="sendAllToKitchen" wire:loading.attr="disabled" wire:target="sendAllToKitchen"
+                        wire:confirm="{{ __('modules.order.boardAllToKitchenConfirm', ['count' => $columns['new']->count()]) }}"
+                        class="mb-2 w-full rounded-lg border-2 border-dashed border-amber-400 py-1.5 text-xs font-bold text-amber-700 hover:bg-amber-50 dark:text-amber-300 dark:hover:bg-amber-900/20">
+                        👨‍🍳 @lang('modules.order.boardAllToKitchen', ['count' => $columns['new']->count()])
+                    </button>
+                @endif
 
                 <div class="max-h-[560px] space-y-2 overflow-y-auto">
                     @forelse ($columns[$key] as $order)
@@ -91,7 +109,7 @@
                             $mins = (int) $order->date_time?->diffInMinutes($jbNow);
                             $late = $key === 'bill' ? '' : ($mins >= 20 ? 'text-red-600 font-bold' : ($mins >= 10 ? 'text-amber-600 font-semibold' : 'text-gray-400'));
                         @endphp
-                        <article wire:key="jb-board-{{ $order->id }}" @if ($key === 'new') data-alert-id="order-{{ $order->id }}" @endif
+                        <article wire:key="jb-board-{{ $order->id }}" @if ($key === 'new') data-alert-id="order-{{ $order->id }}" @endif @if ($key === 'new' && ! $order->waiter_id) data-unclaimed @endif
                             class="rounded-xl border border-gray-100 bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-800 {{ $key === 'new' ? 'ring-2 ring-amber-300/60' : '' }}">
                             <div class="flex items-start justify-between gap-2">
                                 <a href="{{ route('orders.live', $order->id) }}" class="min-w-0 hover:opacity-80">
