@@ -606,6 +606,9 @@ return [
         'navMenu' => 'Menu',
         'navCart' => 'Panier',
         'navPromos' => 'Promos',
+        'promoOnSale' => 'à prix réduit',
+        'promoEmptyTitle' => 'Pas de promo en ce moment',
+        'promoEmptySub' => 'Revenez bientôt, ou découvrez toute la carte.',
         'navWaiter' => 'Appeler',
     ],
 ];

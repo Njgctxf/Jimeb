@@ -3086,6 +3086,9 @@ return [
         'navMenu' => 'Menu',
         'navCart' => 'Cart',
         'navPromos' => 'Deals',
+        'promoOnSale' => 'on sale',
+        'promoEmptyTitle' => 'No deals right now',
+        'promoEmptySub' => 'Come back soon, or browse the full menu.',
         'navWaiter' => 'Waiter',
     ],
 ];

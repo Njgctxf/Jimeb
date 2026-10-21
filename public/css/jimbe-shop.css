@@ -724,3 +724,16 @@ body:has(.jb-shop) .flex.mt-4.min-w-0.overflow-hidden { overflow-x: clip !import
 .jb-scanbar > span { font-size: 26px; }
 .jb-scanbar p { margin: 0; font-size: 13px; line-height: 1.35; opacity: .9; }
 .jb-scanbar b { display: block; font-size: 14px; opacity: 1; }
+
+/* ===== Page Promos ===== */
+.jb-nav button { position: relative; }
+.jb-nav__dot { position: absolute; top: 4px; left: calc(50% + 8px); width: 8px; height: 8px; border-radius: 50%; background: #e2412b; box-shadow: 0 0 0 2px #fff; animation: jb-pulse 1.6s infinite; }
+.jb-promo-hero { position: relative; overflow: hidden; margin: 6px 0 16px; padding: 20px 20px 18px; border-radius: 24px; color: #fff; background: linear-gradient(135deg, #e2412b, #f59e0b); box-shadow: 0 14px 30px rgba(226, 65, 43, .3); animation: jb-pop .6s cubic-bezier(.2, 1.4, .4, 1) both; }
+.jb-promo-hero::after { content: '🏷️'; position: absolute; right: -6px; bottom: -14px; font-size: 92px; opacity: .25; transform: rotate(-18deg); }
+.jb-promo-hero__tag { display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: .06em; background: rgba(255, 255, 255, .22); padding: 5px 10px; border-radius: 999px; }
+.jb-promo-hero h2 { margin: 10px 0 4px; font-size: 30px; font-weight: 900; letter-spacing: -.02em; }
+.jb-promo-hero p { margin: 0; font-size: 14px; opacity: .92; }
+.jb-promo-empty { text-align: center; padding: 50px 20px; }
+.jb-promo-empty > div { font-size: 54px; animation: jb-bob 1.8s ease-in-out infinite; }
+.jb-promo-empty h3 { margin: 10px 0 6px; font-size: 19px; font-weight: 800; }
+.jb-promo-empty p { margin: 0 0 18px; color: var(--jb-mute); font-size: 14px; }

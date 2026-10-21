@@ -102,6 +102,7 @@
             x-init="window.addEventListener('popstate', () => { view = 'home'; }); if (new URLSearchParams(location.search).get('jb') === 'menu') view = 'menu';">
             <div x-show="view === 'home'">@include('livewire.shop.partials.jimbe-home')</div>
             <div x-show="view === 'menu'" x-cloak>@include('livewire.shop.partials.jimbe-menu-page')</div>
+            <div x-show="view === 'promo'" x-cloak>@include('livewire.shop.partials.jimbe-promo-page')</div>
 
             <p class="jb-powered">@lang('modules.shop.poweredBy') <b>Mobilo</b></p>
 
@@ -201,7 +202,11 @@
                     </i>
                     <span>@lang('modules.shop.navCart')</span>
                 </button>
-                {{-- Les promos restent sur l'accueil (bannière + section) : barre du bas limitée à 4 boutons. --}}
+                <button type="button" :class="view === 'promo' ? 'is-on' : ''" @click="go('promo')">
+                    <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6Z"/></svg>
+                    @lang('modules.shop.navPromos')
+                    <span class="jb-nav__dot" x-show="promoItems().length > 0" x-cloak></span>
+                </button>
                 @if ($jbCanCall)
                 <button type="button" @click="$dispatch('jb-call-open')">
                     <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"/></svg>

@@ -7,7 +7,7 @@
         $id = (int) $b->target_id;
         return match ($b->target_type) {
             'dish' => $id ? "openItemDetail($id)" : "setBadgeFilter(null); go('menu')",
-            'promo' => "setBadgeFilter('promo'); go('menu')",
+            'promo' => "go('promo')",
             'call' => "\$dispatch('jb-call-open')",
             'cart' => "callLw('showCartItems')",
             'category' => $id
@@ -131,7 +131,7 @@
         <div class="jb-hm-slide__txt">
             <h2>@lang('modules.shop.hm2a')<br>@lang('modules.shop.hm2b') <em x-text="'-' + (Math.max(...promoItems().map(p => Number(p.discount_percent || 0)), 0) || '') + '%'"></em></h2>
             <p>@lang('modules.shop.hm2sub')</p>
-            <button type="button" class="jb-hm-cta" @click="setBadgeFilter('promo'); go('menu')">@lang('modules.shop.promoCta') <span>→</span></button>
+            <button type="button" class="jb-hm-cta" @click="go('promo')">@lang('modules.shop.promoCta') <span>→</span></button>
         </div>
         <div class="jb-hm-slide__art"><span class="a1">🏷️</span><span class="a2">🍕</span><span class="a3">🍰</span></div>
     </div>
