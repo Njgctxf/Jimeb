@@ -192,7 +192,7 @@
             </div>
 
             <div class="absolute bottom-0 left-0 justify-center w-full p-2 space-x-4 bg-white md:flex dark:bg-gray-800 rtl:space-x-reverse" sidebar-bottom-menu>
-                <a href="{{ module_enabled('Subdomain') ? 'https://'.restaurant()->sub_domain : route('shop_restaurant', [restaurant()->hash]) }}" target="_blank" class="inline-flex justify-center items-center gap-1 p-2 w-full md:w-auto text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white">
+                <a href="{{ module_enabled('Subdomain') ? 'https://'.restaurant()->sub_domain : customer_preview_url() }}" target="_blank" class="inline-flex justify-center items-center gap-1 p-2 w-full md:w-auto text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white">
                     @lang('menu.customerSite')
 
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">

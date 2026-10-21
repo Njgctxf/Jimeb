@@ -45,7 +45,7 @@
         $jbTodo = [
             ['id' => 'qr', 'label' => $jbFr ? 'Télécharger et imprimer vos QR codes' : 'Download and print your QR codes', 'url' => route('qrcodes.index'), 'done' => false],
             ['id' => 'dishes', 'label' => $jbFr ? "Ajouter d'autres plats" : 'Add more dishes', 'url' => route('menu-items.create'), 'done' => $jbDishCount >= 5],
-            ['id' => 'site', 'label' => $jbFr ? 'Voir ce que vos clients voient' : 'See what your customers see', 'url' => route('shop_restaurant', [restaurant()->hash]), 'done' => false, 'blank' => true],
+            ['id' => 'site', 'label' => $jbFr ? 'Voir ce que vos clients voient' : 'See what your customers see', 'url' => customer_preview_url(), 'done' => false, 'blank' => true],
         ];
     @endphp
     <section class="px-4 mt-4" x-data="{ hidden: false, ticked: {}, init() { try { this.hidden = localStorage.getItem('jb_todo_hidden') === '1'; this.ticked = JSON.parse(localStorage.getItem('jb_todo_ticked') || '{}'); } catch (e) {} }, tick(id) { this.ticked[id] = true; try { localStorage.setItem('jb_todo_ticked', JSON.stringify(this.ticked)); } catch (e) {} }, hide() { this.hidden = true; try { localStorage.setItem('jb_todo_hidden', '1'); } catch (e) {} } }" x-show="!hidden" x-cloak>

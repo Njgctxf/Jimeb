@@ -125,6 +125,14 @@ function branch()
     return false;
 }
 
+/** Aperçu de la page client telle qu'un client la voit après avoir scanné le QR d'une table (commande possible). */
+function customer_preview_url(): string
+{
+    $table = branch() ? \App\Models\Table::withoutGlobalScopes()->where('branch_id', branch()->id)->whereNotNull('hash')->orderBy('id')->first() : null;
+
+    return $table ? route('qr_table_landing', $table->hash) : route('shop_restaurant', [restaurant()->hash]);
+}
+
 function shop_branch()
 {
     if (session()->has('shop_branch')) {

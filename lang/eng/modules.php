@@ -3074,6 +3074,8 @@ return [
         'welcomeAt' => 'Welcome to :name',
         'tableLabel' => 'Table :n',
         'poweredBy' => 'Powered by',
+        'scanToOrderTitle' => 'Want to order?',
+        'scanToOrderSub' => 'Scan the QR code on your table.',
         'heroSub' => 'Pick your dishes, a waiter brings them to you.',
         'heroCta' => 'See the menu',
         'all' => 'All',

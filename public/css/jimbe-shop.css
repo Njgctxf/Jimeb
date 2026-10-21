@@ -717,3 +717,10 @@ body:has(.jb-shop) .flex.mt-4.min-w-0.overflow-hidden { overflow-x: clip !import
 .jb-pay__opt.is-main { background: var(--jb-accent); border-color: var(--jb-accent); color: #fff; }
 .jb-pay__opt.is-main small { color: rgba(255, 255, 255, .85); }
 .jb-bill__msg, .jb-bill__done { margin-top: 12px; padding: 12px; border-radius: 14px; background: #eaf7ef; color: #1f6b3d; font-weight: 700; font-size: 14px; text-align: center; animation: jb-pop .5s cubic-bezier(.2, 1.4, .4, 1) both; }
+
+/* Page sans table : on explique comment commander */
+.jb-scanbar { position: fixed; left: 50%; transform: translateX(-50%); bottom: 98px; width: calc(100% - 40px); max-width: 440px; z-index: 39; display: flex; align-items: center; gap: 12px; background: #1b1411; color: #fff; border-radius: 18px; padding: 12px 16px; box-shadow: 0 12px 26px rgba(0, 0, 0, .3); animation: jb-scanbar-in .5s ease-out both; }
+@keyframes jb-scanbar-in { from { opacity: 0; bottom: 70px; } to { opacity: 1; bottom: 98px; } }
+.jb-scanbar > span { font-size: 26px; }
+.jb-scanbar p { margin: 0; font-size: 13px; line-height: 1.35; opacity: .9; }
+.jb-scanbar b { display: block; font-size: 14px; opacity: 1; }

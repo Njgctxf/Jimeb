@@ -594,6 +594,8 @@ return [
         'welcomeAt' => 'Bienvenue chez :name',
         'tableLabel' => 'Table :n',
         'poweredBy' => 'Propulsé par',
+        'scanToOrderTitle' => 'Envie de commander ?',
+        'scanToOrderSub' => 'Scannez le QR code posé sur votre table.',
         'heroSub' => 'Parcourez la carte et commandez directement depuis votre table.',
         'heroCta' => 'Découvrir la carte',
         'all' => 'Tout',

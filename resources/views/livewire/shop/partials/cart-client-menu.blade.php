@@ -106,6 +106,11 @@
             <p class="jb-powered">@lang('modules.shop.poweredBy') <b>Mobilo</b></p>
 
             {{-- Mini barre panier --}}
+            <div class="jb-scanbar" x-show="!cfg.canCreateOrder" x-cloak>
+                <span>📷</span>
+                <p><b>@lang('modules.shop.scanToOrderTitle')</b>@lang('modules.shop.scanToOrderSub')</p>
+            </div>
+
             <button type="button" class="jb-mini" x-show="cartCount() > 0" x-cloak x-transition @click="callLw('showCartItems')">
                 <span><b x-text="cartCount()"></b> <span x-text="cartCount() > 1 ? @js(__('modules.shop.dishes')) : @js(__('modules.shop.dish'))"></span></span>
                 <span>@lang('modules.shop.viewCart') →</span>
