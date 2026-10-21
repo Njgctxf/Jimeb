@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Tabletrack Installer</title>
+    <title>Jimbe Installer</title>
     <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}" sizes="16x16"/>
 
     <link href="{{ asset('installer/css/style.min.css') }}" rel="stylesheet"/>

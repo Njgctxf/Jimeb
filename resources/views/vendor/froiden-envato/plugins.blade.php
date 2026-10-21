@@ -18,7 +18,7 @@
             <div class="flex-grow border-t border-gray-300"></div>
         </div>
         <p class="text-center text-xs text-gray-500 mt-3">
-            Explore additional modules to extend your Tabletrack functionality
+            Explore additional modules to extend your Jimbe functionality
         </p>
     </div>
 

@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Tabletrack - Verify Purchase</title>
+    <title>Jimbe - Verify Purchase</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50">
     <div class="container mx-auto px-4 py-6 max-w-2xl">
         <div class="flex flex-col items-center mb-12">
             <div class="flex items-center">
-                <img src="{{ asset('img/logo.png') }}" class="h-12 w-auto" alt="Tabletrack Logo"/>
-                <h1 class="text-2xl font-bold ml-4 text-gray-800">Tabletrack</h1>
+                <img src="{{ asset('img/logo.png') }}" class="h-12 w-auto" alt="Jimbe Logo"/>
+                <h1 class="text-2xl font-bold ml-4 text-gray-800">Jimbe</h1>
             </div>
         </div>
 
