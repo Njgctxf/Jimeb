@@ -51,9 +51,12 @@ class HomeController extends Controller
         // Validate if the locale exists in language settings
         $languageSetting = LanguageSetting::where('language_code', $locale)->first();
 
-        // Set the customer locale in session
-        session(['customer_locale' => $locale]);
-        session(['customer_is_rtl' => $languageSetting->is_rtl == 1]);
+        // Set the locale in session for both customer and admin/system
+        session([
+            'customer_locale' => $locale,
+            'locale' => $locale,
+            'customer_is_rtl' => (bool) ($languageSetting?->is_rtl == 1),
+        ]);
         app()->setLocale($locale);
         $this->language = $locale;
         return redirect()->back()->with('success', 'Language changed successfully');
@@ -139,12 +142,28 @@ class HomeController extends Controller
 
         // Ajustements Jimbe (retrait des éléments du créateur du template).
         $v = filemtime(public_path('landing/alytics/jimbe-overrides.css'));
+        $currentLocale = session('customer_locale') ?? session('locale') ?? global_setting()->locale ?? 'fr';
         $head = '<link rel="stylesheet" href="jimbe-overrides.css?v=' . $v . '">'
-            . '<script src="jimbe-overrides.js?v=' . $v . '" data-signup="' . e(route('restaurant_signup', [], false)) . '" data-login="' . e(route('login', [], false)) . '"></script>';
+            . '<script src="jimbe-overrides.js?v=' . $v . '" data-signup="' . e(route('restaurant_signup', [], false)) . '" data-login="' . e(route('login', [], false)) . '" data-locale="' . e($currentLocale) . '"></script>';
         $html = str_replace('</head>', $head . '</head>', $html);
+
+        // Bouton de bascule de langue FR / EN
+        $langSwitchHtml = '<div class="jb-alytics-lang-switch" role="group" aria-label="Langue">'
+            . '<a href="' . route('change.locale', 'fr') . '" class="' . ($currentLocale === 'fr' ? 'active' : '') . '">🇫🇷 FR</a>'
+            . '<span class="sep">/</span>'
+            . '<a href="' . route('change.locale', 'en') . '" class="' . ($currentLocale === 'en' ? 'active' : '') . '">🇬🇧 EN</a>'
+            . '</div>';
+        $html = preg_replace('/<body[^>]*>/', '$0' . $langSwitchHtml, $html, 1);
 
         // Traceur d'analytique Framer du template : retiré.
         $html = preg_replace('/<script[^>]*\ssrc="script"[^>]*><\/script>/', '', $html);
+
+        // Correction des liens vers l'application réelle
+        $html = str_replace(
+            ['https://connexion.jimbe.invalid/', 'https://inscription.jimbe.invalid/', 'index.html#', 'href="index.html"', 'newsletter.html'],
+            [route('login'), route('restaurant_signup'), '#', 'href="' . url('/') . '"', route('alytics.newsletter')],
+            $html
+        );
 
         return response($html)->header('Content-Type', 'text/html; charset=UTF-8');
     }

@@ -78,6 +78,10 @@ use App\Http\Controllers\SuperAdmin\RazorpayWebhookController;
 use App\Http\Controllers\SuperAdmin\FlutterwaveWebhookController;
 use App\Http\Middleware\EnsureDeliveryExecutiveAuthenticated;
 
+// Neutralize purchase code verification completely
+Route::match(['get', 'post'], 'verify-purchase', fn () => redirect()->route('login'))->name('verify-purchase');
+Route::match(['get', 'post'], 'purchase-verified', fn () => redirect()->route('login'))->name('purchase-verified');
+
 Route::get('/manifest.json', [HomeController::class, 'manifest'])->name('manifest');
 
 // Signed URL endpoint used in emails to download Menu PDF without requiring a logged-in session

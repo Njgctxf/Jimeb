@@ -30,13 +30,13 @@
         <div class="jb-hero__cta">
             <a href="{{ route('restaurant_signup') }}" class="jb-btn jb-btn--primary">
                 @if ($trialPackage)
-                    Essai gratuit de {{ $trialPackage->trial_days }} jours
+                    {{ __('landing.startTrial', ['days' => $trialPackage->trial_days]) }}
                 @else
-                    Commencer gratuitement
+                    {{ __('landing.getStartedFree') }}
                 @endif
                 <span class="jb-btn__arrow">{!! $arrow !!}</span>
             </a>
-            <a href="#simple-pricing" class="jb-btn jb-btn--dark">Voir les tarifs</a>
+            <a href="#simple-pricing" class="jb-btn jb-btn--dark">{{ __('landing.viewPricing') }}</a>
         </div>
 
         <div class="jb-hero__stage">
@@ -52,7 +52,7 @@
 {{-- ===================== BANDEAU DÉFILANT ===================== --}}
 <section class="jb-marquee" aria-label="Modules inclus">
     <div class="jb-container">
-        <p class="jb-marquee__label">Tout votre restaurant, au même endroit</p>
+        <p class="jb-marquee__label">{{ __('landing.allYourRestaurant') }}</p>
     </div>
     <div class="jb-marquee__viewport">
         <div class="jb-marquee__track">
@@ -69,9 +69,9 @@
 <section class="jb-section jb-section--cream" id="values">
     <div class="jb-container">
         <div class="jb-head">
-            <span class="jb-pill"><i>{!! $check !!}</i>Nos valeurs</span>
-            <h2>Les fondations de notre approche</h2>
-            <p>Nous construisons Jimbe autour de trois principes : la clarté, l'expérience client et la confiance. C'est ce qui guide chaque fonctionnalité.</p>
+            <span class="jb-pill"><i>{!! $check !!}</i>{{ __('landing.ourValues') }}</span>
+            <h2>{{ __('landing.valuesHeading') }}</h2>
+            <p>{{ __('landing.valuesSub') }}</p>
         </div>
 
         <div class="jb-grid-3">
@@ -79,22 +79,22 @@
                 <div class="jb-card__icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r=".6" fill="currentColor"/></svg>
                 </div>
-                <h3>Simple pour vous</h3>
-                <p>Une seule plateforme pour piloter vos commandes, votre menu et vos tables. Moins de gestes, plus de temps pour vos équipes et vos clients.</p>
+                <h3>{{ __('landing.valueTitle1') }}</h3>
+                <p>{{ __('landing.valueDesc1') }}</p>
             </article>
             <article class="jb-card">
                 <div class="jb-card__icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-4.6-9.2-9.1C1.4 8.8 3 5.5 6.3 5.2c2-.2 3.7.8 4.7 2.4 1-1.6 2.7-2.6 4.7-2.4 3.3.3 4.9 3.6 3.5 6.7C19 16.4 12 21 12 21z"/></svg>
                 </div>
-                <h3>Meilleur pour vos clients</h3>
-                <p>Un menu clair en un scan, des commandes rapides et un service fluide. Le digital accompagne le service humain, il ne le remplace pas.</p>
+                <h3>{{ __('landing.valueTitle2') }}</h3>
+                <p>{{ __('landing.valueDesc2') }}</p>
             </article>
             <article class="jb-card">
                 <div class="jb-card__icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.2 8-8 9-4.8-1-8-4.5-8-9V6l8-3z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>
                 </div>
-                <h3>La confiance avant tout</h3>
-                <p>Vos données et celles de vos clients restent séparées et protégées. Une plateforme fiable, y compris en plein service.</p>
+                <h3>{{ __('landing.valueTitle3') }}</h3>
+                <p>{{ __('landing.valueDesc3') }}</p>
             </article>
         </div>
     </div>
@@ -105,7 +105,7 @@
 <section class="jb-section" id="key-features">
     <div class="jb-container">
         <div class="jb-head">
-            <span class="jb-pill"><i>{!! $check !!}</i>Fonctionnalités clés</span>
+            <span class="jb-pill"><i>{!! $check !!}</i>{{ __('landing.keyFeatures') }}</span>
             <h2>{{ $frontDetails->feature_with_image_heading ?? __('landing.featureSection1') }}</h2>
         </div>
 
@@ -116,7 +116,7 @@
                         <h3>{{ $feature->title }}</h3>
                         <div class="jb-rich">{!! $feature->description !!}</div>
                         <a href="{{ route('restaurant_signup') }}" class="jb-btn jb-btn--blue">
-                            Essayer
+                            {{ __('landing.tryIt') }}
                             <span class="jb-btn__arrow">{!! $arrow !!}</span>
                         </a>
                     </div>
@@ -137,7 +137,7 @@
 <section class="jb-section jb-section--soft" id="icon-features">
     <div class="jb-container">
         <div class="jb-head">
-            <span class="jb-pill"><i>{!! $check !!}</i>Pourquoi Jimbe ?</span>
+            <span class="jb-pill"><i>{!! $check !!}</i>{{ __('landing.whyJimbe') }}</span>
             <h2>{{ $frontDetails->feature_with_icon_heading ?? __('landing.featureSection2') }}</h2>
         </div>
 
@@ -166,7 +166,7 @@
 <section class="jb-section" id="simple-pricing">
     <div class="jb-container">
         <div class="jb-head">
-            <span class="jb-pill"><i>{!! $check !!}</i>Tarifs</span>
+            <span class="jb-pill"><i>{!! $check !!}</i>{{ __('landing.pricing') }}</span>
             <h2>{{ $frontDetails->price_heading ?? __('landing.pricingTitle1') }}</h2>
             <div class="jb-rich">{!! $frontDetails->price_description ?? __('landing.pricingSubTitle1') !!}</div>
         </div>
@@ -180,7 +180,7 @@
 <section class="jb-section jb-section--soft" id="reviews">
     <div class="jb-container">
         <div class="jb-head">
-            <span class="jb-pill"><i>{!! $check !!}</i>Témoignages</span>
+            <span class="jb-pill"><i>{!! $check !!}</i>{{ __('landing.testimonials') }}</span>
             <h2>{{ $frontDetails->review_heading ?? __('landing.testimonialSection1') }}</h2>
         </div>
 
@@ -207,7 +207,7 @@
 <section class="jb-section" id="integrations">
     <div class="jb-container">
         <div class="jb-head">
-            <span class="jb-pill"><i>{!! $check !!}</i>Intégrations</span>
+            <span class="jb-pill"><i>{!! $check !!}</i>{{ __('landing.features') }}</span>
             <h2>Reliez Jimbe aux outils que vous utilisez déjà</h2>
             <p>Encaissez en ligne et suivez le service en direct, sans changer vos habitudes.</p>
         </div>
@@ -235,7 +235,7 @@
 <section class="jb-section jb-section--cream" id="user-faqs">
     <div class="jb-container">
         <div class="jb-head">
-            <span class="jb-pill"><i>{!! $check !!}</i>FAQ</span>
+            <span class="jb-pill"><i>{!! $check !!}</i>{{ __('landing.faq') }}</span>
             <h2>{{ $frontDetails->faq_heading ?? __('landing.faqTitle1') }}</h2>
             <div class="jb-rich">{!! $frontDetails->faq_description ?? __('landing.faqSubTitle1') !!}</div>
         </div>
@@ -258,7 +258,7 @@
 <section class="jb-section" id="contact">
     <div class="jb-container">
         <div class="jb-head">
-            <span class="jb-pill"><i>{!! $check !!}</i>Contact</span>
+            <span class="jb-pill"><i>{!! $check !!}</i>{{ __('landing.contactTitle') }}</span>
             <h2>{{ $frontDetails->contact_heading ?? __('landing.contactTitle') }}</h2>
         </div>
 

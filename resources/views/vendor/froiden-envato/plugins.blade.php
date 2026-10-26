@@ -49,7 +49,7 @@
                             </div>
 
                             <!-- Content -->
-                            <h3 class="text-base font-bold text-gray-900 text-center mb-1">{{ str_replace('for Tabletrack', '', $module['product_name']) }}</h3>
+                            <h3 class="text-base font-bold text-gray-900 text-center mb-1">{{ str_ireplace(['for Tabletrack', 'for Jimeb'], '', $module['product_name']) }}</h3>
 
                             <!-- Version and Sales -->
                             <div class="flex items-center gap-2 mb-2">

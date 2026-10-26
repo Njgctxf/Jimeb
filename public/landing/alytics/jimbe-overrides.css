@@ -80,3 +80,43 @@ a[href$="404"], a[href$="404.html"] { display: none !important; }
 [class*="framer-"]:has(> a[href$="404"]), [class*="framer-"]:has(> a[href$="404.html"]) { display: none !important; }
 /* Pied de page : l'espace de l'ancien lien « Integrations » est retiré */
 .framer-erztd9 { display: none !important; }
+
+/* Sélecteur de langue flottant (FR / EN) */
+.jb-alytics-lang-switch {
+    position: fixed;
+    top: 16px;
+    right: 18px;
+    z-index: 99999;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+    padding: 4px 6px;
+    border-radius: 999px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+}
+.jb-alytics-lang-switch a {
+    color: #333;
+    text-decoration: none;
+    padding: 5px 9px;
+    border-radius: 999px;
+    transition: background 0.15s, color 0.15s;
+    line-height: 1;
+}
+.jb-alytics-lang-switch a:hover {
+    color: #ff7900;
+}
+.jb-alytics-lang-switch a.active {
+    background: #ff7900;
+    color: #fff !important;
+}
+.jb-alytics-lang-switch .sep {
+    color: #ccc;
+    font-size: 11px;
+}
+

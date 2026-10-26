@@ -79,23 +79,29 @@
             </a>
 
             <ul class="jb-nav__links">
-                <li><a href="{{ url('/') }}">Accueil</a></li>
-                <li><a href="{{ url('/') }}#icon-features">Fonctionnalités</a></li>
-                <li><a href="{{ url('/') }}#simple-pricing">Tarifs</a></li>
-                <li><a href="{{ url('/') }}#user-faqs">FAQ</a></li>
-                <li><a href="{{ url('/') }}#contact">Contact</a></li>
+                <li><a href="{{ url('/') }}">{{ __('menu.home') }}</a></li>
+                <li><a href="{{ url('/') }}#icon-features">{{ __('landing.features') }}</a></li>
+                <li><a href="{{ url('/') }}#simple-pricing">{{ __('landing.pricing') }}</a></li>
+                <li><a href="{{ url('/') }}#user-faqs">{{ __('landing.faq') }}</a></li>
+                <li><a href="{{ url('/') }}#contact">{{ __('landing.contactTitle') }}</a></li>
                 @foreach ($headerMenus as $menu)
                     <li><a href="{{ route('customMenu', ['slug' => $menu->menu_slug]) }}">{{ $menu->menu_name }}</a></li>
                 @endforeach
             </ul>
 
             <div class="jb-nav__actions">
-                @if (languages()->count() > 1)
-                    @livewire('shop.languageSwitcher')
-                @endif
-                <a href="{{ route('login') }}" class="jb-nav__login">{{ user() ? __('menu.dashboard') : 'Connexion' }}</a>
+                @php
+                    $currentLocale = session('customer_locale') ?? session('locale') ?? global_setting()->locale ?? 'fr';
+                @endphp
+                <div class="jb-lang-switch" role="group" aria-label="Langue">
+                    <a href="{{ route('change.locale', 'fr') }}" class="jb-lang-btn {{ $currentLocale === 'fr' ? 'is-active' : '' }}" title="Passer en français">🇫🇷 FR</a>
+                    <span class="jb-lang-sep">/</span>
+                    <a href="{{ route('change.locale', 'en') }}" class="jb-lang-btn {{ $currentLocale === 'en' ? 'is-active' : '' }}" title="Switch to English">🇬🇧 EN</a>
+                </div>
+
+                <a href="{{ route('login') }}" class="jb-nav__login">{{ user() ? __('menu.dashboard') : __('app.login') }}</a>
                 @if (!user())
-                    <a href="{{ route('restaurant_signup') }}" class="jb-btn jb-btn--dark jb-btn--sm">Commencer</a>
+                    <a href="{{ route('restaurant_signup') }}" class="jb-btn jb-btn--dark jb-btn--sm">{{ __('landing.getStarted') }}</a>
                 @endif
                 <button type="button" class="jb-nav__burger" id="jb-burger" aria-expanded="false" aria-controls="jb-panel" aria-label="Ouvrir le menu">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
@@ -103,17 +109,22 @@
             </div>
 
             <div class="jb-nav__panel" id="jb-panel">
-                <a href="{{ url('/') }}">Accueil</a>
-                <a href="{{ url('/') }}#icon-features">Fonctionnalités</a>
-                <a href="{{ url('/') }}#simple-pricing">Tarifs</a>
-                <a href="{{ url('/') }}#user-faqs">FAQ</a>
-                <a href="{{ url('/') }}#contact">Contact</a>
+                <div class="jb-lang-switch mb-3" style="width: fit-content;" role="group" aria-label="Langue">
+                    <a href="{{ route('change.locale', 'fr') }}" class="jb-lang-btn {{ $currentLocale === 'fr' ? 'is-active' : '' }}">🇫🇷 FR</a>
+                    <span class="jb-lang-sep">/</span>
+                    <a href="{{ route('change.locale', 'en') }}" class="jb-lang-btn {{ $currentLocale === 'en' ? 'is-active' : '' }}">🇬🇧 EN</a>
+                </div>
+                <a href="{{ url('/') }}">{{ __('menu.home') }}</a>
+                <a href="{{ url('/') }}#icon-features">{{ __('landing.features') }}</a>
+                <a href="{{ url('/') }}#simple-pricing">{{ __('landing.pricing') }}</a>
+                <a href="{{ url('/') }}#user-faqs">{{ __('landing.faq') }}</a>
+                <a href="{{ url('/') }}#contact">{{ __('landing.contactTitle') }}</a>
                 @foreach ($headerMenus as $menu)
                     <a href="{{ route('customMenu', ['slug' => $menu->menu_slug]) }}">{{ $menu->menu_name }}</a>
                 @endforeach
-                <a href="{{ route('login') }}">{{ user() ? __('menu.dashboard') : 'Connexion' }}</a>
+                <a href="{{ route('login') }}">{{ user() ? __('menu.dashboard') : __('app.login') }}</a>
                 @if (!user())
-                    <a href="{{ route('restaurant_signup') }}" class="jb-btn jb-btn--primary">Commencer</a>
+                    <a href="{{ route('restaurant_signup') }}" class="jb-btn jb-btn--primary">{{ __('landing.getStarted') }}</a>
                 @endif
             </div>
         </nav>
@@ -146,15 +157,15 @@
 
             <div class="jb-footer__cols">
                 <ul>
-                    <li><a href="{{ url('/') }}">Accueil</a></li>
-                    <li><a href="{{ url('/') }}#icon-features">Fonctionnalités</a></li>
+                    <li><a href="{{ url('/') }}">{{ __('menu.home') }}</a></li>
+                    <li><a href="{{ url('/') }}#icon-features">{{ __('landing.features') }}</a></li>
                 </ul>
                 <ul>
-                    <li><a href="{{ url('/') }}#simple-pricing">Tarifs</a></li>
-                    <li><a href="{{ url('/') }}#user-faqs">FAQ</a></li>
+                    <li><a href="{{ url('/') }}#simple-pricing">{{ __('landing.pricing') }}</a></li>
+                    <li><a href="{{ url('/') }}#user-faqs">{{ __('landing.faq') }}</a></li>
                 </ul>
                 <ul>
-                    <li><a href="{{ url('/') }}#contact">Contact</a></li>
+                    <li><a href="{{ url('/') }}#contact">{{ __('landing.contactTitle') }}</a></li>
                     @foreach ($footerMenus as $menu)
                         <li><a href="{{ route('customMenu', ['slug' => $menu->menu_slug]) }}">{{ $menu->menu_name }}</a></li>
                     @endforeach

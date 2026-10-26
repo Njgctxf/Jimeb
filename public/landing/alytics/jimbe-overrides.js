@@ -8,12 +8,28 @@
     var SIGNUP = (document.currentScript && document.currentScript.getAttribute('data-signup')) || '/restaurant-signup';
 
     var LOGIN = (document.currentScript && document.currentScript.getAttribute('data-login')) || '/login';
+    var LOCALE = (document.currentScript && document.currentScript.getAttribute('data-locale')) || 'fr';
+
+    // Injection du sélecteur de langue flottant (FR / EN)
+    var langDiv = document.createElement('div');
+    langDiv.className = 'jb-alytics-lang-switch';
+    langDiv.innerHTML = '<a href="/change-locale/fr" class="' + (LOCALE === 'fr' ? 'active' : '') + '">🇫🇷 FR</a>'
+        + '<span class="sep">/</span>'
+        + '<a href="/change-locale/en" class="' + (LOCALE === 'en' ? 'active' : '') + '">🇬🇧 EN</a>';
+    document.body.appendChild(langDiv);
 
     document.addEventListener('click', function (e) {
-        var a = e.target.closest && e.target.closest('a[href^="https://inscription.jimbe.invalid"], a[href^="https://connexion.jimbe.invalid"]');
+        var a = e.target.closest && e.target.closest('a[href*="inscription"], a[href*="restaurant-signup"], a[href*="connexion"], a[href*="/login"]');
         if (!a) return;
-        e.preventDefault();
-        e.stopPropagation();
-        window.location.href = a.getAttribute('href').indexOf('connexion.') > -1 ? LOGIN : SIGNUP;
+        var href = a.getAttribute('href') || '';
+        if (href.indexOf('login') > -1 || href.indexOf('connexion') > -1) {
+            e.preventDefault();
+            e.stopPropagation();
+            window.location.href = LOGIN;
+        } else if (href.indexOf('inscription') > -1 || href.indexOf('restaurant-signup') > -1) {
+            e.preventDefault();
+            e.stopPropagation();
+            window.location.href = SIGNUP;
+        }
     }, true);
 })();

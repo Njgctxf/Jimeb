@@ -10,9 +10,9 @@ class LanguageSwitcher extends Component
 
     public function setLanguage($locale)
     {
-        session(['customer_locale' => $locale]);
+        session(['customer_locale' => $locale, 'locale' => $locale]);
         $language = LanguageSetting::where('language_code', $locale)->first();
-        $isRtl = ($language->is_rtl == 1);
+        $isRtl = (bool) ($language?->is_rtl == 1);
         session(['customer_is_rtl' => $isRtl]);
 
         

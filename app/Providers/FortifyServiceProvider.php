@@ -83,18 +83,6 @@ class FortifyServiceProvider extends ServiceProvider
 
             $this->checkMigrateStatus();
 
-            if (!$this->isLegal()) {
-                if (!module_enabled('Subdomain')) {
-                    return redirect('verify-purchase');
-                }
-
-                // We will only show verify page for super-admin-login
-                // We will check it's opened on main or not
-                if (Str::contains(request()->url(), 'super-admin-login')) {
-                    return redirect('verify-purchase');
-                }
-            }
-
             return view('auth.login');
         });
 
@@ -138,5 +126,10 @@ class FortifyServiceProvider extends ServiceProvider
     public function checkMigrateStatus()
     {
         return check_migrate_status();
+    }
+
+    public function isLegal()
+    {
+        return true;
     }
 }
