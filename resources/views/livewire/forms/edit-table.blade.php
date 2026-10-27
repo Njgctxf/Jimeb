@@ -62,7 +62,7 @@
 
         <div class="flex w-full pb-4 space-x-4 mt-6 rtl:space-x-reverse">
             <x-button>@lang('app.save')</x-button>
-            <x-danger-button  wire:click="showDeleteTable"  wire:key='member-del-{{ $item->id . microtime() }}'>
+            <x-danger-button  wire:click="showDeleteTable"  wire:key='table-del-{{ $activeTable->id }}'>
                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd"
