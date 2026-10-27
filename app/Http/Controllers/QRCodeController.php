@@ -10,4 +10,9 @@ class QRCodeController extends Controller
     {
         return view('qrcodes.index');
     }
+
+    public function designer()
+    {
+        return view('qrcodes.designer');
+    }
 }

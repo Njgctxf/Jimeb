@@ -241,6 +241,7 @@ Route::middleware(['auth', config('jetstream.auth_session'), 'verified', VerifyR
     Route::get('payments/expenseCategory', [PaymentController::class, 'expenseCategory'])->name('payments.expenseCategory');
 
     Route::get('qr-codes', [QRCodeController::class, 'index'])->name('qrcodes.index');
+    Route::get('qr-codes/personnaliser', [QRCodeController::class, 'designer'])->name('qrcodes.designer');
 
     Route::resource('reservations', ReservationController::class);
 

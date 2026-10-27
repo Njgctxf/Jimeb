@@ -112,8 +112,18 @@ class Table extends BaseModel
 
         $this->createQrCode(
             route('table_order', [$this->hash]),
-            trim(__('modules.table.table') . ' ' . $this->table_code)
+            $this->qrLabel()
         );
+    }
+
+    /** Texte sous le QR : « Table 4 » (sans répéter « Table » si le nom de la table le contient déjà). */
+    public function qrLabel(): string
+    {
+        $word = __('modules.table.table');
+
+        return str_starts_with(mb_strtolower((string) $this->table_code), mb_strtolower($word))
+            ? (string) $this->table_code
+            : trim($word . ' ' . $this->table_code);
     }
 
     public function getQrCodeFileName(): string
