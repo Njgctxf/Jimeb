@@ -128,7 +128,9 @@
                         {{-- Le type de plat n'est plus demandé : valeur par défaut « autre » --}}
 
                         @include('livewire.forms.partials.menu-item-badges', ['badgeDomPrefix' => 'cre-badge'])
+                        @unless (config('jimeb.simple_mode'))
                         @include('livewire.forms.partials.menu-item-dietary-label-chips', ['dietaryDomPrefix' => 'create-mi'])
+                        @endunless
 
                         @include('livewire.forms.partials.menu-item-eu-allergen-chips', ['euAllergenDomPrefix' => 'create-mi'])
 
@@ -152,6 +154,8 @@
                                 <x-input-error for="prepMinutes" class="mt-2" />
                             </div>
 
+                            @unless (config('jimeb.simple_mode'))
+
                             <div>
                                 <x-label for="isAvailable" :value="__('modules.menu.isAvailable')" />
                                 <x-select id="isAvailable" class="mt-1 block w-full" wire:model.defer="isAvailable">
@@ -160,6 +164,8 @@
                                 </x-select>
                                 <x-input-error for="isAvailable" class="mt-2" />
                             </div>
+
+                            @endunless
                         </div>
 
                         @if (in_array('Kitchen', restaurant_modules()))
@@ -175,69 +181,7 @@
                         </div>
                         @endif
 
-                        <!-- Item Image Upload -->
-                        <div>
-                            <x-label for="itemImage" value="{{ __('modules.menu.itemImage') }}" />
-
-                            <input
-                                class="block w-full text-sm border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 text-slate-500 mt-1"
-                                type="file" wire:model.defer="itemImageTemp" accept="image/*">
-
-                            <x-input-error for="itemImageTemp" class="mt-2" />
-
-                            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                                @lang('modules.menu.itemImageUploadHelp')
-                            </p>
-
-                            @if($itemImageTemp)
-                            <div class="mt-2">
-                                <div class="relative inline-block">
-                                    <img src="{{ $itemImageTemp->temporaryUrl() }}" alt="Preview" class="w-32 h-32 object-cover rounded-lg border border-gray-300">
-                                    <button type="button" wire:click="removeSelectedImage"
-                                         class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600 transition-colors">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
-                                            </path>
-                                        </svg>
-                                    </button>
-                                </div>
-                                <div class="mt-2 text-xs text-gray-600 dark:text-gray-400">
-                                    <p class="font-medium">{{ $itemImageTemp->getClientOriginalName() }}</p>
-                                    <p class="text-gray-500">{{ $this->formatFileSize($itemImageTemp->getSize()) }}</p>
-                                    @php
-                                    $imageInfo = @getimagesize($itemImageTemp->getRealPath());
-                                    if ($imageInfo) {
-                                    echo '<p class="text-gray-500">' . $imageInfo[0] . ' × ' . $imageInfo[1] . ' pixels
-                                    </p>';
-                                    }
-                                    @endphp
-                                </div>
-                            </div>
-                            @endif
-                        </div>
-
-                        <!-- Photos supplémentaires -->
-                        <div>
-                            <x-label for="galleryTemp" :value="__('modules.menu.morePhotos')" />
-                            <input id="galleryTemp"
-                                class="block w-full text-sm border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 text-slate-500 mt-1"
-                                type="file" multiple wire:model="galleryTemp" accept="image/*">
-                            <x-input-error for="galleryTemp.*" class="mt-2" />
-                            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">@lang('modules.menu.morePhotosHelp')</p>
-                            @if(!empty($galleryTemp))
-                            <div class="mt-2 flex flex-wrap gap-3">
-                                @foreach($galleryTemp as $gi => $photo)
-                                <div class="relative" wire:key="gallery-new-{{ $gi }}">
-                                    <img src="{{ $photo->temporaryUrl() }}" alt="" class="w-20 h-20 object-cover rounded-lg border border-gray-300">
-                                    <button type="button" wire:click="removeGalleryPhoto({{ $gi }})"
-                                        class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600 transition-colors">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                                    </button>
-                                </div>
-                                @endforeach
-                            </div>
-                            @endif
-                        </div>
+                        @include('livewire.forms.partials.menu-item-media', ['mediaMode' => 'create'])
                     </div>
 
                 </div>

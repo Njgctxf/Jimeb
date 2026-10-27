@@ -160,6 +160,10 @@ class CustomerSiteCatalogBuilder
                 'type' => $item->type,
                 'item_photo_url' => $item->item_photo_url,
                 'extra_photo_urls' => collect((array) $item->extra_images)
+                    ->reject(fn ($f) => \App\Models\MenuItem::isVideoFile($f))
+                    ->map(fn ($f) => asset_url_local_s3('item/' . $f))->values()->all(),
+                'video_urls' => collect((array) $item->extra_images)
+                    ->filter(fn ($f) => \App\Models\MenuItem::isVideoFile($f))
                     ->map(fn ($f) => asset_url_local_s3('item/' . $f))->values()->all(),
                 'original_price_label' => ($item->original_price !== null && (float) $item->original_price > (float) $item->price)
                     ? currency_format((float) $item->original_price, $restaurant->currency_id)

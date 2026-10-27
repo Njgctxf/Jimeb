@@ -67,6 +67,12 @@ class MenuItem extends BaseModel
         'extra_images' => 'array',
     ];
 
+    /** Vrai si le fichier est une vidéo (d'après l'extension). */
+    public static function isVideoFile(?string $name): bool
+    {
+        return in_array(strtolower(pathinfo((string) $name, PATHINFO_EXTENSION)), ['mp4', 'webm', 'mov', 'm4v'], true);
+    }
+
     /** URLs de toutes les photos du plat (principale + supplémentaires). */
     public function galleryUrls(): array
     {

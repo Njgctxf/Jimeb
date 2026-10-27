@@ -24,6 +24,8 @@ use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class CreateMenuItem extends Component
 {
+    use \App\Livewire\Concerns\HandlesMediaUploads;
+
     use WithFileUploads, LivewireAlert, \App\Livewire\Concerns\HasSideGroups;
 
     protected $listeners = ['refreshCategories'];
@@ -515,7 +517,7 @@ class CreateMenuItem extends Component
 
         $this->validate([
             'promoPrice' => ['nullable', 'numeric', 'min:0', 'lt:itemPrice'],
-            'galleryTemp.*' => \App\Support\ImageUpload::IMAGE_MIMES_MAX_2048,
+            'galleryTemp.*' => \App\Support\ImageUpload::MEDIA_MIMES_MAX_50MB,
         ], [
             'promoPrice.lt' => __('modules.menu.promoPriceLower'),
         ]);
@@ -636,18 +638,26 @@ class CreateMenuItem extends Component
 
     private function handleImageUpload(MenuItem $menuItem): void
     {
-        if (!empty($this->galleryTemp)) {
-            $extra = [];
-            foreach ($this->galleryTemp as $photo) {
-                $extra[] = Files::uploadLocalOrS3($photo, 'item', width: 350);
+        // Un seul champ « photos et vidéos » : la 1re photo devient l'image principale, le reste va dans la galerie.
+        $main = null;
+        $extra = [];
+
+        foreach (array_values($this->galleryTemp) as $file) {
+            if (MenuItem::isVideoFile($file->getClientOriginalName())) {
+                $extra[] = Files::uploadLocalOrS3($file, 'item');
+            } elseif ($main === null) {
+                $main = Files::uploadLocalOrS3($file, 'item', width: 350);
+            } else {
+                $extra[] = Files::uploadLocalOrS3($file, 'item', width: 350);
             }
+        }
+
+        if ($extra !== []) {
             $menuItem->update(['extra_images' => $extra]);
         }
 
-        if ($this->itemImageTemp) {
-            $menuItem->update([
-                'image' => Files::uploadLocalOrS3($this->itemImageTemp, 'item', width: 350),
-            ]);
+        if ($main !== null) {
+            $menuItem->update(['image' => $main]);
 
             if ($menuItem->branch_id) {
                 PosBranchCacheInvalidation::invalidateForBranch((int) $menuItem->branch_id);

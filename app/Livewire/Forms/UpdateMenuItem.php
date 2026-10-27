@@ -25,6 +25,8 @@ use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class UpdateMenuItem extends Component
 {
+    use \App\Livewire\Concerns\HandlesMediaUploads;
+
     use WithFileUploads, LivewireAlert, \App\Livewire\Concerns\HasSideGroups;
 
     protected $listeners = ['refreshCategories'];
@@ -85,6 +87,9 @@ class UpdateMenuItem extends Component
 
     /** Photos supplémentaires déjà enregistrées (noms de fichiers) */
     public array $extraImages = [];
+
+    /** Vrai quand l'utilisateur retire l'image principale actuelle. */
+    public bool $mainImageRemoved = false;
 
     public ?string $itemImage = null;
 
@@ -739,7 +744,7 @@ class UpdateMenuItem extends Component
             $rules['itemPrice'] = 'required|numeric|min:0';
             $rules['promoPrice'] = 'nullable|numeric|min:0|lt:itemPrice';
         }
-        $rules['galleryTemp.*'] = \App\Support\ImageUpload::IMAGE_MIMES_MAX_2048;
+        $rules['galleryTemp.*'] = \App\Support\ImageUpload::MEDIA_MIMES_MAX_50MB;
 
         // Validate image if present
         if ($this->itemImageTemp) {
@@ -962,6 +967,11 @@ class UpdateMenuItem extends Component
         $this->galleryTemp = array_values($this->galleryTemp);
     }
 
+    public function removeMainImage(): void
+    {
+        $this->mainImageRemoved = true;
+    }
+
     private function syncExtraImages(MenuItem $menuItem): void
     {
         $previous = array_values((array) $menuItem->extra_images);
@@ -970,8 +980,42 @@ class UpdateMenuItem extends Component
         foreach (array_diff($previous, $kept) as $removed) {
             MenuItem::deleteImageFileIfUnreferenced($removed);
         }
-        foreach ($this->galleryTemp as $photo) {
-            $kept[] = Files::uploadLocalOrS3($photo, 'item', width: 350, height: 350);
+
+        $oldMain = $menuItem->image;
+        if ($this->mainImageRemoved && $oldMain) {
+            $menuItem->update(['image' => null]);
+            MenuItem::deleteImageFileIfUnreferenced($oldMain, $menuItem->id);
+            $oldMain = null;
+        }
+
+        // Sans image principale, la 1re nouvelle photo (sinon la 1re photo de la galerie) la remplace.
+        $newMain = null;
+        foreach ($this->galleryTemp as $file) {
+            if (MenuItem::isVideoFile($file->getClientOriginalName())) {
+                $kept[] = Files::uploadLocalOrS3($file, 'item');
+            } elseif (blank($oldMain) && $newMain === null) {
+                $newMain = Files::uploadLocalOrS3($file, 'item', width: 350, height: 350);
+            } else {
+                $kept[] = Files::uploadLocalOrS3($file, 'item', width: 350, height: 350);
+            }
+        }
+
+        if ($newMain === null && blank($oldMain)) {
+            foreach ($kept as $i => $name) {
+                if (! MenuItem::isVideoFile($name)) {
+                    $newMain = $name;
+                    unset($kept[$i]);
+                    break;
+                }
+            }
+        }
+
+        if ($newMain !== null) {
+            $menuItem->update(['image' => $newMain]);
+
+            if ($menuItem->branch_id) {
+                PosBranchCacheInvalidation::invalidateForBranch((int) $menuItem->branch_id);
+            }
         }
 
         $menuItem->update(['extra_images' => array_values($kept) ?: null]);

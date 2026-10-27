@@ -31,6 +31,12 @@
                     </template>
                 </div>
 
+                <div class="jb-dp__videos" x-show="(selectedPreviewItem.video_urls || []).length">
+                    <template x-for="v in (selectedPreviewItem.video_urls || [])" :key="v">
+                        <video :src="v" controls playsinline preload="metadata"></video>
+                    </template>
+                </div>
+
                 <div class="jb-dp__thumbs" x-show="!cfg.hideImages && (selectedPreviewItem.extra_photo_urls || []).length">
                     <template x-for="u in (selectedPreviewItem.extra_photo_urls || [])" :key="u">
                         <button type="button" @click="selectedPreviewItem = { ...selectedPreviewItem, item_photo_url: u }">

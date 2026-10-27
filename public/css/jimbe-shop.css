@@ -757,3 +757,6 @@ body:has(.jb-shop) .flex.mt-4.min-w-0.overflow-hidden { overflow-x: clip !import
 @keyframes jb-ring { 0%, 100% { transform: rotate(0); } 10%, 30% { transform: rotate(-2deg); } 20%, 40% { transform: rotate(2deg); } 50% { transform: rotate(0); } }
 .jb-choice { display: inline-flex; gap: 6px; flex-wrap: wrap; margin: 0 0 4px; }
 .jb-choice span { background: #f8f4ee; border-radius: 999px; padding: 6px 10px; font-size: 12px; font-weight: 700; }
+
+.jb-dp__videos { display: flex; gap: 10px; overflow-x: auto; padding: 10px 4px 0; scrollbar-width: none; }
+.jb-dp__videos video { height: 120px; border-radius: 14px; background: #000; flex-shrink: 0; }
