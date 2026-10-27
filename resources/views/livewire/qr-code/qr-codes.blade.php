@@ -40,6 +40,94 @@
         </div>
     </div>
 
+
+    {{-- Personnaliser les QR codes --}}
+    <div class="px-4 mt-4 print:hidden">
+        <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-600 dark:bg-gray-800">
+            <p class="font-semibold text-gray-900 dark:text-white">Personnaliser vos QR codes</p>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Choisissez la forme, les couleurs et ajoutez votre logo. Le style s'applique à tous vos QR codes ; les liens ne changent pas, donc les QR déjà imprimés restent valables.</p>
+
+            <div class="mt-4 grid gap-6 lg:grid-cols-[1fr_260px]">
+                <div class="space-y-5">
+                    {{-- Forme des points --}}
+                    <div>
+                        <p class="mb-2 text-sm font-medium text-gray-800 dark:text-gray-100">Forme des points</p>
+                        <div class="flex flex-wrap gap-2">
+                            @foreach (\App\Support\QrStyle::SHAPES as $key => $label)
+                                <label class="cursor-pointer">
+                                    <input type="radio" class="peer sr-only" name="qrShape" value="{{ $key }}" wire:model.live="qrShape">
+                                    <span class="inline-flex items-center rounded-lg border-2 border-gray-200 px-3 py-2 text-sm font-medium text-gray-600 transition peer-checked:border-skin-base peer-checked:bg-skin-base/5 peer-checked:text-gray-900 dark:border-gray-600 dark:text-gray-300 dark:peer-checked:text-white">{{ $label }}</span>
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    {{-- Forme des coins --}}
+                    <div>
+                        <p class="mb-2 text-sm font-medium text-gray-800 dark:text-gray-100">Forme des trois coins</p>
+                        <div class="flex flex-wrap gap-2">
+                            @foreach (\App\Support\QrStyle::EYES as $key => $label)
+                                <label class="cursor-pointer">
+                                    <input type="radio" class="peer sr-only" name="qrEye" value="{{ $key }}" wire:model.live="qrEye">
+                                    <span class="inline-flex items-center rounded-lg border-2 border-gray-200 px-3 py-2 text-sm font-medium text-gray-600 transition peer-checked:border-skin-base peer-checked:bg-skin-base/5 peer-checked:text-gray-900 dark:border-gray-600 dark:text-gray-300 dark:peer-checked:text-white">{{ $label }}</span>
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    {{-- Couleurs --}}
+                    <div>
+                        <p class="mb-2 text-sm font-medium text-gray-800 dark:text-gray-100">Couleurs</p>
+                        <div class="flex flex-wrap items-center gap-4">
+                            <label class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
+                                <input type="color" wire:model.live.debounce.300ms="qrColor" class="h-10 w-14 cursor-pointer rounded border border-gray-300 bg-white p-1">
+                                QR code
+                            </label>
+                            <label class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
+                                <input type="color" wire:model.live.debounce.300ms="qrBackground" class="h-10 w-14 cursor-pointer rounded border border-gray-300 bg-white p-1">
+                                Fond
+                            </label>
+                        </div>
+                        <x-input-error for="qrColor" class="mt-2" />
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Gardez un QR foncé sur un fond clair : c'est ce que les téléphones lisent le mieux.</p>
+                    </div>
+
+                    {{-- Logo --}}
+                    <div>
+                        <p class="mb-2 text-sm font-medium text-gray-800 dark:text-gray-100">Logo au centre</p>
+                        <input type="file" wire:model="qrLogoTemp" accept="image/png,image/jpeg,image/webp,image/gif"
+                            class="block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm text-slate-500 dark:border-gray-600 dark:bg-gray-700">
+                        <div wire:loading wire:target="qrLogoTemp" class="mt-1 text-xs text-gray-500">Envoi du logo…</div>
+                        <x-input-error for="qrLogoTemp" class="mt-2" />
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">PNG, JPG, WebP ou GIF, 4 Mo maximum. Un logo carré, simple et sur fond transparent donne le meilleur résultat.</p>
+                        @if ($qrLogo || $qrLogoTemp)
+                            <button type="button" wire:click="removeQrLogo" class="mt-2 text-sm text-red-600 hover:underline">Retirer le logo</button>
+                        @endif
+                    </div>
+
+                    <div class="flex flex-wrap gap-2">
+                        <x-button type="button" wire:click="saveQrStyle" wire:loading.attr="disabled" wire:target="saveQrStyle">
+                            <span wire:loading.remove wire:target="saveQrStyle">Enregistrer et appliquer à tous les QR</span>
+                            <span wire:loading wire:target="saveQrStyle">Mise à jour des QR codes…</span>
+                        </x-button>
+                        <x-secondary-button type="button" wire:click="resetQrStyle" wire:loading.attr="disabled">Revenir au style classique</x-secondary-button>
+                    </div>
+                </div>
+
+                {{-- Aperçu --}}
+                <div class="text-center">
+                    <p class="mb-2 text-sm font-medium text-gray-800 dark:text-gray-100">Aperçu</p>
+                    <div class="rounded-xl border border-gray-200 bg-gray-50 p-3 dark:border-gray-600 dark:bg-gray-700">
+                        @if ($qrPreview)
+                            <img src="{{ $qrPreview }}" alt="Aperçu du QR code" class="mx-auto w-full max-w-[240px] rounded">
+                        @endif
+                    </div>
+                    <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">Vérifiez toujours avec votre téléphone avant d'imprimer.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {{-- QR par table --}}
     <div class="px-4 mt-6 print:hidden">
         <div class="flex flex-wrap items-center justify-between gap-2">

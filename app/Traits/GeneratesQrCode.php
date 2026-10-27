@@ -16,7 +16,7 @@ trait GeneratesQrCode
         $filePath = public_path(Files::UPLOAD_FOLDER . '/qrcodes/' . $fileName);
 
         Files::createDirectoryIfNotExist('qrcodes');
-        QrCodeGenerator::savePng($qrUrl, $filePath, $label);
+        QrCodeGenerator::savePng($qrUrl, $filePath, $label, \App\Support\QrStyle::forRestaurant($this->getRestaurantId()));
 
         Files::fileStore(
             new File($filePath),

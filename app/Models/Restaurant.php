@@ -75,6 +75,7 @@ class Restaurant extends BaseModel
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'custom_delivery_options' => 'array',
+        'qr_settings' => 'array',
         'is_active' => 'boolean',
         'enable_admin_reservation' => 'boolean',
         'enable_customer_reservation' => 'boolean',
