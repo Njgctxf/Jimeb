@@ -202,37 +202,49 @@ class User extends Authenticatable
 
         $ip = $this->getClientIpFromRequest();
 
+        // Le pays d'une adresse IP ne change pas d'une page à l'autre : on le garde 24 h au lieu d'interroger
+        // des sites externes (ipify, ip-api) à CHAQUE affichage de page, ce qui ralentissait tout le tableau de bord.
+        $key = 'ip-country:' . md5($ip);
 
-        // 3. Handle localhost
-        if ($ip === '127.0.0.1' || $ip === '::1') {
-            $ip = @file_get_contents('https://api.ipify.org');
-
+        $cached = \Illuminate\Support\Facades\Cache::get($key);
+        if (is_string($cached) && $cached !== '') {
+            return $cached;
         }
 
+        $country = $this->lookupCountryFromIp($ip);
 
-        $ipCountry = 'US';
+        // Réponse obtenue : 24 h. Échec (hors ligne, limite atteinte) : on réessaie dans 10 minutes seulement.
+        \Illuminate\Support\Facades\Cache::put($key, $country['code'], $country['ok'] ? now()->addDay() : now()->addMinutes(10));
+
+        return $country['code'];
+    }
+
+    /** @return array{code:string, ok:bool} */
+    private function lookupCountryFromIp(string $ip): array
+    {
+        // En local, 127.0.0.1 n'a pas de pays : on cherche l'adresse publique de la machine.
+        if ($ip === '127.0.0.1' || $ip === '::1') {
+            $context = stream_context_create(['http' => ['timeout' => 2]]);
+            $public = @file_get_contents('https://api.ipify.org', false, $context);
+
+            if (! is_string($public) || ! filter_var($public, FILTER_VALIDATE_IP)) {
+                return ['code' => 'US', 'ok' => false];
+            }
+
+            $ip = $public;
+        }
 
         try {
-            $response = Http::get('http://ip-api.com/json/' . $ip);
+            $response = Http::timeout(2)->get('http://ip-api.com/json/' . $ip);
 
-
-
-            if ($response->failed()) {
-                $ipCountry = 'US';
-            } else {
-
-                if ($response->json()['status'] == 'success') {
-
-                    $ipCountry = $response->json()['countryCode'];
-                }
+            if ($response->successful() && ($response->json()['status'] ?? null) === 'success') {
+                return ['code' => (string) $response->json()['countryCode'], 'ok' => true];
             }
         } catch (\Throwable $th) {
-            $ipCountry = 'US';
+            // on retombe sur la valeur par défaut
         }
 
-
-
-        return $ipCountry;
+        return ['code' => 'US', 'ok' => false];
     }
 
     private function getClientIpFromRequest(): string
