@@ -47,6 +47,25 @@
         @if ($step === 2)
             <form wire:submit="saveTables" class="space-y-5">
                 <div>
+                    <p class="text-sm font-medium text-gray-900 dark:text-white">Comment vos clients commandent-ils ?</p>
+                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Vous pourrez changer à tout moment.</p>
+                    <div class="mt-3 grid gap-3 sm:grid-cols-2">
+                        @foreach ([
+                            'per_table' => ['Un QR code par table', 'La commande arrive déjà avec le numéro de table. Un QR à imprimer par table.'],
+                            'single' => ['Un seul QR code', 'Un seul QR à imprimer. Le client écrit le numéro de sa table avant de commander.'],
+                        ] as $key => [$title, $text])
+                            <label wire:key="wiz-mode-{{ $key }}" class="cursor-pointer">
+                                <input type="radio" class="peer sr-only" name="qrMode" value="{{ $key }}" wire:model.live="qrMode">
+                                <span class="block rounded-xl border-2 border-gray-200 p-3 text-left transition peer-checked:border-skin-base peer-checked:bg-skin-base/5 dark:border-gray-600">
+                                    <span class="block text-sm font-semibold text-gray-900 dark:text-white">{{ $title }}</span>
+                                    <span class="mt-1 block text-xs text-gray-500 dark:text-gray-400">{{ $text }}</span>
+                                </span>
+                            </label>
+                        @endforeach
+                    </div>
+                    <x-input-error for="qrMode" class="mt-1" />
+                </div>
+                <div>
                     <x-label for="tableCount" value="Combien de tables avez-vous ?" />
                     <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Les tables « Table 1 », « Table 2 »… sont créées avec leur QR code. Vous pourrez les renommer plus tard.</p>
                     <x-input id="tableCount" type="number" min="1" max="200" class="mt-2 block w-40" wire:model="tableCount" placeholder="ex. 12" />

@@ -15,6 +15,35 @@ class QrCodes extends Component
 
     public $tableCount = '';
 
+    /** null = pas encore choisi ; « per_table » ou « single ». */
+    public ?string $qrMode = null;
+
+    public function setQrMode(string $mode): void
+    {
+        if (! in_array($mode, ['per_table', 'single'], true)) {
+            return;
+        }
+
+        $restaurant = \App\Models\Restaurant::findOrFail(restaurant()->id);
+        $restaurant->update(['qr_mode' => $mode]);
+        session(['restaurant' => $restaurant]);
+        $this->qrMode = $mode;
+
+        // Le QR général existe dans les deux modes
+        try {
+            $branch = branch();
+            if ($branch && ! FileStorage::where('filename', $branch->getQrCodeFileName())->exists()) {
+                $branch->generateQrCode();
+            }
+        } catch (\Throwable $e) {
+            report($e);
+        }
+
+        $this->alert('success', $mode === 'single'
+            ? 'Mode « QR unique » activé : le client indiquera son numéro de table.'
+            : 'Mode « un QR par table » activé.', ['toast' => true, 'position' => 'top-end']);
+    }
+
     /**
      * « Combien de tables avez-vous ? » : crée les tables manquantes (Table 1 … Table N) avec leur QR.
      * Les tables existantes ne sont jamais supprimées ni renumérotées.
@@ -141,6 +170,13 @@ class QrCodes extends Component
 
     public function mount(): void
     {
+        $this->qrMode = \App\Models\Restaurant::find(restaurant()->id)?->qr_mode;
+
+        // Aucun QR n'est généré tant que le restaurant n'a pas choisi son mode
+        if ($this->qrMode === null) {
+            return;
+        }
+
         // Génère automatiquement le QR code du restaurant s'il n'existe pas encore
         try {
             $branch = branch();
@@ -169,6 +205,7 @@ class QrCodes extends Component
             'printableQrItems' => [],
             'tableQrs' => $this->tableQrs($areasWithTables),
             'restaurantName' => restaurant()->name,
+            'qrMode' => $this->qrMode,
         ]);
     }
 }

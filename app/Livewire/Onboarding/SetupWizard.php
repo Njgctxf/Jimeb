@@ -30,6 +30,7 @@ class SetupWizard extends Component
 
     // Étape 2
     public $tableCount = '';
+    public $qrMode = '';
 
     // Étape 3
     public $categoryName = '';
@@ -45,7 +46,13 @@ class SetupWizard extends Component
         // Reprise après rechargement : si les tables existent déjà, on passe directement au premier plat.
         if (\App\Models\Table::count() > 0) {
             $this->step = 3;
+
+            if (restaurant()->qr_mode === null) {
+                restaurant()->update(['qr_mode' => 'per_table']);
+            }
         }
+
+        $this->qrMode = (string) (restaurant()->qr_mode ?? '');
     }
 
     public function saveIdentity(): void
@@ -72,12 +79,19 @@ class SetupWizard extends Component
 
     public function saveTables(): void
     {
-        $this->validate(['tableCount' => 'required|integer|min:1|max:200'], [
+        $this->validate([
+            'qrMode' => 'required|in:per_table,single',
+            'tableCount' => 'required|integer|min:1|max:200',
+        ], [
+            'qrMode.required' => 'Choisissez comment vos clients commandent.',
+            'qrMode.in' => 'Choisissez comment vos clients commandent.',
             'tableCount.required' => 'Indiquez le nombre de tables.',
             'tableCount.integer' => 'Indiquez un nombre entier.',
             'tableCount.min' => 'Indiquez au moins 1 table.',
             'tableCount.max' => 'Maximum 200 tables.',
         ]);
+
+        restaurant()->update(['qr_mode' => $this->qrMode]);
 
         TableGenerator::generate((int) $this->tableCount);
         $this->step = 3;

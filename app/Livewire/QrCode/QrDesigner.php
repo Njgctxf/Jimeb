@@ -78,7 +78,7 @@ class QrDesigner extends Component
 
     public function mount(): void
     {
-        $s = QrStyle::forRestaurant(restaurant());
+        $s = QrStyle::forRestaurant(restaurant()->id);
 
         $this->silhouette = $s['silhouette'];
         $this->ghost = $s['ghost'];
@@ -235,7 +235,7 @@ class QrDesigner extends Component
         }
 
         $restaurant = restaurant();
-        $before = QrStyle::forRestaurant($restaurant);
+        $before = QrStyle::forRestaurant($restaurant->id);
         $stamp = time();
 
         // Les images d'aperçu (« prev-… ») deviennent des fichiers définitifs

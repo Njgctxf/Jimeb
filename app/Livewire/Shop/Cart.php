@@ -153,6 +153,9 @@ class Cart extends Component
     public $guestName = '';
     public $guestPhone = '';
     public $guestTable = '';
+
+    /** Mode « QR unique » : numéro de table tapé par le client. */
+    public $guestTableNumber = '';
     public $canCreateOrder;
     public $orderBeingProcessed = false;
     public $showModifiersModal = false;
@@ -2654,22 +2657,39 @@ class Cart extends Component
         // Le téléphone prérempli peut venir de la base sous forme de nombre.
         $this->guestPhone = blank($this->guestPhone) ? null : (string) $this->guestPhone;
 
-        $this->validate([
+        $single = $this->singleQrMode();
+
+        $this->validate(array_merge([
             'guestName' => 'required|string|max:80',
             'guestPhone' => 'nullable|string|max:25',
-            'guestTable' => 'required',
-        ], [
+        ], $single
+            ? ['guestTableNumber' => 'required|string|max:30']
+            : ['guestTable' => 'required']
+        ), [
             'guestName.required' => __('modules.shop.nameRequired'),
             'guestTable.required' => __('modules.shop.tableRequired'),
+            'guestTableNumber.required' => 'Indiquez le numéro de votre table.',
+            'guestTableNumber.max' => 'Numéro de table trop long.',
         ]);
 
-        $table = Table::where('hash', $this->guestTable)
-            ->where('branch_id', $this->shopBranch->id)
-            ->first();
+        if ($single) {
+            $table = \App\Support\TableLookup::find((int) $this->shopBranch->id, (string) $this->guestTableNumber);
 
-        if (!$table) {
-            $this->addError('guestTable', __('modules.shop.tableRequired'));
-            return;
+            if (! $table) {
+                $this->addError('guestTableNumber', 'Cette table n\'existe pas. Vérifiez le numéro écrit sur votre table.');
+
+                return;
+            }
+        } else {
+            $table = Table::where('hash', $this->guestTable)
+                ->where('branch_id', $this->shopBranch->id)
+                ->first();
+
+            if (! $table) {
+                $this->addError('guestTable', __('modules.shop.tableRequired'));
+
+                return;
+            }
         }
 
         $name = trim($this->guestName);
@@ -2889,7 +2909,14 @@ class Cart extends Component
      */
     public function browseOnly(): bool
     {
-        return config('jimeb.simple_mode') && empty($this->tableID);
+        // Sans table connue, le menu est en consultation seule... sauf en mode « QR unique » où le client saisit sa table.
+        return config('jimeb.simple_mode') && empty($this->tableID) && ! $this->singleQrMode();
+    }
+
+    /** Mode « QR unique » : un seul QR pour tout le restaurant, le client écrit son numéro de table. */
+    public function singleQrMode(): bool
+    {
+        return config('jimeb.simple_mode') && empty($this->tableID) && ($this->restaurant->qr_mode ?? null) === 'single';
     }
 
     public function placeOrder($pay = false, $updateOrder = null, $method = null)

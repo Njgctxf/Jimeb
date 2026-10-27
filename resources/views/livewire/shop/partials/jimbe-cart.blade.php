@@ -84,20 +84,35 @@
                 @error('guestName') <small class="jb-err">{{ $message }}</small> @enderror
             </label>
 
-            <label class="jb-field">
-                <span>@lang('modules.shop.yourTable') <i>*</i></span>
-                <select wire:model.defer="guestTable">
-                    <option value="">@lang('modules.shop.chooseTable')</option>
-                    @foreach ($jbAreas as $area)
-                        <optgroup label="{{ $area->area_name }}">
-                            @foreach ($area->tables as $t)
-                                <option value="{{ $t->hash }}">{{ $t->table_code }}</option>
-                            @endforeach
-                        </optgroup>
-                    @endforeach
-                </select>
-                @error('guestTable') <small class="jb-err">{{ $message }}</small> @enderror
-            </label>
+            @if (! empty($tableID) && $table)
+                {{-- QR de table : la table est déjà connue, on ne la redemande pas --}}
+                <div class="jb-field">
+                    <span>@lang('modules.shop.yourTable')</span>
+                    <div class="jb-fixed"><i></i> {{ $table->table_code }}</div>
+                </div>
+            @elseif ($this->singleQrMode())
+                {{-- QR unique : le client écrit le numéro de sa table --}}
+                <label class="jb-field">
+                    <span>Numéro de votre table <i>*</i></span>
+                    <input type="text" wire:model.defer="guestTableNumber" inputmode="numeric" autocomplete="off" placeholder="ex. 5" maxlength="30">
+                    @error('guestTableNumber') <small class="jb-err">{{ $message }}</small> @enderror
+                </label>
+            @else
+                <label class="jb-field">
+                    <span>@lang('modules.shop.yourTable') <i>*</i></span>
+                    <select wire:model.defer="guestTable">
+                        <option value="">@lang('modules.shop.chooseTable')</option>
+                        @foreach ($jbAreas as $area)
+                            <optgroup label="{{ $area->area_name }}">
+                                @foreach ($area->tables as $t)
+                                    <option value="{{ $t->hash }}">{{ $t->table_code }}</option>
+                                @endforeach
+                            </optgroup>
+                        @endforeach
+                    </select>
+                    @error('guestTable') <small class="jb-err">{{ $message }}</small> @enderror
+                </label>
+            @endif
 
             <label class="jb-field">
                 <span>@lang('modules.shop.yourPhone') <em>(@lang('modules.shop.optional'))</em></span>
