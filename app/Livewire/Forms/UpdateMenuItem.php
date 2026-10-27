@@ -82,6 +82,9 @@ class UpdateMenuItem extends Component
 
     public string $promoPrice = '';
 
+    /** Coche « ce plat est en promotion » : sans elle, seul le prix normal est enregistré. */
+    public bool $onPromo = false;
+
     /** Nouvelles photos supplémentaires (uploads multiples) */
     public array $galleryTemp = [];
 
@@ -215,6 +218,7 @@ class UpdateMenuItem extends Component
         if ($this->menuItem->original_price !== null && (float) $this->menuItem->original_price > (float) $this->menuItem->price) {
             $this->itemPrice = (string) (float) $this->menuItem->original_price;
             $this->promoPrice = (string) (float) $this->menuItem->price;
+            $this->onPromo = true;
         } else {
             $this->itemPrice = (string)$this->menuItem->price;
         }
@@ -742,7 +746,7 @@ class UpdateMenuItem extends Component
                 }
             }
             $rules['itemPrice'] = 'required|numeric|min:0';
-            $rules['promoPrice'] = 'nullable|numeric|min:0|lt:itemPrice';
+            $rules['promoPrice'] = $this->onPromo ? 'required|numeric|min:0|lt:itemPrice' : 'nullable';
         }
         $rules['galleryTemp.*'] = \App\Support\ImageUpload::MEDIA_MIMES_MAX_50MB;
 
@@ -946,7 +950,7 @@ class UpdateMenuItem extends Component
     private function effectivePrices(): array
     {
         $normal = (float) $this->itemPrice;
-        $promo = trim($this->promoPrice) !== '' ? (float) $this->promoPrice : null;
+        $promo = ($this->onPromo && trim($this->promoPrice) !== '') ? (float) $this->promoPrice : null;
 
         if ($promo !== null && $promo > 0 && $promo < $normal) {
             return [$promo, $normal];
@@ -959,6 +963,14 @@ class UpdateMenuItem extends Component
     {
         unset($this->extraImages[$index]);
         $this->extraImages = array_values($this->extraImages);
+    }
+
+    public function updatedOnPromo($value): void
+    {
+        if (! $value) {
+            $this->promoPrice = '';
+            $this->resetErrorBag('promoPrice');
+        }
     }
 
     public function removeGalleryPhoto(int $index): void

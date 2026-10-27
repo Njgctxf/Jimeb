@@ -329,6 +329,7 @@
                         @lang('modules.menu.pricingDetails')
                     </h3>
 
+@if (! config('jimeb.simple_mode') || $hasVariations)
                     <!-- Variations Toggle Switch -->
                     <div class="flex items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
                         <x-checkbox name="hasVariations" id="hasVariations" wire:model.live='hasVariations' wire:change="checkVariations()" />
@@ -337,6 +338,7 @@
                             <p class="text-sm text-gray-500 dark:text-gray-400">@lang('modules.menu.hasVariationsHelp')</p>
                         </div>
                     </div>
+@endif
 
                     <!-- Variations Management Section -->
                     @if(!$showItemPrice)
@@ -592,7 +594,7 @@
                     <div class="space-y-6 mt-4" wire:key="simple-pricing-section">
                         <!-- Default Price (itemPrice) -->
                         <div>
-                            <x-label for="itemPrice" :value="__('modules.menu.normalPrice')" />
+                            <x-label for="itemPrice" :value="$onPromo ? __('modules.menu.normalPrice') : 'Prix du plat'" />
                             <div class="relative mt-1">
                                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                                     <span class="text-gray-500">{{ restaurant()->currency->currency_symbol }}</span>
@@ -603,9 +605,17 @@
                             
                         </div>
 
-                        <!-- Prix promo -->
+                        <!-- Promotion : coche puis prix promo -->
                         <div>
-                            <x-label for="promoPrice" :value="__('modules.menu.promoPrice')" />
+                            <label for="onPromo" class="flex cursor-pointer items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-600 dark:bg-gray-700">
+                                <x-checkbox id="onPromo" name="onPromo" wire:model.live="onPromo" />
+                                <span class="text-sm font-medium text-gray-800 dark:text-gray-100">Ce plat est en promotion</span>
+                            </label>
+                        </div>
+
+                        @if ($onPromo)
+                        <div>
+                            <x-label for="promoPrice" value="Prix en promotion" />
                             <div class="relative mt-1">
                                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                                     <span class="text-gray-500">{{ restaurant()->currency->currency_symbol }}</span>
@@ -613,8 +623,9 @@
                                 <x-input id="promoPrice" type="number" step="0.001" min="0" wire:model.defer="promoPrice" class="block w-full pl-10 pr-4" placeholder="0.00" />
                             </div>
                             <x-input-error for="promoPrice" class="mt-1" />
-                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">@lang('modules.menu.promoPriceHelp')</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Le client verra ce prix. Le prix normal apparaîtra barré.</p>
                         </div>
+                        @endif
                     </div>
                     @endif
 

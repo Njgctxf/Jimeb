@@ -72,6 +72,9 @@ class CreateMenuItem extends Component
 
     public string $promoPrice = '';
 
+    /** Coche « ce plat est en promotion » : sans elle, seul le prix normal est enregistré. */
+    public bool $onPromo = false;
+
     /** Photos supplémentaires (uploads multiples) */
     public array $galleryTemp = [];
 
@@ -516,10 +519,11 @@ class CreateMenuItem extends Component
         $rules['selectedBadges.*'] = 'string|in:' . implode(',', \App\Support\DishBadges::keys());
 
         $this->validate([
-            'promoPrice' => ['nullable', 'numeric', 'min:0', 'lt:itemPrice'],
+            'promoPrice' => $this->onPromo ? ['required', 'numeric', 'min:0', 'lt:itemPrice'] : ['nullable'],
             'galleryTemp.*' => \App\Support\ImageUpload::MEDIA_MIMES_MAX_50MB,
         ], [
             'promoPrice.lt' => __('modules.menu.promoPriceLower'),
+            'promoPrice.required' => 'Indiquez le prix en promotion.',
         ]);
     }
 
@@ -527,13 +531,21 @@ class CreateMenuItem extends Component
     private function effectivePrices(): array
     {
         $normal = (float) $this->itemPrice;
-        $promo = trim($this->promoPrice) !== '' ? (float) $this->promoPrice : null;
+        $promo = ($this->onPromo && trim($this->promoPrice) !== '') ? (float) $this->promoPrice : null;
 
         if ($promo !== null && $promo > 0 && $promo < $normal) {
             return [$promo, $normal];
         }
 
         return [$normal, null];
+    }
+
+    public function updatedOnPromo($value): void
+    {
+        if (! $value) {
+            $this->promoPrice = '';
+            $this->resetErrorBag('promoPrice');
+        }
     }
 
     public function removeGalleryPhoto(int $index): void
