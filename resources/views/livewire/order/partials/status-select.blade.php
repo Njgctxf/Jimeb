@@ -25,9 +25,9 @@
         <option value="{{ $jbCurrent }}" selected disabled>{{ $order->order_status?->translatedLabel() }}</option>
     @endunless
     @foreach ($jbStatuses as $value => [$emoji, $label])
-        <option value="{{ $value }}" @selected($jbCurrent === $value)>{{ $emoji }} {{ $label }}</option>
+        <option value="{{ $value }}" @selected($jbCurrent === $value)>{{ $label }}</option>
     @endforeach
     @if ($order->status !== 'paid')
-        <option value="cancel">✕ @lang('modules.order.cancelOrderShort')</option>
+        <option value="cancel">@lang('modules.order.cancelOrderShort')</option>
     @endif
 </select>

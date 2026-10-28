@@ -18,6 +18,8 @@ class ItemModifiers extends Component
     public $selectedVariationName;
     public $orderTypeId;
     public $deliveryAppId;
+    /** Jimbe : rendu « page client » (fenêtre du bas) au lieu du rendu caisse */
+    public $clientStyle = false;
 
     public function mount()
     {
@@ -157,6 +159,6 @@ class ItemModifiers extends Component
 
     public function render()
     {
-        return view('livewire.pos.item-modifiers');
+        return view($this->clientStyle ? 'livewire.shop.item-modifiers-sheet' : 'livewire.pos.item-modifiers');
     }
 }

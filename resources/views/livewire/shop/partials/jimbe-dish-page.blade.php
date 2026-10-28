@@ -63,7 +63,7 @@
 
                 <div class="jb-dp__chips">
                     <span class="jb-dp__chip" x-show="selectedPreviewItem.preparation_time">
-                        ⏱ <span x-text="labels.preparationTime + ' : ' + (selectedPreviewItem.preparation_time >= 60 ? Math.floor(selectedPreviewItem.preparation_time / 60) + ' h' + (selectedPreviewItem.preparation_time % 60 ? ' ' + String(selectedPreviewItem.preparation_time % 60).padStart(2, '0') : '') : selectedPreviewItem.preparation_time + ' min')"></span>
+                        <span x-text="labels.preparationTime + ' : ' + (selectedPreviewItem.preparation_time >= 60 ? Math.floor(selectedPreviewItem.preparation_time / 60) + ' h' + (selectedPreviewItem.preparation_time % 60 ? ' ' + String(selectedPreviewItem.preparation_time % 60).padStart(2, '0') : '') : selectedPreviewItem.preparation_time + ' min')"></span>
                     </span>
                     <span class="jb-dp__chip jb-dp__chip--off" x-show="selectedPreviewItem.discount_percent" x-text="'-' + selectedPreviewItem.discount_percent + '%'"></span>
                     <template x-for="row in (selectedPreviewItem.dietary_labels_display || [])" :key="'d-' + row.key">

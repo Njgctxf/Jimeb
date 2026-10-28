@@ -1,13 +1,10 @@
-{{-- Page « Menu » : toute la carte du restaurant, avec onglets de catégories collés en haut --}}
-@include('livewire.shop.partials.jimbe-page-head', ['jbPageTitle' => __('modules.shop.navMenu')])
-
-@include('livewire.shop.partials.jimbe-searchrow', ['jbSearchGoesToMenu' => false])
-
+{{-- Toute la carte : onglets de catégories collés en haut, puis une section par catégorie.
+     Affichée directement sur la page d'accueil (« menu d'abord »). Scope Alpine : ttShopClientMenuBrowse --}}
 <div id="jb-menu" x-show="cfg.showMenu" x-cloak x-data="jbSpy()" x-init="start()">
     {{-- Filtre actif --}}
     <div class="jb-mp-filter" x-show="badgeFilter" x-cloak>
-        <span x-text="@js(__('modules.shop.filtered')) + ' : ' + ({ promo: '🏷️ ' + @js(__('modules.shop.navPromos')) }[badgeFilter] || badgeFilter)"></span>
-        <button type="button" @click="setBadgeFilter(null)">✕ @lang('modules.shop.clear')</button>
+        <span x-text="@js(__('modules.shop.filtered')) + ' : ' + ({ promo: @js(__('modules.shop.navPromos')) }[badgeFilter] || badgeFilter)"></span>
+        <button type="button" @click="setBadgeFilter(null)">@lang('modules.shop.clear')</button>
     </div>
 
     {{-- Onglets de catégories --}}
@@ -15,7 +12,6 @@
         <div class="jb-tabs__in" x-ref="scroller">
             <template x-for="(g, gi) in groupedForDisplay()" :key="'jb-c-' + gi + g.key">
                 <button type="button" class="jb-tab" :class="active === gi ? 'is-active' : ''" :data-i="gi" @click="jump(gi)">
-                    <span class="jb-tab__e" x-text="window.jbEmoji(g.key)"></span>
                     <span x-text="g.key"></span>
                 </button>
             </template>
@@ -25,11 +21,8 @@
     <template x-for="(g, gi) in groupedForDisplay()" :key="'jb-s-' + gi + g.key">
         <section class="jb-section" :id="'jb-sec-' + gi">
             <div class="jb-sec2">
-                <span class="jb-sec2__e" x-text="window.jbEmoji(g.key)"></span>
-                <div>
-                    <h3 x-text="g.key"></h3>
-                    <small x-text="g.items.length + ' ' + (g.items.length > 1 ? @js(__('modules.shop.dishes')) : @js(__('modules.shop.dish')))"></small>
-                </div>
+                <h3 x-text="g.key"></h3>
+                <small x-text="g.items.length + ' ' + (g.items.length > 1 ? @js(__('modules.shop.dishes')) : @js(__('modules.shop.dish')))"></small>
             </div>
             <div class="jb-rows">
                 <template x-for="(item, ix) in g.items" :key="'jb-i-' + item.id">

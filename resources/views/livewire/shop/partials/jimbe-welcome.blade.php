@@ -13,20 +13,9 @@
 @endphp
 
 <script>
+    // Plat sans photo : on affiche l'initiale de son nom (plus d'émojis)
     window.jbEmoji = window.jbEmoji || function (text) {
-        const t = (text || '').toLowerCase();
-        const map = [
-            [/poulet|chicken|volaille|wing|aile/, '🍗'], [/burger|hamburger/, '🍔'], [/pizza/, '🍕'],
-            [/poisson|fish|crevette|shrimp|thon|capitaine/, '🐟'], [/salade|salad|legume|légume|veg/, '🥗'],
-            [/riz|rice|biryani|attieke|attiéké|foutou|placali|alloco/, '🍚'], [/soupe|soup|sauce|ragout|ragoût/, '🍲'],
-            [/pain|naan|roti|bread|sandwich/, '🥖'], [/frite|fries|chips/, '🍟'], [/pates|pâtes|noodle|spaghetti/, '🍝'],
-            [/dessert|gateau|gâteau|cake|glace|ice/, '🍰'], [/cafe|café|coffee|the |thé/, '☕'],
-            [/boisson|drink|jus|juice|soda|eau|water|biere|bière|cocktail|bissap|gnamakoudji/, '🥤'],
-            [/viande|beef|boeuf|bœuf|steak|grill|brochette|mouton|porc/, '🥩'], [/oeuf|œuf|egg|omelette/, '🍳'],
-            [/fruit|mangue|ananas|banane/, '🍍'], [/entree|entrée|starter|spring|nem/, '🥟'],
-        ];
-        for (const [re, e] of map) { if (re.test(t)) return e; }
-        return '🍽️';
+        return ((text || '').trim().charAt(0) || '').toUpperCase();
     };
 </script>
 
@@ -56,11 +45,6 @@
                 <div class="jb-welcome__plate">
                     <div class="jb-welcome__logo"><x-restaurant-logo :restaurant="$restaurant" class="h-14" /></div>
                 </div>
-                <span class="jb-welcome__food f1">🍗</span>
-                <span class="jb-welcome__food f2">🥗</span>
-                <span class="jb-welcome__food f3">🍲</span>
-                <span class="jb-welcome__food f4">🥤</span>
-                <span class="jb-welcome__food f5">🍰</span>
             </div>
         @endunless
     </div>
@@ -68,7 +52,6 @@
     <div class="jb-welcome__body">
         @if ($jbTableCode)
             <div class="jb-welcome__table">
-                <span class="jb-welcome__table-i">🪑</span>
                 <b>{{ $jbTableText }}</b>
             </div>
         @endif

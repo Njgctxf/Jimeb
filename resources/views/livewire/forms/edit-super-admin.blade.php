@@ -27,7 +27,7 @@
 
                         <x-select class="mt-1 block w-full" wire:model='userRole'>
                             @foreach ($roles as $role)
-                                <option value="{{ $role->name }}">{{ $role->display_name }}</option>
+                                <option value="{{ $role->name }}">{{ $role->translated_name }}</option>
                             @endforeach
                         </x-select>
 

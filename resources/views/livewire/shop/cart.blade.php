@@ -1032,25 +1032,23 @@ $disableOrderTypePopup = (bool) ($restaurant->disable_order_type_popup ?? false)
 
     </x-dialog-modal>
 
-    <x-dialog-modal wire:model.live="showVariationModal" maxWidth="xl">
-        <x-slot name="title">
-            @lang('modules.menu.itemVariations')
-        </x-slot>
-
-        <x-slot name="content">
-            @if ($menuItem)
+    {{-- Jimbe : choix de la taille, fenêtre du bas au style de la page client --}}
+    @if ($showVariationModal && $menuItem)
+        <div class="jb-sheet" wire:key="jb-sheet-var-{{ $menuItem->id }}">
+            <div class="jb-sheet__veil" wire:click="$set('showVariationModal', false)"></div>
+            <div class="jb-sheet__panel" role="dialog" aria-modal="true" aria-label="@lang('modules.menu.itemVariations')">
+                <button type="button" class="jb-sheet__close" wire:click="$set('showVariationModal', false)" aria-label="@lang('app.close')">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg>
+                </button>
                 @livewire('pos.itemVariations', [
                     'menuItemId' => $menuItem->id,
                     'orderTypeId' => $orderTypeId,
-                    'deliveryAppId' => null
-                ], key(str()->random(50)))
-            @endif
-        </x-slot>
-
-        <x-slot name="footer">
-            <x-button-cancel wire:click="$toggle('showVariationModal')" wire:loading.attr="disabled" />
-        </x-slot>
-    </x-dialog-modal>
+                    'deliveryAppId' => null,
+                    'clientStyle' => true,
+                ], key('jb-var-' . $menuItem->id))
+            </div>
+        </div>
+    @endif
 
     <x-dialog-modal wire:model.live="showCartVariationModal" maxWidth="sm">
         <x-slot name="title">
@@ -1626,21 +1624,23 @@ $disableOrderTypePopup = (bool) ($restaurant->disable_order_type_popup ?? false)
         </x-dialog-modal>
     @endif
 
-    <x-dialog-modal wire:model.live="showModifiersModal" maxWidth="xl">
-        <x-slot name="title">
-            @lang('modules.modifier.itemModifiers')
-        </x-slot>
-
-        <x-slot name="content">
-            @if ($selectedModifierItem)
+    {{-- Jimbe : options du plat (suppléments, sauces…), fenêtre du bas au style de la page client --}}
+    @if ($showModifiersModal && $selectedModifierItem)
+        <div class="jb-sheet" wire:key="jb-sheet-mod-{{ $selectedModifierItem }}">
+            <div class="jb-sheet__veil" wire:click="closeModifiersModal"></div>
+            <div class="jb-sheet__panel" role="dialog" aria-modal="true" aria-label="@lang('modules.modifier.itemModifiers')">
+                <button type="button" class="jb-sheet__close" wire:click="closeModifiersModal" aria-label="@lang('app.close')">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg>
+                </button>
                 @livewire('pos.itemModifiers', [
                     'menuItemId' => $selectedModifierItem,
                     'orderTypeId' => $orderTypeId,
-                    'deliveryAppId' => null
-                ], key(str()->random(50)))
-            @endif
-        </x-slot>
-    </x-dialog-modal>
+                    'deliveryAppId' => null,
+                    'clientStyle' => true,
+                ], key('jb-mod-' . $selectedModifierItem))
+            </div>
+        </div>
+    @endif
 
     <x-dialog-modal wire:model.live="showItemVariationsModal" maxWidth="xl">
         <x-slot name="title">

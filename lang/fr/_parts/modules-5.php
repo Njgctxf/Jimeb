@@ -408,6 +408,8 @@ return [
         'reason_bill' => 'L’addition',
         'reason_water' => 'De l’eau',
         'reason_other' => 'Autre chose',
+        'messageLabel' => 'Message pour le serveur',
+        'messagePlaceholder' => 'Une précision ? ex. un mouchoir, de l’eau… (facultatif)',
         'callTitle' => 'Appeler un serveur',
         'callSub' => 'Dites-nous pourquoi, on arrive !',
         'callNow' => 'Appeler maintenant',

@@ -12,7 +12,7 @@ class WaiterRequest extends BaseModel
 {
     use HasBranch;
 
-    protected $fillable = ['table_id', 'branch_id', 'status', 'reason'];
+    protected $fillable = ['table_id', 'branch_id', 'status', 'reason', 'message'];
 
     public function table()
     {

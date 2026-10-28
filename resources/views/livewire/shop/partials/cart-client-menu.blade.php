@@ -93,28 +93,48 @@
         <div class="jb-shop" id="jb-top" x-show="cfg.showMenu !== false" x-cloak
             x-data="{
                 view: 'home',
+                catId: null,
+                // Page d'une catégorie (ex. toutes les boissons)
+                openCat(id) {
+                    this.catId = Number(id);
+                    this.go('cat');
+                    this.$nextTick(() => document.querySelector('.jb-cattabs .is-active')?.scrollIntoView({ inline: 'center', block: 'nearest' }));
+                },
                 go(v) {
+                    // « Menu d'abord » : les catégories sont sur l'accueil, « menu » y fait défiler
+                    if (v === 'menu') {
+                        if (this.view !== 'home') { this.view = 'home'; try { history.pushState({ jb: 'home' }, ''); } catch (e) {} }
+                        this.$nextTick(() => document.getElementById('jb-cats')?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+                        return;
+                    }
                     if (this.view === v) { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
                     this.view = v; window.scrollTo(0, 0);
                     try { history.pushState({ jb: v }, ''); } catch (e) {}
                 },
             }"
-            x-init="window.addEventListener('popstate', () => { view = 'home'; }); if (new URLSearchParams(location.search).get('jb') === 'menu') view = 'menu';">
+            x-init="
+                window.addEventListener('popstate', () => { view = 'home'; });
+                const jbQ = new URLSearchParams(location.search);
+                // Lien direct depuis le suivi de commande : ?jb=menu&cat=boisson|dessert → page de la catégorie
+                const jbRe = { boisson: /boisson|drink|beverage|jus|juice|bar|cocktail/i, dessert: /dessert|sucr|sweet|glace/i }[jbQ.get('cat')];
+                if (jbRe) setTimeout(() => { const c = visibleCategories().find(c => jbRe.test(c.name)); c ? openCat(c.id) : go('menu'); }, 400);
+                else if (jbQ.get('jb') === 'menu') setTimeout(() => go('menu'), 400);
+            ">
             <div x-show="view === 'home'">@include('livewire.shop.partials.jimbe-home')</div>
-            <div x-show="view === 'menu'" x-cloak>@include('livewire.shop.partials.jimbe-menu-page')</div>
+            <div x-show="view === 'cat'" x-cloak>@include('livewire.shop.partials.jimbe-category-page')</div>
             <div x-show="view === 'promo'" x-cloak>@include('livewire.shop.partials.jimbe-promo-page')</div>
 
             <p class="jb-powered">@lang('modules.shop.poweredBy') <b>Mobilo</b></p>
 
             {{-- Mini barre panier --}}
             <div class="jb-scanbar" x-show="!cfg.canCreateOrder" x-cloak>
-                <span>📷</span>
+                <span><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 3.75 9.375v-4.5ZM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 0 1-1.125-1.125v-4.5ZM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 13.5 9.375v-4.5ZM13.5 14.25h.75v.75h-.75v-.75ZM18.75 14.25h.75v.75h-.75v-.75ZM16.5 16.5h.75v.75h-.75v-.75ZM13.5 18.75h.75v.75h-.75v-.75ZM18.75 18.75h.75v.75h-.75v-.75Z"/></svg></span>
                 <p><b>@lang('modules.shop.scanToOrderTitle')</b>@lang('modules.shop.scanToOrderSub')</p>
             </div>
 
             <button type="button" class="jb-mini" x-show="cartCount() > 0" x-cloak x-transition @click="callLw('showCartItems')">
                 <span><b x-text="cartCount()"></b> <span x-text="cartCount() > 1 ? @js(__('modules.shop.dishes')) : @js(__('modules.shop.dish'))"></span></span>
-                <span>@lang('modules.shop.viewCart') →</span>
+                <span>@lang('modules.shop.viewCart')</span>
             </button>
 
             <script>
@@ -187,11 +207,7 @@
 
             {{-- Navigation du bas --}}
             <nav class="jb-nav" aria-label="Navigation">
-                <button type="button" :class="view === 'home' ? 'is-on' : ''" @click="go('home')">
-                    <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955a1.126 1.126 0 0 1 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/></svg>
-                    @lang('modules.shop.navHome')
-                </button>
-                <button type="button" :class="view === 'menu' ? 'is-on' : ''" @click="setBadgeFilter(null); go('menu')">
+                <button type="button" :class="['home', 'cat'].includes(view) ? 'is-on' : ''" @click="setBadgeFilter(null); go('home')">
                     <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg>
                     @lang('modules.shop.navMenu')
                 </button>

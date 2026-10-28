@@ -11,7 +11,7 @@
         </template>
         <div class="jb-row__badges jb-row__badges--over" x-show="(item.badges || []).length">
             <template x-for="b in (item.badges || [])" :key="b.key">
-                <span class="jb-badge2" :class="'jb-badge2--' + b.tone"><i x-text="b.emoji"></i><span x-text="b.label"></span></span>
+                <span class="jb-badge2" :class="'jb-badge2--' + b.tone"><span x-text="b.label"></span></span>
             </template>
         </div>
         <span class="jb-row__off" x-show="!(item.in_stock && item.is_available !== false)">@lang('modules.shop.unavailable')</span>
@@ -34,7 +34,7 @@
                 </template>
             </div>
             <span class="jb-row__time" x-show="item.preparation_time"
-                x-text="'⏱ ' + (item.preparation_time >= 60 ? Math.floor(item.preparation_time / 60) + ' h' + (item.preparation_time % 60 ? ' ' + String(item.preparation_time % 60).padStart(2, '0') : '') : item.preparation_time + ' min')"></span>
+                x-text="(item.preparation_time >= 60 ? Math.floor(item.preparation_time / 60) + ' h' + (item.preparation_time % 60 ? ' ' + String(item.preparation_time % 60).padStart(2, '0') : '') : item.preparation_time + ' min')"></span>
         </div>
     </div>
 

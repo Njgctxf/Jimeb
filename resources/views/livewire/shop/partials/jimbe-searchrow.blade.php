@@ -13,10 +13,10 @@
     <div class="jb-hm-fpanel" x-show="f" x-cloak x-transition.origin.top.right @click.outside="f = false">
         <div class="jb-hm-fpanel__t">@lang('modules.shop.filterBy')</div>
         <div class="jb-hm-fpanel__chips">
-            <button type="button" :class="!badgeFilter ? 'is-on' : ''" @click="setBadgeFilter(null); f = false">🍽️ @lang('modules.shop.all')</button>
-            <button type="button" :class="badgeFilter === 'promo' ? 'is-on' : ''" @click="setBadgeFilter('promo'); f = false; go('menu')">🏷️ @lang('modules.shop.navPromos')</button>
+            <button type="button" :class="!badgeFilter ? 'is-on' : ''" @click="setBadgeFilter(null); f = false">@lang('modules.shop.all')</button>
+            <button type="button" :class="badgeFilter === 'promo' ? 'is-on' : ''" @click="setBadgeFilter('promo'); f = false; go('menu')">@lang('modules.shop.navPromos')</button>
             @foreach (\App\Support\DishBadges::keys() as $bk)
-                <button type="button" :class="badgeFilter === '{{ $bk }}' ? 'is-on' : ''" @click="setBadgeFilter('{{ $bk }}'); f = false; go('menu')">{{ \App\Support\DishBadges::emoji($bk) }} @lang(\App\Support\DishBadges::langKey($bk))</button>
+                <button type="button" :class="badgeFilter === '{{ $bk }}' ? 'is-on' : ''" @click="setBadgeFilter('{{ $bk }}'); f = false; go('menu')">@lang(\App\Support\DishBadges::langKey($bk))</button>
             @endforeach
         </div>
     </div>

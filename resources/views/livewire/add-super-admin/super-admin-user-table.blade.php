@@ -37,7 +37,7 @@
 
                                 <td class="py-2.5 px-4 text-sm text-gray-900 whitespace-nowrap dark:text-white">
                                     @php
-                                        $roleLabel = $item->roles->first()->translated_name ?? $item->roles->pluck('display_name')[0] ?? '--';
+                                        $roleLabel = \App\Models\Role::translate($item->roles->first()?->display_name) ?: '--';
                                         $isDefaultSuperAdminRole = ($item->roles->first()->name ?? null) === 'Super Admin';
                                     @endphp
                                     @if ($item->id == auth()->id())

@@ -19,9 +19,12 @@ class ItemVariations extends Component
     public $showDeleteVariationsModal = false;
     public $orderTypeId;
     public $deliveryAppId;
+    /** Jimbe : rendu « page client » (fenêtre du bas) au lieu du rendu caisse */
+    public $clientStyle = false;
 
-    public function mount($menuItemId, $orderTypeId = null, $deliveryAppId = null)
+    public function mount($menuItemId, $orderTypeId = null, $deliveryAppId = null, $clientStyle = false)
     {
+        $this->clientStyle = (bool) $clientStyle;
         $this->menuItemId = $menuItemId;
         $this->orderTypeId = $orderTypeId;
         $this->deliveryAppId = $deliveryAppId;
@@ -130,7 +133,7 @@ class ItemVariations extends Component
 
     public function render()
     {
-        return view('livewire.pos.item-variations');
+        return view($this->clientStyle ? 'livewire.shop.item-variations-sheet' : 'livewire.pos.item-variations');
     }
 
 }

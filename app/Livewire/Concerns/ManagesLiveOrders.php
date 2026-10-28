@@ -166,6 +166,15 @@ trait ManagesLiveOrders
             return;
         }
 
+        $this->payInFull($order, $paymentMethod);
+
+        $this->collectOrderId = null;
+        $this->dispatch('jb-paid');
+    }
+
+    /** Solde le reste à payer d'une commande avec un seul moyen de paiement. */
+    protected function payInFull(Order $order, string $paymentMethod): void
+    {
         $remaining = $order->remainingAmount();
 
         if ($remaining > 0) {
@@ -186,9 +195,6 @@ trait ManagesLiveOrders
         $order->save();
 
         \App\Events\SendNewOrderReceived::dispatch($order);
-
-        $this->collectOrderId = null;
-        $this->dispatch('jb-paid');
     }
 
     private function syncKots(Order $order, string $kotStatus, string $itemStatus): void

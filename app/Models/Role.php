@@ -26,16 +26,24 @@ class Role extends SpatieRole
      */
     public function getTranslatedNameAttribute()
     {
+        return self::translate($this->display_name);
+    }
+
+    /**
+     * Traduit un nom de rôle par défaut (Admin, Waiter…) ; un rôle renommé par le restaurant reste tel quel.
+     * Utilisable aussi sur les rôles Spatie (relation $user->roles), qui n'ont pas l'accesseur.
+     */
+    public static function translate(?string $displayName): string
+    {
+        if (!$displayName) {
+            return '';
+        }
+
         // Try to get translation from modules.staff namespace first
-        $translationKey = 'modules.staff.' . $this->display_name;
+        $translationKey = 'modules.staff.' . $displayName;
         $translated = __($translationKey);
 
         // If translation key returns itself, it means no translation exists
-        if ($translated === $translationKey) {
-            // Return the display_name as is
-            return $this->display_name;
-        }
-
-        return $translated;
+        return $translated === $translationKey ? $displayName : $translated;
     }
 }

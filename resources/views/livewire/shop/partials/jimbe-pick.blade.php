@@ -4,8 +4,8 @@
     x-init="$nextTick(() => { window.jbReveal && window.jbReveal($el); })">
     <span class="jb-pick__tag" x-show="item.discount_percent || (item.badges || []).length"
         :class="item.discount_percent ? 'is-off' : 'jb-pick__tag--' + ((item.badges || [])[0] || {}).tone"
-        x-text="item.discount_percent ? '-' + item.discount_percent + '%' : (((item.badges || [])[0] || {}).emoji + ' ' + ((item.badges || [])[0] || {}).label)"></span>
-    <button type="button" class="jb-pick__heart" :class="fav ? 'is-on' : ''" aria-label="♥"
+        x-text="item.discount_percent ? '-' + item.discount_percent + '%' : ((item.badges || [])[0] || {}).label"></span>
+    <button type="button" class="jb-pick__heart" :class="fav ? 'is-on' : ''" aria-label="@lang('modules.shop.favorite')"
         @click.stop="fav = !fav; try { let a = JSON.parse(localStorage.getItem('jbFavs') || '[]').filter(x => x !== Number(item.id)); if (fav) a.push(Number(item.id)); localStorage.setItem('jbFavs', JSON.stringify(a)); } catch (e) {}">
         <svg viewBox="0 0 24 24" :fill="fav ? 'currentColor' : 'none'" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/></svg>
     </button>
@@ -19,7 +19,7 @@
 
     <h4 class="jb-pick__name" @click="openItemDetail(item.id)" x-text="item.item_name"></h4>
     <p class="jb-pick__desc" x-text="item.description || ''"></p>
-    <div class="jb-pick__time" x-show="item.preparation_time" x-text="'⏱ ' + item.preparation_time + ' min'"></div>
+    <div class="jb-pick__time" x-show="item.preparation_time" x-text="item.preparation_time + ' min'"></div>
 
     <div class="jb-pick__foot">
         <div class="jb-pick__price">

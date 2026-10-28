@@ -157,26 +157,26 @@
                     return @js(currency_format(0, $restaurant->currency_id)).replace('0', n.toLocaleString('fr-FR'));
                 },
             }">
-            <h3 class="jb-panel__title">💳 @lang('modules.shop.payTitle')</h3>
+            <h3 class="jb-panel__title">@lang('modules.shop.payTitle')</h3>
 
             <p class="jb-bill__label" style="margin-top:0">@lang('modules.shop.payHow')</p>
             <div class="jb-paym">
                 @foreach (\App\Models\Order::PAY_METHODS as $jbKey => [$jbEmoji, $jbLabel])
                     <button type="button" :class="method === '{{ $jbKey }}' && 'is-on'" @click="method = '{{ $jbKey }}'">
-                        <b>{{ $jbEmoji }}</b>@lang($jbLabel)
+                        @lang($jbLabel)
                     </button>
                 @endforeach
             </div>
 
             <p class="jb-bill__label">@lang('modules.shop.payWhenLabel')</p>
             <div class="jb-seg" style="margin-top:0">
-                <button type="button" :class="when === 'after' && 'is-on'" @click="when = 'after'">🍽️ @lang('modules.shop.payAfter')</button>
-                <button type="button" :class="when === 'now' && 'is-on'" @click="when = 'now'">⚡ @lang('modules.shop.payNowLabel')</button>
+                <button type="button" :class="when === 'after' && 'is-on'" @click="when = 'after'">@lang('modules.shop.payAfter')</button>
+                <button type="button" :class="when === 'now' && 'is-on'" @click="when = 'now'">@lang('modules.shop.payNowLabel')</button>
             </div>
 
             <label class="jb-paysplit">
                 <input type="checkbox" :checked="split > 1" @change="split = $event.target.checked ? 2 : 1">
-                <span>👥 @lang('modules.shop.paySplitLabel')</span>
+                <span>@lang('modules.shop.paySplitLabel')</span>
             </label>
             <div class="jb-split" x-show="split > 1" x-cloak x-transition style="margin-top:8px">
                 <div class="jb-split__ctr">
@@ -210,9 +210,8 @@
 
     @else
         <div class="jb-emptycart">
-            <div>🛒</div>
             <h3>@lang('messages.cartEmpty')</h3>
-            <button type="button" class="jb-hero__cta" wire:click="showMenuItems">@lang('modules.shop.backToMenu') <span>→</span></button>
+            <button type="button" class="jb-hero__cta" wire:click="showMenuItems">@lang('modules.shop.backToMenu')</button>
         </div>
     @endif
 </div>

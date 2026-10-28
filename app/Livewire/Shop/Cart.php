@@ -2717,10 +2717,10 @@ class Cart extends Component
     }
 
     /**
-     * Jimbe : appel d'un serveur depuis la page client (motif + table).
+     * Jimbe : appel d'un serveur depuis la page client (motif + message facultatif + table).
      * Retourne ['ok' => bool, 'code' => string, 'at' => 'H:i'].
      */
-    public function callWaiterFromShop(?string $reason = null, ?string $tableHash = null): array
+    public function callWaiterFromShop(?string $reason = null, ?string $tableHash = null, ?string $message = null): array
     {
         if (!$this->restaurant->is_waiter_request_enabled) {
             return ['ok' => false, 'code' => 'disabled', 'message' => __('modules.waiterRequest.callFailed')];
@@ -2754,11 +2754,16 @@ class Cart extends Component
         $allowed = ['help', 'bill', 'water', 'other'];
         $reason = in_array($reason, $allowed, true) ? $reason : 'help';
 
+        // Message libre : texte brut sur une ligne, 140 caractères max
+        $message = trim(preg_replace('/\s+/u', ' ', strip_tags((string) $message)));
+        $message = $message === '' ? null : mb_substr($message, 0, 140);
+
         \App\Models\WaiterRequest::create([
             'table_id' => $table->id,
             'branch_id' => $this->shopBranch->id,
             'status' => 'pending',
             'reason' => $reason,
+            'message' => $message,
         ]);
 
         session([$cooldownKey => now()->timestamp]);

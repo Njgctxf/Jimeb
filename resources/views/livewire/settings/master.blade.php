@@ -1,8 +1,22 @@
+@php
+    // Jimbe : titres et descriptions des groupes de réglages (voir Master::sections())
+    $jbGroups = [
+        'restaurant' => [__('modules.settings.groupRestaurant'), __('modules.settings.groupRestaurantHint')],
+        'orders' => [__('modules.settings.groupOrders'), __('modules.settings.groupOrdersHint')],
+        'payment' => [__('modules.settings.groupPayment'), __('modules.settings.groupPaymentHint')],
+        'site' => [__('modules.settings.groupSite'), __('modules.settings.groupSiteHint')],
+        'team' => [__('modules.settings.groupTeam'), __('modules.settings.groupTeamHint')],
+        'account' => [__('modules.settings.groupAccount'), __('modules.settings.groupAccountHint')],
+        'advanced' => [__('modules.settings.groupAdvanced'), __('modules.settings.groupAdvancedHint')],
+    ];
+    $jbCanStaff = in_array('Staff', restaurant_modules()) && user_can('Show Staff Member');
+@endphp
+
 <div class="min-h-0 lg:flex lg:h-[calc(100dvh-4rem)] lg:max-h-[calc(100dvh-4rem)] lg:min-h-0 lg:flex-col lg:overflow-hidden">
 
     <div class="flex min-h-0 flex-1 flex-col lg:h-full lg:min-h-0 lg:flex-row lg:items-stretch lg:overflow-x-hidden lg:overflow-y-visible">
 
-        <div class="relative z-10 flex w-full min-h-0 shrink-0 flex-col border-b border-gray-100 bg-white text-sm font-medium text-gray-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 lg:sticky lg:top-0 lg:h-full lg:max-h-full lg:min-h-0 lg:w-52 lg:min-w-[208px] lg:overflow-x-hidden lg:border-b-0 lg:border-r"
+        <div class="relative z-10 flex w-full min-h-0 shrink-0 flex-col border-b border-gray-100 bg-white text-sm font-medium text-gray-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 lg:sticky lg:top-0 lg:h-full lg:max-h-full lg:min-h-0 lg:w-60 lg:min-w-[240px] lg:overflow-x-hidden lg:border-b-0 lg:border-r"
             x-data="{
                 menuOpen: false,
                 largeScreen: typeof window !== 'undefined' && window.matchMedia('(min-width: 1024px)').matches,
@@ -54,128 +68,68 @@
                 class="min-h-0 flex-1 overflow-y-auto overscroll-contain max-lg:max-h-[min(70vh,28rem)] max-lg:[-webkit-overflow-scrolling:touch] [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-200 [&::-webkit-scrollbar-thumb]:bg-gray-400 hover:[&::-webkit-scrollbar-thumb]:bg-gray-500 dark:[&::-webkit-scrollbar-track]:bg-gray-700 dark:[&::-webkit-scrollbar-thumb]:bg-gray-500 dark:hover:[&::-webkit-scrollbar-thumb]:bg-gray-400"
                 :class="!largeScreen && !menuOpen ? 'hidden' : 'block'"
                 aria-label="{{ __('menu.settings') }}">
-            <ul id="settingsTabsList"
-                class="flex w-full min-w-0 flex-col pb-3"
+            <div id="settingsTabsList" class="w-full min-w-0 pb-4"
                 @click="if (!largeScreen && $event.target.closest('a[href]')) { menuOpen = false }">
-                @if (user()->hasRole('Admin_'.user()->restaurant_id))
 
-                <li class="me-2">
-                    <x-settings.sidebar-menu-item :name='__("modules.settings.restaurantSettings")' :link='route("settings.index")."?tab=restaurant"' :active='$activeSetting == "restaurant"' />
-                </li>
-                <li class="me-2">
-                    <x-settings.sidebar-menu-item :name='__("modules.settings.appSettings")' :link='route("settings.index")."?tab=app"' :active='$activeSetting == "app"' />
-                </li>
-                <li class="me-2">
-                    <x-settings.sidebar-menu-item :name='__("modules.settings.operationalShifts")' :link='route("settings.index")."?tab=operationalShifts"' :active='$activeSetting == "operationalShifts"' />
-                </li>
-                @if (user()->hasRole('Admin_'.user()->restaurant_id) || user_can('Show Restaurant Open/Close'))
-                    <li class="me-2">
-                        <x-settings.sidebar-menu-item :name='__("modules.settings.restaurantOpenCloseSettings")' :link='route("settings.index")."?tab=restaurantOpenClose"' :active='$activeSetting == "restaurantOpenClose"' />
-                    </li>
-                @endif
-                <li class="me-2">
-                    <x-settings.sidebar-menu-item :name='__("modules.settings.branchSettings")' :link='route("settings.index")."?tab=branch"' :active='$activeSetting == "branch"' />
-                </li>
-                <li class="me-2">
-                    <x-settings.sidebar-menu-item :name='__("modules.settings.currencySettings")' :link='route("settings.index")."?tab=currency"' :active='$activeSetting == "currency"' />
-                </li>
-                <li class="me-2">
-                    <x-settings.sidebar-menu-item :name='__("modules.settings.emailSettings")' :link='route("settings.index")."?tab=email"' :active='$activeSetting == "email"' />
-                </li>
-                <li class="me-2">
-                    <x-settings.sidebar-menu-item :name='__("modules.settings.taxSettings")' :link='route("settings.index")."?tab=tax"' :active='$activeSetting == "tax"' />
-                </li>
-                <li class="me-2">
-                    <x-settings.sidebar-menu-item :name='__("modules.settings.paymentgatewaySettings")' :link='route("settings.index")."?tab=payment"' :active='$activeSetting == "payment"' />
-                </li>
-                <li class="me-2">
-                    <x-settings.sidebar-menu-item :name='__("modules.settings.themeSettings")' :link='route("settings.index")."?tab=theme"' :active='$activeSetting == "theme"' />
-                </li>
-                <li class="me-2">
-                    <x-settings.sidebar-menu-item :name='__("modules.settings.roleSettings")' :link='route("settings.index")."?tab=role"' :active='$activeSetting == "role"' />
-                </li>
+                {{-- Vue d'ensemble --}}
+                <a href="{{ route('settings.index') }}" wire:navigate
+                    @class([
+                        'mx-2 mt-2 flex items-center rounded-lg px-3 py-2 text-sm font-semibold transition',
+                        'bg-skin-base/10 text-skin-base' => $activeSetting === 'home',
+                        'text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-gray-700/50' => $activeSetting !== 'home',
+                    ])>
+                    @lang('modules.settings.overview')
+                </a>
 
-                <li class="me-2">
-                    <x-settings.sidebar-menu-item :name='__("modules.settings.billing")' :link='route("settings.index")."?tab=billing"' :active='$activeSetting == "billing"' />
-                </li>
-
-                @endif
-
-                @if (!user()->hasRole('Admin_'.user()->restaurant_id) && user_can('Show Restaurant Open/Close'))
-                    <li class="me-2">   
-                        <x-settings.sidebar-menu-item :name='__("modules.settings.restaurantOpenCloseSettings")' :link='route("settings.index")."?tab=restaurantOpenClose"' :active='$activeSetting == "restaurantOpenClose"' />
-                    </li>
-                @endif
-
-                <li class="me-2">
-                    <x-settings.sidebar-menu-item :name='__("modules.settings.reservationSettings")' :link='route("settings.index")."?tab=reservation"' :active='$activeSetting == "reservation"' />
-                </li>
-
-                <li class="me-2">
-                    <x-settings.sidebar-menu-item :name='__("modules.settings.aboutUsSettings")' :link='route("settings.index")."?tab=aboutus"' :active='$activeSetting == "aboutus"' />
-                </li>
-
-                <li class="me-2">
-                    <x-settings.sidebar-menu-item :name='__("modules.settings.customerSiteSettings")' :link='route("settings.index")."?tab=customerSite"' :active='$activeSetting == "customerSite"' />
-                </li>
-
-                <li class="me-2">
-                    <x-settings.sidebar-menu-item :name='__("modules.settings.welcomePage")' :link='route("settings.index")."?tab=welcome"' :active='$activeSetting == "welcome"' />
-                </li>
-
-                <li class="me-2">
-                    <x-settings.sidebar-menu-item :name='__("modules.settings.banners")' :link='route("settings.index")."?tab=banners"' :active='$activeSetting == "banners"' />
-                </li>
-
-                <li class="me-2">
-                    <x-settings.sidebar-menu-item :name='__("modules.settings.customerDisplaySettings")' :link='route("settings.index")."?tab=customerDisplay"' :active='$activeSetting == "customerDisplay"' />
-                </li>
-
-                <li class="me-2">
-                    <x-settings.sidebar-menu-item :name='__("modules.settings.receiptSetting")' :link='route("settings.index")."?tab=receipt"' :active='$activeSetting == "receipt"' />
-                </li>
-
-                <li class="me-2">
-                    <x-settings.sidebar-menu-item :name='__("modules.settings.printerSetting")' :link='route("settings.index")."?tab=printer"' :active='$activeSetting == "printer"' />
-                </li>
-
-                <li class="me-2">
-                    <x-settings.sidebar-menu-item :name='__("modules.settings.downloads")' :link='route("settings.index")."?tab=downloads"' :active='$activeSetting == "downloads"' />
-                </li>
-
-                <li class="me-2">
-                    <x-settings.sidebar-menu-item :name='__("modules.menu.menuItemImageSettings")' :link='route("settings.index")."?tab=menuItemImageSettings"' :active='$activeSetting == "menuItemImageSettings"' />
-                </li>
-
-                <li class="me-2">
-                    <x-settings.sidebar-menu-item :name='__("modules.settings.deliverySettings")' :link='route("settings.index")."?tab=deliverySettings"' :active='$activeSetting == "deliverySettings"' />
-                   
-                </li>
-
-                <li class="me-2">
-                    <x-settings.sidebar-menu-item :name='__("modules.settings.euAllergensFicTitle")' :link='route("settings.index")."?tab=euAllergens"' :active='$activeSetting == "euAllergens"' />
-                </li>
-
-                <li class="me-2">
-                    <x-settings.sidebar-menu-item :name='__("modules.settings.kotSettings")' :link='route("settings.index")."?tab=kotSettings"' :active='$activeSetting == "kotSettings"' />
-                </li>
-                <li class="me-2">
-                    <x-settings.sidebar-menu-item :name='__("modules.settings.cancelSettings")' :link='route("settings.index")."?tab=cancelSettings"' :active='$activeSetting == "cancelSettings"' />
-                </li>
-
-                <li class="me-2">
-                    <x-settings.sidebar-menu-item :name='__("modules.settings.orderSettings")' :link='route("settings.index")."?tab=orderSettings"' :active='$activeSetting == "orderSettings"' />
-                </li>
-
-                <li class="me-2">
-                    <x-settings.sidebar-menu-item :name='__("modules.settings.refundReasons")' :link='route("settings.index")."?tab=refundReasons"' :active='$activeSetting == "refundReasons"' />
-                </li>
+                {{-- Groupes de réglages --}}
+                @foreach ($sections as $group => $items)
+                    @php $groupActive = collect($items)->contains(fn ($i) => $i[0] === $activeSetting); @endphp
+                    @if ($group === 'advanced')
+                        <details data-settings-group class="mt-4 [&[open]_.jb-chevron]:rotate-180" @if ($groupActive) open @endif>
+                            <summary class="mx-2 flex cursor-pointer list-none items-center justify-between rounded-lg px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 [&::-webkit-details-marker]:hidden">
+                                {{ $jbGroups[$group][0] }}
+                                <svg class="jb-chevron h-4 w-4 transition-transform" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" /></svg>
+                            </summary>
+                    @else
+                        <div data-settings-group class="mt-4">
+                            <p class="mx-2 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">{{ $jbGroups[$group][0] }}</p>
+                    @endif
+                            <ul class="mt-0.5">
+                                @foreach ($items as [$tab, $label])
+                                    <li data-settings-item>
+                                        <a href="{{ route('settings.index') }}?tab={{ $tab }}" wire:navigate
+                                            @if ($activeSetting === $tab) aria-current="page" @endif
+                                            @class([
+                                                'mx-2 block rounded-lg px-3 py-1.5 text-sm transition',
+                                                'bg-skin-base/10 font-semibold text-skin-base' => $activeSetting === $tab,
+                                                'text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700/50 dark:hover:text-white' => $activeSetting !== $tab,
+                                            ])>{{ $label }}</a>
+                                    </li>
+                                @endforeach
+                                @if ($group === 'team' && $jbCanStaff)
+                                    <li data-settings-item>
+                                        <a href="{{ route('staff.index') }}" wire:navigate
+                                            class="mx-2 flex items-center justify-between rounded-lg px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700/50 dark:hover:text-white">
+                                            @lang('modules.settings.staffLink')
+                                            <svg class="h-3.5 w-3.5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 0 1 .02-1.06L11.17 10 7.23 6.29a.75.75 0 1 1 1.04-1.08l4.5 4.25a.75.75 0 0 1 0 1.08l-4.5 4.25a.75.75 0 0 1-1.06-.02Z" clip-rule="evenodd"/></svg>
+                                        </a>
+                                    </li>
+                                @endif
+                            </ul>
+                    @if ($group === 'advanced')
+                        </details>
+                    @else
+                        </div>
+                    @endif
+                @endforeach
 
                 <!-- NAV ITEM - CUSTOM MODULES  -->
-                @foreach (custom_module_plugins() as $item)
-                    @includeIf(strtolower($item) . '::sections.settings.restaurant.sidebar')
-                @endforeach
-            </ul>
+                <ul data-settings-group class="mt-2">
+                    @foreach (custom_module_plugins() as $item)
+                        @includeIf(strtolower($item) . '::sections.settings.restaurant.sidebar')
+                    @endforeach
+                </ul>
+            </div>
             </nav>
         </div>
     @once
@@ -197,10 +151,15 @@
                                 clearBtn.classList.toggle('inline-flex', q.length > 0);
                             }
 
-                            Array.from(list.children).forEach((child) => {
-                                if (!child || child.tagName !== 'LI') return;
-                                const text = (child.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
-                                child.classList.toggle('hidden', q.length > 0 && !text.includes(q));
+                            // Filtre les réglages, masque les groupes vides, déplie « Avancé » pendant la recherche
+                            list.querySelectorAll('li').forEach((item) => {
+                                const text = (item.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
+                                item.classList.toggle('hidden', q.length > 0 && !text.includes(q));
+                            });
+                            list.querySelectorAll('[data-settings-group]').forEach((group) => {
+                                const visible = group.querySelector('li:not(.hidden)');
+                                group.classList.toggle('hidden', q.length > 0 && !visible);
+                                if (group.tagName === 'DETAILS' && q.length > 0 && visible) group.open = true;
                             });
                         };
 
@@ -239,6 +198,10 @@
 
                 <div>
                     @switch($activeSetting)
+                        @case('home')
+                        @include('livewire.settings.partials.overview', ['sections' => $sections, 'groups' => $jbGroups, 'canStaff' => $jbCanStaff])
+                        @break
+
                         @case('restaurant')
                         @livewire('settings.generalSettings', ['settings' => $settings])
                         @break
