@@ -440,6 +440,8 @@ return [
         'boardMarkReady' => 'It’s ready',
         'boardMarkServed' => 'Served',
         'boardCollect' => 'Collect payment',
+        'boardKitchenShort' => 'Kitchen',
+        'boardReadyShort' => 'Ready',
         'boardCollectTable' => 'Collect the table',
         'boardSessionPos' => 'Order :i of :n',
         'boardTableOrders' => ':count orders',

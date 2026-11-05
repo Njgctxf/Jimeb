@@ -7,6 +7,13 @@
         'ready' => [__('modules.order.boardReady'), __('modules.order.boardMarkServed'), 'bg-emerald-500 hover:bg-emerald-600', 'bg-emerald-500', 'border-gray-200 dark:border-gray-700'],
         'bill' => [__('modules.order.boardBill'), __('modules.order.boardCollect'), 'bg-violet-500 hover:bg-violet-600', 'bg-violet-500', 'border-gray-200 dark:border-gray-700'],
     ];
+    // Libellés courts des onglets sur téléphone
+    $jbShort = [
+        'new' => __('modules.order.boardNew'),
+        'kitchen' => __('modules.order.boardKitchenShort'),
+        'ready' => __('modules.order.boardReadyShort'),
+        'bill' => __('modules.order.boardBill'),
+    ];
     $jbNow = now();
     $jbQty = fn ($q) => rtrim(rtrim(number_format((float) $q, 3, '.', ''), '0'), '.');
 @endphp
@@ -65,7 +72,7 @@
     <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
         <div class="flex items-center gap-2.5">
             <span class="relative flex h-2.5 w-2.5"><span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500"></span></span>
-            <h2 class="text-lg font-bold text-gray-900 dark:text-white">@lang('modules.order.boardTitle')</h2>
+            <h2 class="hidden text-lg font-bold text-gray-900 sm:block dark:text-white">@lang('modules.order.boardTitle')</h2>
             <span class="text-sm text-gray-400">{{ $finished }} @lang('modules.order.boardFinished')</span>
         </div>
         <div class="flex items-center gap-2">
@@ -123,7 +130,7 @@
                 ])>
                 <span class="flex min-w-0 items-center gap-2.5">
                     <span @class(['h-2.5 w-2.5 shrink-0 rounded-full', $dot => $key !== $stage, 'bg-white' => $key === $stage])></span>
-                    <span class="truncate text-sm font-semibold">{{ $title }}</span>
+                    <span class="truncate text-sm font-semibold"><span class="sm:hidden">{{ $jbShort[$key] }}</span><span class="hidden sm:inline">{{ $title }}</span></span>
                 </span>
                 <span @class(['text-xl font-bold tabular-nums', 'opacity-40' => ! $jbCount && $key !== $stage])>{{ $jbCount }}</span>
             </a>

@@ -56,6 +56,12 @@ html.dark .dark\:bg-gray-900 { background-color: #0e1514 !important; }
 html.dark #main-body > nav.fixed { background: rgba(22, 32, 31, .78) !important; box-shadow: 0 12px 40px rgba(0, 0, 0, .45); }
 #main-body > nav.fixed > div { padding-top: .5rem; padding-bottom: .5rem; }
 #main-body > div.h-screen { padding-top: 88px !important; background: transparent !important; }
+/* La barre flottante est déjà compensée ci-dessus : pas de second décalage sous elle (petits écrans) */
+#main-body > div.h-screen #main-content > main { padding-top: 0 !important; }
+/* Téléphone : le raccourci « Tables » (aussi dans le menu) laisse la place au profil dans la barre */
+@media (max-width: 479px) {
+    #main-body > nav.fixed div.relative:has(> a[href$="/tables"]) { display: none; }
+}
 
 /* ---------- Barre latérale : îlot flottant (grand écran) ---------- */
 @media (min-width: 1024px) {

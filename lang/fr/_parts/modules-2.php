@@ -130,6 +130,8 @@ return [
         'boardMarkReady' => 'C’est prêt',
         'boardMarkServed' => 'Servie',
         'boardCollect' => 'Encaisser',
+        'boardKitchenShort' => 'Cuisine',
+        'boardReadyShort' => 'Prêtes',
         'boardCollectTable' => 'Encaisser la table',
         'boardSessionPos' => 'Commande :i sur :n',
         'boardTableOrders' => ':count commandes',
