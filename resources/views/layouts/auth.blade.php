@@ -98,7 +98,7 @@
                     <p>Menu QR, commandes à table et suivi en direct : tout votre restaurant au même endroit.</p>
                 </div>
                 <div class="jb-auth__stage">
-                    <p class="jb-typed" id="jb-typed" data-phrases='["Bienvenue sur Mobilo.","Ici, vos clients scannent, commandent, et vous servez.","Prêt à recevoir votre première commande ?"]'>Bienvenue sur Mobilo.</p>
+                    <p class="jb-typed" id="jb-typed" data-phrases='["Bienvenue sur Jimbe.","Ici, vos clients scannent, commandent, et vous servez.","Prêt à recevoir votre première commande ?"]'>Bienvenue sur Jimbe.</p>
                 </div>
             </aside>
             <div class="jb-auth__main">

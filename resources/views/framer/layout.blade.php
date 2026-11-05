@@ -27,7 +27,7 @@
     <header class="fm-header">
         <div class="fm-header__bar">
             <a class="fm-header__logo" href="{{ $home }}" aria-label="Accueil">
-                <img src="{{ $fa('qJ79a7uh7BDpTYRCcBzM6dJ5QYk.svg') }}" alt="Mobilo" width="130" height="32">
+                <img src="{{ asset('landing/alytics/jimbe-logo.svg') }}" alt="Jimbe" width="128" height="32">
             </a>
 
             <nav class="fm-nav" aria-label="Navigation principale">
@@ -64,7 +64,7 @@
 
             <div class="fm-footer__top">
                 <div class="fm-footer__brand">
-                    <img src="{{ $fa('ecnC3SLFLuiRCRwPccplmpDSY.png') }}" alt="Mobilo" width="211" height="52">
+                    <img src="{{ asset('landing/alytics/jimbe-logo-light.svg') }}" alt="Jimbe" width="208" height="52">
                     <p>Jimbe est la plateforme tout-en-un des restaurants : menu QR, commandes, réservations et caisse réunis au même endroit. Simple pour vous. Meilleur pour vos clients.</p>
                 </div>
 

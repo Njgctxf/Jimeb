@@ -124,7 +124,7 @@
             <div x-show="view === 'cat'" x-cloak>@include('livewire.shop.partials.jimbe-category-page')</div>
             <div x-show="view === 'promo'" x-cloak>@include('livewire.shop.partials.jimbe-promo-page')</div>
 
-            <p class="jb-powered">@lang('modules.shop.poweredBy') <b>Mobilo</b></p>
+            <p class="jb-powered">@lang('modules.shop.poweredBy') <b>Jimbe</b></p>
 
             {{-- Mini barre panier --}}
             <div class="jb-scanbar" x-show="!cfg.canCreateOrder" x-cloak>
