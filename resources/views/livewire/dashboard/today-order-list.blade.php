@@ -15,22 +15,31 @@
     x-data="{
         known: null,
         sound: true,
-        beep() {
+        // Notes jouées : [fréquence, début (s), durée (s), forme d'onde]
+        tones(notes) {
             if (!this.sound) return;
             try {
                 const c = new (window.AudioContext || window.webkitAudioContext)();
-                [880, 1175, 1480].forEach((f, i) => {
+                notes.forEach(([f, at, len, type]) => {
                     const o = c.createOscillator(), g = c.createGain();
-                    o.frequency.value = f; o.connect(g); g.connect(c.destination);
-                    g.gain.setValueAtTime(0.25, c.currentTime + i * 0.18);
-                    g.gain.exponentialRampToValueAtTime(0.001, c.currentTime + i * 0.18 + 0.17);
-                    o.start(c.currentTime + i * 0.18); o.stop(c.currentTime + i * 0.18 + 0.17);
+                    o.type = type || 'sine'; o.frequency.value = f; o.connect(g); g.connect(c.destination);
+                    g.gain.setValueAtTime(0.25, c.currentTime + at);
+                    g.gain.exponentialRampToValueAtTime(0.001, c.currentTime + at + len);
+                    o.start(c.currentTime + at); o.stop(c.currentTime + at + len);
                 });
             } catch (e) {}
         },
+        // Nouvelle commande : trois notes qui montent
+        beep() { this.tones([[880, 0, 0.17], [1175, 0.18, 0.17], [1480, 0.36, 0.17]]); },
+        // Appel serveur : « ding-dong » plus grave, deux fois, pour ne pas le confondre avec une commande
+        callBeep() { this.tones([[784, 0, 0.35, 'triangle'], [587, 0.32, 0.5, 'triangle'], [784, 0.95, 0.35, 'triangle'], [587, 1.27, 0.5, 'triangle']]); },
         check() {
             const ids = [...this.$root.querySelectorAll('[data-alert-id]')].map(e => e.dataset.alertId);
-            if (this.known !== null && ids.some(id => !this.known.includes(id))) { this.beep(); }
+            if (this.known !== null) {
+                const fresh = ids.filter(id => !this.known.includes(id));
+                if (fresh.some(id => id.startsWith('call'))) { this.callBeep(); }
+                else if (fresh.length) { this.beep(); }
+            }
             this.known = ids;
             // Nombre de commandes que personne n'a prises (+ appels) dans le titre de l'onglet
             const n = this.$root.querySelectorAll('[data-unclaimed], [data-alert-id^=call]').length;
@@ -44,7 +53,10 @@
             // Après chaque rafraîchissement Livewire : nouvelles commandes ? (son + titre)
             Livewire.hook('morphed', () => this.$nextTick(() => this.check()));
             // Rappel toutes les 30 s tant qu'une commande n'est pas prise ou qu'un appel attend
-            setInterval(() => { if (this.$root.querySelector('[data-unclaimed], [data-alert-id^=call]')) this.beep(); }, 30000);
+            setInterval(() => {
+                if (this.$root.querySelector('[data-alert-id^=call]')) this.callBeep();
+                else if (this.$root.querySelector('[data-unclaimed]')) this.beep();
+            }, 30000);
         },
     }"
     x-on:jb-order-taken.window="alert(@js(__('modules.order.alreadyTaken')) + ' ' + ($event.detail.name || ''))">

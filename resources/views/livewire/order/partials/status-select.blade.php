@@ -27,7 +27,8 @@
     @foreach ($jbStatuses as $value => [$emoji, $label])
         <option value="{{ $value }}" @selected($jbCurrent === $value)>{{ $label }}</option>
     @endforeach
-    @if ($order->status !== 'paid')
+    {{-- Annulation possible seulement tant que la commande est nouvelle (pas encore validée) --}}
+    @if ($order->status !== 'paid' && $jbCurrent === 'confirmed')
         <option value="cancel">@lang('modules.order.cancelOrderShort')</option>
     @endif
 </select>

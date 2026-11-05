@@ -409,6 +409,7 @@ return [
         'reason_water' => 'De l’eau',
         'reason_other' => 'Autre chose',
         'messageLabel' => 'Message pour le serveur',
+        'tooManyCalls' => 'Vous avez déjà appelé plusieurs fois. Un serveur arrive ; vous pourrez rappeler dans :minutes min.',
         'messagePlaceholder' => 'Une précision ? ex. un mouchoir, de l’eau… (facultatif)',
         'callTitle' => 'Appeler un serveur',
         'callSub' => 'Dites-nous pourquoi, on arrive !',

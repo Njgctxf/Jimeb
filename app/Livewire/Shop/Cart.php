@@ -2692,6 +2692,19 @@ class Cart extends Component
             }
         }
 
+        // Anti-abus côté serveur, par table (tous téléphones confondus) : 6 commandes au plus en 10 minutes
+        $limitKey = 'jb-order-table:' . $table->id;
+        if (\Illuminate\Support\Facades\RateLimiter::tooManyAttempts($limitKey, 6)) {
+            $minutes = (int) ceil(\Illuminate\Support\Facades\RateLimiter::availableIn($limitKey) / 60);
+            $this->alert('warning', __('modules.shop.tooManyOrders', ['minutes' => max(1, $minutes)]), [
+                'toast' => false,
+                'position' => 'center',
+            ]);
+
+            return;
+        }
+        \Illuminate\Support\Facades\RateLimiter::hit($limitKey, 600);
+
         $name = trim($this->guestName);
         $phone = trim((string) $this->guestPhone) ?: null;
 
@@ -2750,6 +2763,15 @@ class Cart extends Component
         if (session($cooldownKey) && now()->timestamp - (int) session($cooldownKey) < 90) {
             return ['ok' => false, 'code' => 'pending', 'at' => now()->setTimestamp((int) session($cooldownKey))->timezone(timezone())->format('H:i')];
         }
+
+        // Anti-abus côté serveur, par table (tous téléphones confondus) : 4 appels au plus en 15 minutes
+        $limitKey = 'jb-call-table:' . $table->id;
+        if (\Illuminate\Support\Facades\RateLimiter::tooManyAttempts($limitKey, 4)) {
+            $minutes = (int) ceil(\Illuminate\Support\Facades\RateLimiter::availableIn($limitKey) / 60);
+
+            return ['ok' => false, 'code' => 'limited', 'message' => __('modules.waiterRequest.tooManyCalls', ['minutes' => max(1, $minutes)])];
+        }
+        \Illuminate\Support\Facades\RateLimiter::hit($limitKey, 900);
 
         $allowed = ['help', 'bill', 'water', 'other'];
         $reason = in_array($reason, $allowed, true) ? $reason : 'help';

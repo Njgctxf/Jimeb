@@ -99,12 +99,15 @@ trait ManagesLiveOrders
         $order->save();
     }
 
-    /** Annulation (avec confirmation côté écran). */
+    /**
+     * Annulation (avec confirmation côté écran), seulement tant que la commande est nouvelle :
+     * une fois validée, elle est en cuisine et ne s'annule plus depuis le service.
+     */
     public function cancelOrder(int $orderId, ?string $reason = null): void
     {
         $order = Order::find($orderId);
 
-        if (!$order || $order->status === 'paid' || !user_can('Update Order')) {
+        if (!$order || $order->status === 'paid' || !user_can('Update Order') || self::columnOf($order) !== 'new') {
             return;
         }
 

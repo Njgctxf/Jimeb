@@ -613,6 +613,7 @@ return [
         'optMulti' => 'Plusieurs choix possibles',
         'optChooseSize' => 'Choisissez une option',
         'addToCartBtn' => 'Ajouter au panier',
+        'tooManyOrders' => 'Cette table a envoyé beaucoup de commandes en peu de temps. Réessayez dans :minutes min ou appelez un serveur.',
         'navCart' => 'Panier',
         'navPromos' => 'Promos',
         'payTitle' => 'Paiement',
