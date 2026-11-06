@@ -117,7 +117,7 @@ return array(
     'updateBackupNotice' => 'Take a backup of files and database before updating.',
     'frontHeroHeading' => 'Ready to Satisfy Your Cravings? Place Your Order Now!',
     'profileUpdated' => 'Profile Updated Successfully',
-    'cartEmpty' => 'Your cart is empty 🙁',
+    'cartEmpty' => 'Your cart is empty',
     'memberAdded' => 'Member added successfully!',
     'cannotEditOwnRole' => 'You cannot change own role.',
     'memberUpdated' => 'Member updated successfully!',

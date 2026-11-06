@@ -72,6 +72,9 @@
     </div>
 @endif
 
+{{-- ===== Plat du moment (bandeau en diagonale) ===== --}}
+@include('livewire.shop.partials.jimbe-fs-hero')
+
 {{-- ===== Populaires (une seule rangée) ===== --}}
 <div id="jb-popular" x-show="popularItems().length > 0 && !(search || '').trim() && !badgeFilter" x-cloak>
     <div class="jb-hm-sec">

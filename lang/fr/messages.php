@@ -117,7 +117,7 @@ return array(
     'updateBackupNotice' => 'Faites une sauvegarde des fichiers et de la base de données avant la mise à jour.',
     'frontHeroHeading' => 'Une envie ? Passez votre commande maintenant !',
     'profileUpdated' => 'Profil mis à jour avec succès',
-    'cartEmpty' => 'Votre panier est vide 🙁',
+    'cartEmpty' => 'Votre panier est vide',
     'memberAdded' => 'Membre ajouté avec succès !',
     'cannotEditOwnRole' => 'Vous ne pouvez pas changer votre propre rôle.',
     'memberUpdated' => 'Membre modifié avec succès !',

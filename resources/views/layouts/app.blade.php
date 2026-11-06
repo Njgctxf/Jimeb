@@ -165,6 +165,8 @@
     ])
 
     @include('sections.jimbe_theme')
+    {{-- Verre liquide du tableau de bord (retirer cette ligne pour revenir au thème simple) --}}
+    <link href="{{ asset('css/jimbe-dashboard-glass.css') }}?v={{ filemtime(public_path('css/jimbe-dashboard-glass.css')) }}" rel="stylesheet">
 
 
     @if (File::exists(public_path() . '/css/app-custom.css'))

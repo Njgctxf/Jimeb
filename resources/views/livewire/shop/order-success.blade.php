@@ -8,12 +8,15 @@
         $jbStatus === 'preparing' => 2,
         default => 1,
     };
+    // Icônes dessinées des étapes (contours 24×24) : reçue, en cuisine, prête, servie
+    $jbIcon = fn (string $d) => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' . $d . '</svg>';
     $jbSteps = [
-        1 => ['📩', __('modules.shop.stepReceived')],
-        2 => ['👨‍🍳', __('modules.shop.stepPreparing')],
-        3 => ['✅', __('modules.shop.stepReady')],
-        4 => ['🍽️', __('modules.shop.stepServed')],
+        1 => [$jbIcon('<path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="m9 14 2 2 4-4"/>'), __('modules.shop.stepReceived')],
+        2 => [$jbIcon('<path d="M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.2 1.2-3.8 2.5-5 .2 1.6 1 2.6 2 3 0-3 0-5.5.5-8Z"/>'), __('modules.shop.stepPreparing')],
+        3 => [$jbIcon('<path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15L6 16Z"/><path d="M10 20a2 2 0 0 0 4 0"/><path d="M12 3v2"/>'), __('modules.shop.stepReady')],
+        4 => [$jbIcon('<path d="M3 15h18"/><path d="M5 15a7 7 0 0 1 14 0"/><path d="M12 6v2"/><path d="M4 19h16"/>'), __('modules.shop.stepServed')],
     ];
+    $jbCheck = $jbIcon('<path d="m5 12.5 4.5 4.5L19 7.5"/>');
     $jbHints = [
         1 => __('modules.shop.trackReceivedHint'),
         2 => __('modules.shop.trackPreparingHint'),
@@ -42,10 +45,21 @@
     $jbBillSent = $order->bill_sent_at && ! $jbFullyPaid && ! $jbCancelled;
 @endphp
 
-<div class="jb-shop jb-done" wire:poll.10s="refreshOrderSuccess">
+<div class="jb-shop jb-done" wire:poll.6s="refreshOrderSuccess">
     <link rel="stylesheet" href="{{ asset('css/jimbe-shop.css') }}?v={{ @filemtime(public_path('css/jimbe-shop.css')) }}">
+    @include('livewire.shop.partials.jimbe-foodslice-head')
     <div class="jb-done__hero">
-        <div class="jb-done__check">{{ $jbCancelled ? '✕' : '✓' }}</div>
+        {{-- Coche (ou croix) qui se dessine à l'arrivée --}}
+        <div class="jb-okmark {{ $jbCancelled ? 'is-cancel' : '' }}" aria-hidden="true">
+            <svg viewBox="0 0 52 52">
+                <circle class="jb-okmark__c" cx="26" cy="26" r="24" />
+                @if ($jbCancelled)
+                    <path class="jb-okmark__p" d="M17 17l18 18M35 17 17 35" />
+                @else
+                    <path class="jb-okmark__p" d="M14.5 27.5 22 35l15.5-17" />
+                @endif
+            </svg>
+        </div>
         <h1>{{ $jbCancelled ? __('modules.shop.orderCancelled') : __('modules.shop.orderSent') }}</h1>
         <p>
             @if ($jbCancelled)
@@ -57,10 +71,10 @@
         <div class="jb-done__meta">
             <span>{{ $order->show_formatted_order_number }}</span>
             @if ($order->table)
-                <span>🪑 {{ $order->table->table_code }}</span>
+                <span>{{ \Illuminate\Support\Str::startsWith(mb_strtolower($order->table->table_code), mb_strtolower(__('modules.shop.tableWord'))) ? $order->table->table_code : __('modules.shop.tableWord') . ' ' . $order->table->table_code }}</span>
             @endif
             @if ($jbMaxPrep && $jbStep < 3)
-                <span>⏱ ~{{ prep_time_label($jbMaxPrep) }}</span>
+                <span>~{{ prep_time_label($jbMaxPrep) }}</span>
             @endif
         </div>
     </div>
@@ -79,7 +93,7 @@
                     } catch (e) {}
                     $el.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }">
-            <b>🧾</b>
+            <b>{!! $jbIcon('<path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3Z"/><path d="M9 8h6M9 12h6"/>') !!}</b>
             <div>
                 <h3>@lang('modules.shop.billSentTitle')</h3>
                 <p>{{ $order->bill_sent_count > 1 ? __('modules.shop.billReminderSub') : __('modules.shop.billSentSub') }}</p>
@@ -89,35 +103,39 @@
     @endif
 
     @unless ($jbCancelled)
-        {{-- Étape 5 : suivi en direct --}}
-        <div class="jb-panel jb-track jb-track--s{{ $jbStep }}">
-            <div class="jb-track__head">
-                <div class="jb-track__pot" aria-hidden="true">
-                    <span class="jb-track__emoji">{{ $jbSteps[$jbStep][0] }}</span>
-                    @if ($jbStep === 2)
-                        <i class="jb-track__steam s1"></i><i class="jb-track__steam s2"></i><i class="jb-track__steam s3"></i>
-                    @endif
+        {{-- Étape 5 : suivi en direct, animé (rafraîchi toutes les 6 s) --}}
+        <div class="jb-panel jb-trk jb-trk--s{{ $jbStep }}" wire:key="jb-trk">
+            <div class="jb-trk__now">
+                <div class="jb-trk__icon" aria-hidden="true">
+                    {!! $jbSteps[$jbStep][0] !!}
+                    @if ($jbStep < 4) <i class="jb-trk__ring"></i> @endif
                 </div>
-                <div>
-                    <h3 class="jb-panel__title" style="margin:0">{{ $jbSteps[$jbStep][1] }}</h3>
+                <div class="min-w-0">
+                    <p class="jb-trk__live">
+                        @if ($jbStep < 4) <i></i> @lang('modules.shop.trackLive') @else @lang('modules.shop.trackDone') @endif
+                    </p>
+                    <h3 class="jb-panel__title jb-trk__title" wire:key="jb-trk-title-{{ $jbStep }}">{{ $jbSteps[$jbStep][1] }}</h3>
                     <p class="jb-track__hint">{{ $jbHints[$jbStep] }}</p>
                 </div>
             </div>
-            <div class="jb-track__bar"><span style="width: {{ $jbProgress }}%"></span></div>
-            <div class="jb-track__labels">
-                @foreach ($jbSteps as $n => [$emoji, $label])
-                    <span class="{{ $n < $jbStep ? 'is-done' : '' }} {{ $n === $jbStep ? 'is-now' : '' }}">{{ $label }}</span>
+
+            <ol class="jb-trk__steps" style="--jb-trk: {{ round(($jbStep - 1) / 3, 3) }}">
+                @foreach ($jbSteps as $n => [$icon, $label])
+                    <li class="{{ $n < $jbStep ? 'is-done' : '' }} {{ $n === $jbStep ? 'is-now' : '' }}" style="--i: {{ $n }}">
+                        <span class="jb-trk__dot">{!! $n < $jbStep ? $jbCheck : $icon !!}</span>
+                        <b>{{ $label }}</b>
+                    </li>
                 @endforeach
-            </div>
+            </ol>
         </div>
 
         {{-- Recommander --}}
         <div class="jb-panel">
             <h3 class="jb-panel__title">@lang('modules.shop.moreTitle')</h3>
             <div class="jb-more">
-                <a href="{{ $jbMoreUrl('boisson') }}"><b>🥤</b>@lang('modules.shop.moreDrink')</a>
-                <a href="{{ $jbMoreUrl('dessert') }}"><b>🍰</b>@lang('modules.shop.moreDessert')</a>
-                <a href="{{ $jbMoreUrl() }}"><b>➕</b>@lang('modules.shop.moreOther')</a>
+                <a href="{{ $jbMoreUrl('boisson') }}"><b>{!! $jbIcon('<path d="M7 4h10l-1.5 16h-7L7 4Z"/><path d="M7.5 9h9"/><path d="M13 4l2-2"/>') !!}</b>@lang('modules.shop.moreDrink')</a>
+                <a href="{{ $jbMoreUrl('dessert') }}"><b>{!! $jbIcon('<path d="M4 14h16v6H4z"/><path d="M6 14v-3a6 6 0 0 1 12 0v3"/><path d="M12 5V3"/>') !!}</b>@lang('modules.shop.moreDessert')</a>
+                <a href="{{ $jbMoreUrl() }}"><b>{!! $jbIcon('<path d="M12 5v14M5 12h14"/>') !!}</b>@lang('modules.shop.moreOther')</a>
             </div>
         </div>
     @endunless
@@ -141,20 +159,20 @@
             @endforeach
         </div>
         @if ($order->order_note)
-            <p class="jb-recap__note">📝 {{ $order->order_note }}</p>
+            <p class="jb-recap__note">{{ $order->order_note }}</p>
         @endif
     </div>
 
     @unless ($jbCancelled)
         {{-- Étape 6 : l'addition --}}
         <div class="jb-panel jb-bill" x-data="{ split: {{ $splitCount > 1 ? 'true' : 'false' }} }">
-            <h3 class="jb-panel__title">🧾 @lang('modules.shop.billTitle')</h3>
+            <h3 class="jb-panel__title">@lang('modules.shop.billTitle')</h3>
             @if ($jbPayChoice)
                 <div class="jb-choice">
-                    <span>{{ $jbPayChoice[0] }} @lang($jbPayChoice[1])</span>
-                    <span>{{ $order->pay_when === 'now' ? '⚡ ' . __('modules.shop.payNowLabel') : '🍽️ ' . __('modules.shop.payAfter') }}</span>
+                    <span>@lang($jbPayChoice[1])</span>
+                    <span>{{ $order->pay_when === 'now' ? __('modules.shop.payNowLabel') : __('modules.shop.payAfter') }}</span>
                     @if ($order->pay_split > 1)
-                        <span>👥 ÷ {{ $order->pay_split }}</span>
+                        <span>÷ {{ $order->pay_split }}</span>
                     @endif
                 </div>
             @endif
@@ -177,7 +195,7 @@
             </div>
 
             @if ($jbFullyPaid)
-                <div class="jb-bill__done">✅ @lang('modules.shop.billAllPaid')</div>
+                <div class="jb-bill__done">{!! $jbCheck !!} @lang('modules.shop.billAllPaid')</div>
             @else
                 @if ($jbTipEditable)
                     <p class="jb-bill__label">@lang('modules.shop.billTip')</p>
@@ -212,12 +230,12 @@
 
                 <div class="jb-pay">
                     <button type="button" class="jb-pay__opt" wire:click="callWaiterForBill" wire:loading.attr="disabled" wire:target="callWaiterForBill">
-                        <b>🙋</b>
+                        <b>{!! $jbSteps[3][0] !!}</b>
                         <span>@lang('modules.shop.billCallWaiter')<small>@lang('modules.shop.billCallWaiterSub')</small></span>
                     </button>
                     @if ($jbCanPayOnline)
                         <button type="button" class="jb-pay__opt is-main" wire:click="payOnline" wire:loading.attr="disabled" wire:target="payOnline">
-                            <b>📱</b>
+                            <b>{!! $jbIcon('<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>') !!}</b>
                             <span>@lang('modules.shop.billPayOnline') · {{ currency_format($jbShare, $jbCur) }}<small>@lang('modules.shop.billPayOnlineSub')</small></span>
                         </button>
                     @endif

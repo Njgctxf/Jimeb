@@ -87,6 +87,7 @@
         </div>
 
         <link rel="stylesheet" href="{{ asset('css/jimbe-shop.css') }}?v={{ @filemtime(public_path('css/jimbe-shop.css')) }}">
+        @include('livewire.shop.partials.jimbe-foodslice-head')
 
         @include('livewire.shop.partials.jimbe-welcome')
 

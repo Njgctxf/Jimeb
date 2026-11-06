@@ -29,7 +29,7 @@ html:not(.dark) { background: #f7f7f7; }
 html:not(.dark) body {
     background:
         radial-gradient(900px 520px at 92% -8%, rgba(5, 80, 73, .11), transparent 70%),
-        radial-gradient(760px 480px at -6% 4%, rgba(252, 248, 208, .75), transparent 70%),
+        radial-gradient(760px 480px at -6% 4%, rgba(134, 230, 214, .75), transparent 70%),
         #f7f7f7 !important;
     background-attachment: fixed !important;
 }
@@ -183,7 +183,7 @@ main .text-gray-500, main .text-gray-600 { color: var(--jb-gray); }
     position: relative; overflow: hidden; color: #fff; padding: 44px 56px; display: flex; flex-direction: column; gap: 28px;
     background:
         radial-gradient(620px 420px at 100% 0%, rgba(66, 184, 166, .38), transparent 70%),
-        radial-gradient(520px 380px at 0% 100%, rgba(252, 248, 208, .16), transparent 70%),
+        radial-gradient(520px 380px at 0% 100%, rgba(134, 230, 214, .16), transparent 70%),
         #055049;
 }
 .jb-auth__pattern { position: absolute; inset: auto 0 0 0; width: 100%; height: 60%; object-fit: cover; opacity: .16; mix-blend-mode: screen; pointer-events: none; }
@@ -205,7 +205,7 @@ main .text-gray-500, main .text-gray-600 { color: var(--jb-gray); }
 
 .jb-auth__main {
     position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 22px; padding: 32px 24px;
-    background: radial-gradient(700px 420px at 100% 0%, rgba(5, 80, 73, .09), transparent 70%), radial-gradient(560px 380px at 0% 100%, rgba(252, 248, 208, .7), transparent 70%), #f7f7f7;
+    background: radial-gradient(700px 420px at 100% 0%, rgba(5, 80, 73, .09), transparent 70%), radial-gradient(560px 380px at 0% 100%, rgba(134, 230, 214, .7), transparent 70%), #f7f7f7;
 }
 html.dark .jb-auth__main { background: #0e1514; }
 .jb-auth__main > .jb-auth__logo, .jb-auth__main .app-logo { font-family: var(--jb-head); font-weight: 600; letter-spacing: -.02em; }
@@ -234,7 +234,7 @@ html.dark .jb-auth__main > div[class*='bg-white'] { background: #16201f !importa
     display: flex; align-items: center; justify-content: space-between; gap: 24px;
     background:
         radial-gradient(520px 300px at 108% -12%, rgba(66, 184, 166, .6), transparent 70%),
-        radial-gradient(420px 260px at -4% 125%, rgba(252, 248, 208, .16), transparent 70%),
+        radial-gradient(420px 260px at -4% 125%, rgba(134, 230, 214, .16), transparent 70%),
         #055049;
     box-shadow: 0 28px 56px -22px rgba(5, 80, 73, .6), inset 0 -6px 4px rgba(230, 230, 230, .08);
 }
@@ -285,7 +285,7 @@ html.dark .jb-hero-card { background: radial-gradient(520px 300px at 108% -12%, 
 }
 .jb-typed::after {
     content: ""; display: inline-block; width: 3px; height: .95em; margin-left: 6px; vertical-align: -0.1em;
-    background: #f5a524; animation: jb-caret 1s steps(1) infinite;
+    background: #055049; animation: jb-caret 1s steps(1) infinite;
 }
 @keyframes jb-caret { 50% { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .jb-typed::after { animation: none; } }
